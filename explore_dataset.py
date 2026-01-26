@@ -6,31 +6,47 @@ Loads each JSON file and displays structure and sample records.
 
 import json
 import os
+import gzip
 from pathlib import Path
 from typing import Dict, Any, List
 
-def load_json_file(file_path: Path) -> List[Dict[Any, Any]]:
-    """Load a JSON or JSONL file and return list of records."""
+def load_json_file(file_path: Path, max_records: int = 1000) -> List[Dict[Any, Any]]:
+    """Load a JSON or JSONL file (compressed or uncompressed) and return list of records."""
     records = []
+
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        # Determine if file is gzipped
+        is_gzipped = file_path.suffix == '.gz'
+
+        # Open with appropriate handler
+        if is_gzipped:
+            f = gzip.open(file_path, 'rt', encoding='utf-8')
+        else:
+            f = open(file_path, 'r', encoding='utf-8')
+
+        try:
             # Try loading as regular JSON first
             try:
                 data = json.load(f)
                 if isinstance(data, list):
-                    records = data
+                    records = data[:max_records]
                 else:
                     records = [data]
             except json.JSONDecodeError:
                 # If that fails, try as JSONL (one JSON object per line)
                 f.seek(0)
-                for line in f:
+                for i, line in enumerate(f):
+                    if i >= max_records:
+                        break
                     line = line.strip()
                     if line:
                         try:
                             records.append(json.loads(line))
                         except json.JSONDecodeError:
                             continue
+        finally:
+            f.close()
+
     except Exception as e:
         print(f"Error loading {file_path}: {e}")
 
@@ -68,11 +84,12 @@ def explore_dataset(data_dir: str, num_examples: int = 3):
         print(f"Error: Directory {data_dir} does not exist!")
         return
 
-    # Find all JSON files, excluding byGenre folder
+    # Find all JSON files (including .gz), excluding byGenre folder
     json_files = []
-    for file in data_path.rglob("*.json"):
-        if "byGenre" not in file.parts:
-            json_files.append(file)
+    for pattern in ["*.json", "*.json.gz"]:
+        for file in data_path.rglob(pattern):
+            if "byGenre" not in file.parts:
+                json_files.append(file)
 
     if not json_files:
         print(f"No JSON files found in {data_dir}")
@@ -88,20 +105,25 @@ def explore_dataset(data_dir: str, num_examples: int = 3):
         print(f"   Size: {json_file.stat().st_size / 1024 / 1024:.2f} MB")
         print("-" * 80)
 
-        records = load_json_file(json_file)
+        # Load limited number of records for exploration
+        records = load_json_file(json_file, max_records=100)
 
         if not records:
             print("   ⚠️  No records loaded (empty or invalid JSON)")
             continue
 
-        print(f"   Total records: {len(records)}")
+        print(f"   Records loaded for analysis: {len(records)} (limited sample)")
         print(f"\n   STRUCTURE (from first record):")
         print_record_structure(records[0], indent=4)
 
         print(f"\n   SAMPLE RECORDS (first {min(num_examples, len(records))}):")
         for i, record in enumerate(records[:num_examples]):
             print(f"\n   --- Record {i+1} ---")
-            print(json.dumps(record, indent=4, ensure_ascii=False)[:500] + "...")
+            record_str = json.dumps(record, indent=4, ensure_ascii=False)
+            if len(record_str) > 800:
+                print(record_str[:800] + "\n    ... (truncated)")
+            else:
+                print(record_str)
 
         print("\n" + "=" * 80)
 
