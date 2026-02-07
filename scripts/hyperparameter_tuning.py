@@ -18,7 +18,7 @@ from scripts.train import train
 
 
 def hyperparameter_tuning(
-    data_dir: str,
+    csv_path: str,
     output_dir: str,
     reg_weights: List[float] = None,
     learning_rates: List[float] = None,
@@ -26,13 +26,14 @@ def hyperparameter_tuning(
     n_epochs: int = 20,
     random_seed: int = 86,
     batch_size: int = 512,
-    save_every: int = 5
+    save_every: int = 5,
+    use_map: bool = False
 ) -> None:
     """
     Run hyperparameter tuning over different regularization weights and learning rates.
     
     Args:
-        data_dir: Path to data directory
+        csv_path: Path to the interactions CSV file
         output_dir: Path to save results
         reg_weights: List of regularization weights to try
         learning_rates: List of learning rates to try
@@ -41,6 +42,7 @@ def hyperparameter_tuning(
         random_seed: Random seed for reproducibility
         batch_size: Batch size for training
         save_every: Evaluate and save every N epochs
+        use_map: If True, load user_id_map.json and book_id_map.json from CSV directory
     """
     if reg_weights is None:
         reg_weights = [0, 0.01, 0.03, 0.1, 0.3, 1.0]
@@ -76,7 +78,7 @@ def hyperparameter_tuning(
             # Train model using train function from train.py
             # Reuse dataloader across runs
             val_metrics, test_metrics, dataloader = train(
-                data_dir=data_dir,
+                csv_path=csv_path,
                 output_dir=str(run_output_dir),
                 embedding_dim=embedding_dim,
                 reg_weight=reg_weight,
@@ -86,7 +88,8 @@ def hyperparameter_tuning(
                 random_seed=random_seed,
                 save_every=save_every,
                 verbose=False,
-                dataloader=dataloader
+                dataloader=dataloader,
+                use_map=use_map
             )
             
             print(f"  Val MAE: {val_metrics['mae']:.4f}, Val Acc: {val_metrics['accuracy']:.4f}")
@@ -157,10 +160,10 @@ def main():
     )
     
     parser.add_argument(
-        "--data_dir",
+        "--csv_path",
         type=str,
-        default="/data/user_data/sheels/Spring2026/10718_mlip/data",
-        help="Path to data directory"
+        default="/data/user_data/sheels/Spring2026/10718_mlip/data/goodreads_interactions.csv",
+        help="Path to the interactions CSV file"
     )
     parser.add_argument(
         "--output_dir",
@@ -198,17 +201,23 @@ def main():
         default=1,
         help="Evaluate and save every N epochs"
     )
+    parser.add_argument(
+        "--use_map",
+        action="store_true",
+        help="Load user_id_map.json and book_id_map.json from CSV directory"
+    )
     
     args = parser.parse_args()
     
     hyperparameter_tuning(
-        data_dir=args.data_dir,
+        csv_path=args.csv_path,
         output_dir=args.output_dir,
         embedding_dim=args.embedding_dim,
         n_epochs=args.n_epochs,
         random_seed=args.random_seed,
         batch_size=args.batch_size,
-        save_every=args.save_every
+        save_every=args.save_every,
+        use_map=args.use_map
     )
 
 

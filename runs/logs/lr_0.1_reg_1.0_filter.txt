@@ -1,0 +1,75 @@
+============================================================
+Loading data...
+============================================================
+Loading data from /data/user_data/sheels/Spring2026/10718_mlip/data/good_reviews.csv...
+Loading user_id map from /data/user_data/sheels/Spring2026/10718_mlip/data/user_id_map.csv...
+Loading book_id map from /data/user_data/sheels/Spring2026/10718_mlip/data/book_id_map.csv...
+Loaded maps: 876,145 users, 2,360,650 books
+Loaded 5,755,147 interactions
+Number of unique users: 175,528
+Number of unique books: 18,443
+Rating distribution: {np.int32(1): np.int64(169590), np.int32(2): np.int64(409108), np.int32(3): np.int64(1132307), np.int32(4): np.int64(1979212), np.int32(5): np.int64(2064930)}
+
+Data splits:
+  Train: 4,028,602 samples (70%)
+  Val:   863,272 samples (15%)
+  Test:  863,273 samples (15%)
+
+============================================================
+Initializing model...
+============================================================
+  Users: 175,528
+  Books: 18,443
+  Embedding dim: 64
+  Regularization weight: 1.0
+  Learning rate: 0.1
+
+============================================================
+Starting training...
+============================================================
+
+Epoch 1/5 (15.2s)
+  Train Loss: 0.249746 (MSE: 0.233377, Reg: 0.016369)
+  Val MSE: 0.059298, RMSE: 1.1954, MAE: 0.9297, Acc: 0.3411
+  ✓ New best model saved (MAE: 0.9297)
+  ✓ Checkpoint saved
+
+Epoch 2/5 (15.4s)
+  Train Loss: 0.046796 (MSE: 0.041179, Reg: 0.005618)
+  Val MSE: 0.045041, RMSE: 1.0506, MAE: 0.8258, Acc: 0.3726
+  ✓ New best model saved (MAE: 0.8258)
+  ✓ Checkpoint saved
+
+Epoch 3/5 (15.4s)
+  Train Loss: 0.036418 (MSE: 0.032524, Reg: 0.003894)
+  Val MSE: 0.041427, RMSE: 1.0087, MAE: 0.7942, Acc: 0.3856
+  ✓ New best model saved (MAE: 0.7942)
+  ✓ Checkpoint saved
+
+Epoch 4/5 (15.1s)
+  Train Loss: 0.032148 (MSE: 0.028945, Reg: 0.003203)
+  Val MSE: 0.039794, RMSE: 0.9888, MAE: 0.7779, Acc: 0.3937
+  ✓ New best model saved (MAE: 0.7779)
+  ✓ Checkpoint saved
+
+Epoch 5/5 (15.0s)
+  Train Loss: 0.029531 (MSE: 0.026681, Reg: 0.002851)
+  Val MSE: 0.038964, RMSE: 0.9784, MAE: 0.7704, Acc: 0.3976
+  ✓ New best model saved (MAE: 0.7704)
+  ✓ Checkpoint saved
+
+============================================================
+Generating training plots...
+============================================================
+  Saved: /data/user_data/saksham3/courses/10-718-project/checkpoints/plots/mse_curve.png
+  Saved: /data/user_data/saksham3/courses/10-718-project/checkpoints/plots/mae_curve.png
+
+============================================================
+Final Evaluation on Test Set
+============================================================
+  Test MSE:  0.038959
+  Test RMSE: 0.9782
+  Test MAE:  0.7706
+  Test Acc:  0.3968
+
+Final model saved to /data/user_data/saksham3/courses/10-718-project/checkpoints/final_model.npz

@@ -59,7 +59,7 @@ def plot_training_curve(
 
 
 def train(
-    data_dir: str,
+    csv_path: str,
     output_dir: str,
     embedding_dim: int = 64,
     reg_weight: float = 0.01,
@@ -69,13 +69,14 @@ def train(
     random_seed: int = 86,
     save_every: int = 1,
     verbose: bool = True,
-    dataloader: Optional[GoodreadsDataLoader] = None
+    dataloader: Optional[GoodreadsDataLoader] = None,
+    use_map: bool = False
 ) -> Tuple[Dict[str, float], Dict[str, float], GoodreadsDataLoader]:
     """
     Train the collaborative filtering model.
     
     Args:
-        data_dir: Path to data directory
+        csv_path: Path to the interactions CSV file
         output_dir: Path to save model checkpoints
         embedding_dim: Dimension of embeddings
         reg_weight: Regularization weight for unit norm constraint
@@ -86,6 +87,7 @@ def train(
         save_every: Evaluate and save checkpoint every N epochs
         verbose: Whether to print progress messages
         dataloader: Optional pre-initialized dataloader (to reuse across runs)
+        use_map: If True, load user_id_map.json and book_id_map.json from CSV directory
         
     Returns:
         Tuple of (val_metrics, test_metrics, dataloader)
@@ -101,9 +103,10 @@ def train(
             print("Loading data...")
             print("=" * 60)
         dataloader = create_dataloader(
-            data_dir=data_dir,
+            csv_path=csv_path,
             batch_size=batch_size,
-            random_seed=random_seed
+            random_seed=random_seed,
+            use_map=use_map
         )
     else:
         if verbose:
@@ -276,10 +279,10 @@ def main():
     )
     
     parser.add_argument(
-        "--data_dir",
+        "--csv_path",
         type=str,
-        default="/data/user_data/sheels/Spring2026/10718_mlip/data",
-        help="Path to data directory"
+        default="/data/user_data/sheels/Spring2026/10718_mlip/data/goodreads_interactions.csv",
+        help="Path to the interactions CSV file"
     )
     parser.add_argument(
         "--output_dir",
@@ -330,6 +333,11 @@ def main():
         help="Evaluate and save checkpoint every N epochs"
     )
     parser.add_argument(
+        "--use_map",
+        action="store_true",
+        help="Load user_id_map.json and book_id_map.json from CSV directory"
+    )
+    parser.add_argument(
         "--profile",
         action="store_true",
         help="Enable profiling and save results to logs/profiling.txt"
@@ -339,7 +347,7 @@ def main():
     
     def run_training():
         return train(
-            data_dir=args.data_dir,
+            csv_path=args.csv_path,
             output_dir=args.output_dir,
             embedding_dim=args.embedding_dim,
             reg_weight=args.reg_weight,
@@ -347,7 +355,8 @@ def main():
             batch_size=args.batch_size,
             n_epochs=args.n_epochs,
             random_seed=args.random_seed,
-            save_every=args.save_every
+            save_every=args.save_every,
+            use_map=args.use_map
         )
     
     if args.profile:

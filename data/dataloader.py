@@ -26,7 +26,8 @@ class GoodreadsDataLoader:
         train_ratio: float = 0.70,
         val_ratio: float = 0.15,
         test_ratio: float = 0.15,
-        random_seed: int = 86
+        random_seed: int = 86,
+        use_map: bool = False
     ):
         """
         Initialize the data loader.
@@ -38,6 +39,7 @@ class GoodreadsDataLoader:
             val_ratio: Fraction for validation set (default 0.15)
             test_ratio: Fraction for test set (default 0.15)
             random_seed: Random seed for shuffling and splitting
+            use_map: If True, load user_id_map.json and book_id_map.json from CSV directory
         """
         assert abs(train_ratio + val_ratio + test_ratio - 1.0) < 1e-6, \
             "Train, val, and test ratios must sum to 1.0"
@@ -48,6 +50,8 @@ class GoodreadsDataLoader:
         self.val_ratio = val_ratio
         self.test_ratio = test_ratio
         self.random_seed = random_seed
+        self.use_map = use_map
+        self.map_dir = self.csv_path.parent
         
         # Data arrays
         self.user_ids: np.ndarray = np.array([])
@@ -76,43 +80,94 @@ class GoodreadsDataLoader:
         
         print(f"Loading data from {self.csv_path}...")
         
+        # Load external mappings if use_map is True
+        if self.use_map:
+            user_map_path = self.map_dir / "user_id_map.csv"
+            book_map_path = self.map_dir / "book_id_map.csv"
+            
+            if not user_map_path.exists():
+                raise FileNotFoundError(f"User ID map not found: {user_map_path}")
+            if not book_map_path.exists():
+                raise FileNotFoundError(f"Book ID map not found: {book_map_path}")
+            
+            # Load user_id map: CSV with columns (index, original_id)
+            print(f"Loading user_id map from {user_map_path}...")
+            self.user_id_to_idx = {}
+            with open(user_map_path, 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                next(reader)  # Skip header
+                for row in reader:
+                    idx = int(row[0])
+                    original_id = row[1]
+                    self.user_id_to_idx[original_id] = idx
+            
+            # Load book_id map: CSV with columns (index, original_id)
+            print(f"Loading book_id map from {book_map_path}...")
+            self.book_id_to_idx = {}
+            with open(book_map_path, 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                next(reader)  # Skip header
+                for row in reader:
+                    idx = int(row[0])
+                    original_id = row[1]
+                    self.book_id_to_idx[original_id] = idx
+            
+            print(f"Loaded maps: {len(self.user_id_to_idx):,} users, {len(self.book_id_to_idx):,} books")
+        
         with open(self.csv_path, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             
             for row in reader:
-                # Filter: only include rows where is_read = 1
-                is_read = int(row['is_read'])
-                if is_read != 1:
-                    continue
-                
                 # Get rating (1-5)
                 rating = int(row['rating'])
                 if rating < 1 or rating > 5:
                     continue  # Skip invalid ratings
                 
-                user_ids_raw.append(int(row['user_id']))
-                book_ids_raw.append(int(row['book_id']))
+                # Get user_id and book_id (as strings for map lookup)
+                user_id_str = row['user_id']
+                book_id_str = row['book_id']
+                
+                # Skip if user/book not in map when use_map is True
+                if self.use_map:
+                    if user_id_str not in self.user_id_to_idx or book_id_str not in self.book_id_to_idx:
+                        continue
+                    user_ids_raw.append(user_id_str)
+                    book_ids_raw.append(book_id_str)
+                else:
+                    # Filter: only include rows where is_read = 1
+                    is_read = int(row['is_read'])
+                    if is_read != 1:
+                        continue
+                    user_ids_raw.append(int(user_id_str))
+                    book_ids_raw.append(int(book_id_str))
+                
                 ratings.append(rating)
         
-        user_ids_raw = np.array(user_ids_raw, dtype=np.int32)
-        book_ids_raw = np.array(book_ids_raw, dtype=np.int32)
         self.ratings = np.array(ratings, dtype=np.int32)
+        self.n_samples = len(self.ratings)
         
-        # Get unique users and books, create mapping to contiguous indices
-        unique_users = np.unique(user_ids_raw)
-        unique_books = np.unique(book_ids_raw)
+        if self.use_map:
+            # Apply pre-loaded mappings (keys are strings) to get intermediate IDs
+            user_ids_mapped = np.array([self.user_id_to_idx[uid] for uid in user_ids_raw], dtype=np.int32)
+            book_ids_mapped = np.array([self.book_id_to_idx[bid] for bid in book_ids_raw], dtype=np.int32)
+        else:
+            # Convert to numpy arrays (IDs are already integers)
+            user_ids_mapped = np.array(user_ids_raw, dtype=np.int32)
+            book_ids_mapped = np.array(book_ids_raw, dtype=np.int32)
+        
+        unique_users = np.unique(user_ids_mapped)
+        unique_books = np.unique(book_ids_mapped)
         
         self.n_users = len(unique_users)
         self.n_books = len(unique_books)
-        self.n_samples = len(self.ratings)
         
-        # Create mappings: original_id -> contiguous_index
-        self.user_id_to_idx = {uid: idx for idx, uid in enumerate(unique_users)}
-        self.book_id_to_idx = {bid: idx for idx, bid in enumerate(unique_books)}
+        # Create mappings: intermediate_id -> contiguous_index
+        user_reindex = {uid: idx for idx, uid in enumerate(unique_users)}
+        book_reindex = {bid: idx for idx, bid in enumerate(unique_books)}
         
-        # Convert raw IDs to contiguous indices
-        self.user_ids = np.array([self.user_id_to_idx[uid] for uid in user_ids_raw], dtype=np.int32)
-        self.book_ids = np.array([self.book_id_to_idx[bid] for bid in book_ids_raw], dtype=np.int32)
+        # Convert to contiguous indices
+        self.user_ids = np.array([user_reindex[uid] for uid in user_ids_mapped], dtype=np.int32)
+        self.book_ids = np.array([book_reindex[bid] for bid in book_ids_mapped], dtype=np.int32)
         
         print(f"Loaded {self.n_samples:,} interactions")
         print(f"Number of unique users: {self.n_users:,}")
@@ -249,22 +304,24 @@ class GoodreadsDataLoader:
 
 
 def create_dataloader(
-    data_dir: str = "/data/user_data/sheels/Spring2026/10718_mlip/data",
+    csv_path: str = "/data/user_data/sheels/Spring2026/10718_mlip/data/goodreads_interactions.csv",
     batch_size: int = 512,
-    random_seed: int = 86
+    random_seed: int = 86,
+    use_map: bool = False
 ) -> GoodreadsDataLoader:
     """
     Factory function to create the data loader.
     
     Args:
-        data_dir: Path to the data directory containing goodreads_interactions.csv
+        csv_path: Path to the interactions CSV file
         batch_size: Batch size for iteration
         random_seed: Random seed for reproducibility
+        use_map: If True, load user_id_map.json and book_id_map.json from CSV directory
         
     Returns:
         Configured GoodreadsDataLoader instance
     """
-    csv_path = Path(data_dir) / "goodreads_interactions.csv"
+    csv_path = Path(csv_path)
     
     if not csv_path.exists():
         raise FileNotFoundError(f"Interactions file not found: {csv_path}")
@@ -272,5 +329,6 @@ def create_dataloader(
     return GoodreadsDataLoader(
         csv_path=str(csv_path),
         batch_size=batch_size,
-        random_seed=random_seed
+        random_seed=random_seed,
+        use_map=use_map
     )
