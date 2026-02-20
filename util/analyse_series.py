@@ -8,6 +8,7 @@ import argparse
 import re
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 
 def identify_core_books(df):
@@ -238,10 +239,90 @@ def filter_to_core_books(input_file, output_file):
              bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
     plt.tight_layout()
-    histogram_file = output_file.replace('.parquet', '_user_distribution.png')
+    # Save PNG locally in current directory
+    base_name = os.path.splitext(os.path.basename(output_file))[0]
+    histogram_file = f'./{base_name}_user_distribution.png'
     plt.savefig(histogram_file, dpi=300, bbox_inches='tight')
     print(f"Histogram saved to: {histogram_file}")
     plt.close()
+
+    # Analyze rating differences for users who read exactly 2 books
+    print(f"\n{'='*80}")
+    print("RATING DIFFERENCES FOR USERS WHO READ EXACTLY 2 BOOKS")
+    print('='*80)
+
+    # Get users who read exactly 2 books
+    two_book_users = user_book_counts[user_book_counts == 2].index.tolist()
+    print(f"\nUsers who read exactly 2 books: {len(two_book_users):,}")
+
+    if len(two_book_users) > 0:
+        # Calculate rating differences for these users
+        rating_differences = []
+
+        for user_id in two_book_users:
+            user_reviews = filtered_df[filtered_df['user_id'] == user_id]
+            ratings = user_reviews['rating'].values
+
+            # Should have exactly 2 ratings (one per book)
+            if len(ratings) == 2:
+                rating_diff = abs(ratings[0] - ratings[1])
+                rating_differences.append(rating_diff)
+            elif len(ratings) > 2:
+                # User reviewed multiple times - take unique ratings per book
+                # Group by book_id and take mean rating per book
+                book_ratings = user_reviews.groupby('book_id')['rating'].mean().values
+                if len(book_ratings) == 2:
+                    rating_diff = abs(book_ratings[0] - book_ratings[1])
+                    rating_differences.append(rating_diff)
+
+        rating_differences = np.array(rating_differences)
+
+        print(f"Successfully calculated rating differences for {len(rating_differences):,} users")
+        print(f"\nRating Difference Statistics:")
+        print(f"  Mean absolute difference: {rating_differences.mean():.2f}")
+        print(f"  Median absolute difference: {np.median(rating_differences):.2f}")
+        print(f"  Std deviation: {rating_differences.std():.2f}")
+
+        # Distribution of rating differences
+        print(f"\nDistribution of absolute rating differences:")
+        unique_diffs = np.arange(0, 5.5, 0.5)  # Possible differences: 0, 0.5, 1, ..., 5
+        for diff in unique_diffs:
+            count = np.sum(np.abs(rating_differences - diff) < 0.01)  # Handle floating point
+            if count > 0:
+                percentage = (count / len(rating_differences)) * 100
+                print(f"  Difference {diff:.1f}: {count:6,} users ({percentage:5.1f}%)")
+
+        # Create histogram for rating differences
+        print(f"\nGenerating rating difference histogram...")
+        plt.figure(figsize=(12, 6))
+
+        # Create bins centered on possible difference values (0, 0.5, 1, 1.5, ..., 5)
+        bins = np.arange(-0.25, 5.5, 0.5)
+        plt.hist(rating_differences, bins=bins, edgecolor='black', alpha=0.7, color='coral')
+
+        plt.xlabel('Absolute Rating Difference', fontsize=12)
+        plt.ylabel('Number of Users', fontsize=12)
+        plt.title('Distribution of Rating Differences for Users Who Read Exactly 2 Books', fontsize=14, fontweight='bold')
+        plt.grid(True, alpha=0.3, linestyle='--')
+
+        # Set x-axis to show all possible differences
+        plt.xticks(np.arange(0, 5.5, 0.5))
+        plt.xlim(-0.25, 5.25)
+
+        # Add stats text box
+        stats_text = f'Total Users: {len(rating_differences):,}\nMean: {rating_differences.mean():.2f}\nMedian: {np.median(rating_differences):.2f}\nStd: {rating_differences.std():.2f}'
+        plt.text(0.98, 0.97, stats_text, transform=plt.gca().transAxes,
+                 fontsize=10, verticalalignment='top', horizontalalignment='right',
+                 bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+
+        plt.tight_layout()
+        # Save PNG locally in current directory
+        rating_diff_file = f'./{base_name}_rating_difference_2books.png'
+        plt.savefig(rating_diff_file, dpi=300, bbox_inches='tight')
+        print(f"Rating difference histogram saved to: {rating_diff_file}")
+        plt.close()
+    else:
+        print("No users found who read exactly 2 books.")
 
     # Save filtered data
     print(f"\nSaving filtered reviews to {output_file}...")

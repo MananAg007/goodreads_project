@@ -1,5 +1,6 @@
 """
 Filter Goodreads reviews to only include specified book series.
+Merges book metadata (title, average_rating) with filtered reviews.
 """
 import pandas as pd
 import argparse
@@ -9,7 +10,7 @@ from pathlib import Path
 
 def load_book_metadata(metadata_file, series_names=None):
     """
-    Load book metadata that maps book_id to title and series information.
+    Load book metadata that maps book_id to title, series, and rating information.
     Optimized for large files by reading in chunks and filtering early.
 
     Args:
@@ -17,7 +18,7 @@ def load_book_metadata(metadata_file, series_names=None):
         series_names: Optional list of series to filter for (speeds up loading)
 
     Returns:
-        DataFrame with book_id, title, and series information
+        DataFrame with book_id, title, series, and average_rating (if available)
     """
     print(f"Loading book metadata from {metadata_file}...")
 
@@ -55,6 +56,8 @@ def load_book_metadata(metadata_file, series_names=None):
                 cols_to_keep.append('title')
             if 'series' in chunk.columns:
                 cols_to_keep.append('series')
+            if 'average_rating' in chunk.columns:
+                cols_to_keep.append('average_rating')
 
             chunk = chunk[cols_to_keep]
 
@@ -119,12 +122,12 @@ def find_books_in_series(books_df, series_names, series_column='title'):
 
 def filter_reviews_by_books(reviews_file, book_ids, books_df, output_file):
     """
-    Filter reviews to only include specified books and merge with book titles.
+    Filter reviews to only include specified books and merge with book metadata.
 
     Args:
         reviews_file: Path to reviews file (CSV or parquet)
         book_ids: Set of book IDs to keep
-        books_df: DataFrame with book metadata (must have book_id and title columns)
+        books_df: DataFrame with book metadata (book_id, title, average_rating if available)
         output_file: Path to save filtered reviews
     """
     print(f"\nLoading reviews from {reviews_file}...")
@@ -147,13 +150,21 @@ def filter_reviews_by_books(reviews_file, book_ids, books_df, output_file):
     print(f"Unique users: {filtered_df['user_id'].nunique():,}")
     print(f"Unique books: {filtered_df['book_id'].nunique():,}")
 
-    # Merge with book titles
-    if 'title' in books_df.columns:
-        print("\nMerging book titles...")
-        # Only keep book_id and title from books_df
-        books_info = books_df[['book_id', 'title']].drop_duplicates()
+    # Merge with book metadata (title and average_rating if available)
+    if 'title' in books_df.columns or 'average_rating' in books_df.columns:
+        print("\nMerging book metadata...")
+        # Collect columns to merge
+        cols_to_merge = ['book_id']
+        if 'title' in books_df.columns:
+            cols_to_merge.append('title')
+        if 'average_rating' in books_df.columns:
+            cols_to_merge.append('average_rating')
+
+        books_info = books_df[cols_to_merge].drop_duplicates()
         filtered_df = filtered_df.merge(books_info, on='book_id', how='left')
-        print(f"Added 'title' column to reviews")
+
+        added_cols = [col for col in cols_to_merge if col != 'book_id']
+        print(f"Added columns to reviews: {', '.join(added_cols)}")
 
     # Save filtered reviews
     print(f"\nSaving to {output_file}...")
