@@ -117,13 +117,14 @@ def find_books_in_series(books_df, series_names, series_column='title'):
     return book_ids
 
 
-def filter_reviews_by_books(reviews_file, book_ids, output_file):
+def filter_reviews_by_books(reviews_file, book_ids, books_df, output_file):
     """
-    Filter reviews to only include specified books.
+    Filter reviews to only include specified books and merge with book titles.
 
     Args:
         reviews_file: Path to reviews file (CSV or parquet)
         book_ids: Set of book IDs to keep
+        books_df: DataFrame with book metadata (must have book_id and title columns)
         output_file: Path to save filtered reviews
     """
     print(f"\nLoading reviews from {reviews_file}...")
@@ -145,6 +146,14 @@ def filter_reviews_by_books(reviews_file, book_ids, output_file):
     print(f"Kept {len(filtered_df):,} reviews ({len(filtered_df)/len(reviews_df)*100:.1f}%)")
     print(f"Unique users: {filtered_df['user_id'].nunique():,}")
     print(f"Unique books: {filtered_df['book_id'].nunique():,}")
+
+    # Merge with book titles
+    if 'title' in books_df.columns:
+        print("\nMerging book titles...")
+        # Only keep book_id and title from books_df
+        books_info = books_df[['book_id', 'title']].drop_duplicates()
+        filtered_df = filtered_df.merge(books_info, on='book_id', how='left')
+        print(f"Added 'title' column to reviews")
 
     # Save filtered reviews
     print(f"\nSaving to {output_file}...")
@@ -225,6 +234,8 @@ Examples:
         # Direct book IDs provided
         book_ids = set(args.book_ids)
         print(f"Filtering to {len(book_ids)} specified book IDs")
+        # Load minimal book metadata for titles
+        books_df = load_book_metadata(args.metadata)
     else:
         # Use series (either default or user-specified)
         print(f"Filtering by series: {args.series}")
@@ -237,8 +248,8 @@ Examples:
             print("Error: No books found for specified series!")
             return
 
-    # Filter reviews
-    filter_reviews_by_books(args.input, book_ids, args.output)
+    # Filter reviews and merge with book titles
+    filter_reviews_by_books(args.input, book_ids, books_df, args.output)
 
 
 if __name__ == "__main__":
