@@ -14,6 +14,37 @@ If you are using our dataset, please cite the following papers:
 
 
 
+## Project: Book Preference Prediction
+
+This project uses the Goodreads dataset to study two related but distinct problems:
+
+### Rating Prediction (Baselines)
+
+`scripts/train.py` and `scripts/hyperparameter_tuning.py` train collaborative filtering and content-based models to **predict a user's numerical rating** for a book. These are evaluated on held-out ratings from the interaction matrix.
+
+### Preference Prediction (LLM Evaluation)
+
+`util/run_llm_eval.py` evaluates an LLM on a **pairwise preference prediction** task: given a user's past review(s) and community reviews for two candidate books, predict which book the user will prefer (i.e., rate higher). This is a different framing — rather than predicting an absolute rating, the model ranks two options.
+
+The dataset for this task lives in `util/book_preference_dataset.jsonl` (205 entries). Each entry contains:
+- A reference review written by the user (with rating)
+- Community reviews for two candidate books (Book A and Book B)
+- Ground truth: which book the user rated higher, and by how much (`rating_difference`)
+
+**Metrics:**
+- `accuracy`: fraction of entries where the LLM picked the correct book
+- `preference_score`: mean signed rating difference (positive = better than random, 0 = random, negative = worse)
+
+**Usage:**
+```bash
+python util/run_llm_eval.py \
+    --input util/book_preference_dataset.jsonl \
+    --output_dir <output_dir> \
+    --model Qwen/Qwen2.5-7B-Instruct   # or any HF causal LM
+```
+
+Or submit via SLURM: `sbatch scripts/run_llm_eval.sh`
+
 ## Notebooks/Code Samples
 
 We've created several notebooks (in python 3.7) to illustrate how to download/read these datasets, and provide some basic explorations of the data.
