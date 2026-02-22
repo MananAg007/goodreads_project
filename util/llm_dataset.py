@@ -2,6 +2,9 @@
 End-to-end dataset preparation for LLM-based book preference prediction.
 Samples random books instead of filtering for specific series.
 
+Prerequisites:
+- Run process_data.py first to create preprocessed reviews file with metadata
+
 For each user who has reviewed at least 3 books:
 - Select 1 reference book with the user's review
 - Select 2 other books (A and B) that the user has rated DIFFERENTLY (no ties)
@@ -13,13 +16,13 @@ predict which book the user will prefer (higher rating).
 
 Output includes:
 - Reference book: title, user's rating, review text, average_rating
-- Book A: title, user's rating, average_rating, sample reviews
-- Book B: title, user's rating, average_rating, sample reviews
+- Book A: title, user's rating, user_review, average_rating, sample reviews
+- Book B: title, user's rating, user_review, average_rating, sample reviews
 - Preferred book (A or B)
 - Rating difference
 
 Notes:
-- Only reviews with ratings 1-5 are included (rating 0 is filtered out)
+- Only reviews with ratings 1-5 are included (already filtered in process_data.py)
 - Only samples where the user rated book A and B differently are included
 - Average rating from Goodreads metadata included if available
 - Books are sampled randomly for diversity
@@ -30,43 +33,6 @@ import json
 import random
 from collections import defaultdict
 from typing import List, Dict, Optional
-
-
-def load_book_metadata(metadata_file):
-    """
-    Load book metadata that maps book_id to title and average_rating.
-
-    Args:
-        metadata_file: Path to book metadata JSON file
-
-    Returns:
-        Dictionary mapping book_id to {title, average_rating}
-    """
-    print(f"Loading book metadata from {metadata_file}...")
-
-    book_metadata = {}
-    chunk_size = 100000
-    total_books = 0
-
-    for i, chunk in enumerate(pd.read_json(metadata_file, lines=True, chunksize=chunk_size)):
-        total_books += len(chunk)
-
-        # Extract needed columns
-        for _, row in chunk.iterrows():
-            book_id = row.get('book_id')
-            if pd.isna(book_id):
-                continue
-
-            book_metadata[int(book_id)] = {
-                'title': row.get('title', 'Unknown Title'),
-                'average_rating': row.get('average_rating')
-            }
-
-        if (i + 1) % 10 == 0:
-            print(f"  Processed {total_books:,} books...")
-
-    print(f"Loaded metadata for {len(book_metadata):,} books")
-    return book_metadata
 
 
 def get_reviews_for_book(df: pd.DataFrame, book_id: int, exclude_user_id: str,
@@ -127,17 +93,16 @@ def get_reviews_for_book(df: pd.DataFrame, book_id: int, exclude_user_id: str,
     return reviews_list
 
 
-def create_dataset(reviews_file: str, metadata_file: str, output_file: str,
+def create_dataset(reviews_file: str, output_file: str,
                    dataset_size: int = 100, min_books_per_user: int = 3,
                    num_reviews_per_book: int = 10, min_reviews_per_book: int = 10,
                    seed: int = 42):
     """
-    Create LLM training dataset from book reviews with random book sampling.
+    Create LLM training dataset from preprocessed book reviews with random book sampling.
     Creates one dataset point per user.
 
     Args:
-        reviews_file: Path to input reviews file (CSV or parquet)
-        metadata_file: Path to book metadata JSON file
+        reviews_file: Path to preprocessed reviews file (parquet with metadata merged)
         output_file: Path to save JSONL output
         dataset_size: Total number of dataset points to create (default 100)
         min_books_per_user: Minimum books a user must have reviewed (default 3)
@@ -147,30 +112,21 @@ def create_dataset(reviews_file: str, metadata_file: str, output_file: str,
     """
     random.seed(seed)
 
-    # Load book metadata
-    book_metadata = load_book_metadata(metadata_file)
-
-    # Load reviews
-    print(f"\nLoading reviews from {reviews_file}...")
-    if reviews_file.endswith('.csv'):
-        df = pd.read_csv(reviews_file)
-    elif reviews_file.endswith('.parquet'):
-        df = pd.read_parquet(reviews_file)
-    else:
-        raise ValueError(f"Unsupported file format: {reviews_file}")
-
+    # Load preprocessed reviews (already has metadata merged and filtered to ratings 1-5)
+    print(f"Loading preprocessed reviews from {reviews_file}...")
+    df = pd.read_parquet(reviews_file)
     print(f"Loaded {len(df):,} reviews")
 
-    # Filter to only include reviews with ratings 1-5 (skip 0 ratings)
-    print(f"\nFiltering to ratings 1-5 only...")
-    print(f"  Reviews before filtering: {len(df):,}")
-    df = df[(df['rating'] >= 1) & (df['rating'] <= 5)]
-    print(f"  Reviews after filtering: {len(df):,}")
+    # Verify expected columns exist
+    required_cols = ['user_id', 'book_id', 'rating', 'review_text', 'title']
+    missing_cols = [col for col in required_cols if col not in df.columns]
+    if missing_cols:
+        raise ValueError(f"Missing required columns: {missing_cols}. Did you run process_data.py first?")
 
-    # Add book titles and average ratings from metadata
-    print(f"\nMerging book metadata...")
-    df['title'] = df['book_id'].map(lambda x: book_metadata.get(x, {}).get('title', 'Unknown Title'))
-    df['average_rating'] = df['book_id'].map(lambda x: book_metadata.get(x, {}).get('average_rating'))
+    # Verify ratings are already filtered
+    if df['rating'].min() < 1 or df['rating'].max() > 5:
+        print("Warning: Found ratings outside 1-5 range. Filtering...")
+        df = df[(df['rating'] >= 1) & (df['rating'] <= 5)]
 
     print(f"\nDataset statistics:")
     print(f"  Unique users: {df['user_id'].nunique():,}")
@@ -255,17 +211,20 @@ def create_dataset(reviews_file: str, metadata_file: str, output_file: str,
             ref_title = ref_review_row['title']
             ref_avg = ref_review_row['average_rating']
 
-            # Get user's ratings for A and B
-            rating_a = int(user_reviews[user_reviews['book_id'] == book_a_id]['rating'].iloc[0])
-            rating_b = int(user_reviews[user_reviews['book_id'] == book_b_id]['rating'].iloc[0])
+            # Get user's ratings and reviews for A and B
+            book_a_row = user_reviews[user_reviews['book_id'] == book_a_id].iloc[0]
+            book_b_row = user_reviews[user_reviews['book_id'] == book_b_id].iloc[0]
+
+            rating_a = int(book_a_row['rating'])
+            rating_b = int(book_b_row['rating'])
+            review_a = book_a_row['review_text'] if pd.notna(book_a_row['review_text']) else ""
+            review_b = book_b_row['review_text'] if pd.notna(book_b_row['review_text']) else ""
 
             # Skip if ratings are equal (we only want clear preferences)
             if rating_a == rating_b:
                 continue
 
             # Get book info for A and B
-            book_a_row = user_reviews[user_reviews['book_id'] == book_a_id].iloc[0]
-            book_b_row = user_reviews[user_reviews['book_id'] == book_b_id].iloc[0]
             title_a = book_a_row['title']
             title_b = book_b_row['title']
             avg_a = book_a_row['average_rating']
@@ -304,6 +263,7 @@ def create_dataset(reviews_file: str, metadata_file: str, output_file: str,
                     'book_id': int(book_a_id),
                     'title': title_a,
                     'user_rating': rating_a,
+                    'user_review': review_a,
                     'average_rating': a_avg_val,
                     'sample_reviews': reviews_a
                 },
@@ -311,6 +271,7 @@ def create_dataset(reviews_file: str, metadata_file: str, output_file: str,
                     'book_id': int(book_b_id),
                     'title': title_b,
                     'user_rating': rating_b,
+                    'user_review': review_b,
                     'average_rating': b_avg_val,
                     'sample_reviews': reviews_b
                 },
@@ -387,24 +348,20 @@ Examples:
 
   # Custom settings
   python prepare_dataset.py \\
-      --reviews /path/to/reviews.csv \\
-      --metadata /path/to/books.json \\
+      --reviews ./processed_reviews.parquet \\
       --output ./book_preference_dataset.jsonl \\
       --dataset-size 100 \\
       --min-books 3 \\
       --reviews-per-book 10
+
+Note: You must run process_data.py first to create the preprocessed reviews file.
         """
     )
 
     parser.add_argument(
         '--reviews',
-        default='/data/user_data/sheels/Spring2026/10718_mlip/data/subsampled_good_reviews.csv',
-        help='Input reviews file (CSV or parquet)'
-    )
-    parser.add_argument(
-        '--metadata',
-        default='/data/user_data/sheels/Spring2026/10718_mlip/data/goodreads_books.json',
-        help='Book metadata JSON file'
+        default='./processed_reviews.parquet',
+        help='Preprocessed reviews file (output from process_data.py)'
     )
     parser.add_argument(
         '--output',
@@ -446,7 +403,6 @@ Examples:
 
     create_dataset(
         reviews_file=args.reviews,
-        metadata_file=args.metadata,
         output_file=args.output,
         dataset_size=args.dataset_size,
         min_books_per_user=args.min_books,
