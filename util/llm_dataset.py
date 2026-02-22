@@ -360,12 +360,12 @@ Note: You must run process_data.py first to create the preprocessed reviews file
 
     parser.add_argument(
         '--reviews',
-        default='./processed_reviews.parquet',
+        default='/data/user_data/sheels/Spring2026/10718_mlip/data/processed_reviews.parquet',
         help='Preprocessed reviews file (output from process_data.py)'
     )
     parser.add_argument(
         '--output',
-        default='./book_preference_dataset.jsonl',
+        default='../data/book_preference_dataset.jsonl',
         help='Output JSONL file for LLM training'
     )
     parser.add_argument(

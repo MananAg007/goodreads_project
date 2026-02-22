@@ -13,24 +13,38 @@ import pandas as pd
 import argparse
 
 
-def load_book_metadata(metadata_file):
+def load_book_metadata(metadata_file, needed_book_ids):
     """
-    Load book metadata efficiently, keeping only needed columns.
+    Load book metadata efficiently, keeping only needed columns and books.
+    Only loads metadata for books that appear in needed_book_ids set.
 
     Args:
         metadata_file: Path to book metadata JSON file
+        needed_book_ids: Set of book_ids to load metadata for
 
     Returns:
-        DataFrame with book_id, title, average_rating
+        DataFrame with book_id, title, average_rating for requested books only
     """
     print(f"Loading book metadata from {metadata_file}...")
+    print(f"  Only loading metadata for {len(needed_book_ids):,} books that appear in reviews")
 
     chunks = []
     chunk_size = 100000
-    total_books = 0
+    total_books_scanned = 0
+    total_books_kept = 0
 
     for i, chunk in enumerate(pd.read_json(metadata_file, lines=True, chunksize=chunk_size)):
-        total_books += len(chunk)
+        total_books_scanned += len(chunk)
+
+        # Filter to only books we need EARLY (before selecting columns)
+        chunk = chunk[chunk['book_id'].isin(needed_book_ids)]
+        total_books_kept += len(chunk)
+
+        if len(chunk) == 0:
+            # Skip empty chunks after filtering
+            if (i + 1) % 10 == 0:
+                print(f"  Scanned {total_books_scanned:,} books, kept {total_books_kept:,}...")
+            continue
 
         # Only keep columns we need to save memory
         cols_to_keep = ['book_id']
@@ -43,13 +57,18 @@ def load_book_metadata(metadata_file):
         chunks.append(chunk)
 
         if (i + 1) % 10 == 0:
-            print(f"  Processed {total_books:,} books...")
+            print(f"  Scanned {total_books_scanned:,} books, kept {total_books_kept:,}...")
 
-    print(f"Loaded {total_books:,} books")
+    print(f"  Scanned {total_books_scanned:,} total books")
+    print(f"  Kept {total_books_kept:,} books that appear in reviews")
+
+    if len(chunks) == 0:
+        print("Warning: No matching books found in metadata!")
+        return pd.DataFrame(columns=['book_id', 'title', 'average_rating'])
+
     metadata_df = pd.concat(chunks, ignore_index=True)
 
     # Drop duplicates (keep first occurrence)
-    print(f"  Removing duplicates...")
     metadata_df = metadata_df.drop_duplicates(subset=['book_id'], keep='first')
     print(f"  Unique books after deduplication: {len(metadata_df):,}")
 
@@ -59,17 +78,15 @@ def load_book_metadata(metadata_file):
 def process_data(reviews_file, metadata_file, output_file):
     """
     Load reviews and metadata, merge them, and save to efficient format.
+    Optimized to only load metadata for books that appear in reviews.
 
     Args:
         reviews_file: Path to reviews file (CSV or parquet)
         metadata_file: Path to book metadata JSON file
         output_file: Path to save processed parquet file
     """
-    # Load book metadata
-    metadata_df = load_book_metadata(metadata_file)
-
-    # Load reviews
-    print(f"\nLoading reviews from {reviews_file}...")
+    # Load reviews FIRST to get the set of book_ids we need
+    print(f"Loading reviews from {reviews_file}...")
     if reviews_file.endswith('.csv'):
         reviews_df = pd.read_csv(reviews_file)
     elif reviews_file.endswith('.parquet'):
@@ -80,6 +97,14 @@ def process_data(reviews_file, metadata_file, output_file):
     print(f"Loaded {len(reviews_df):,} reviews")
     print(f"  Unique users: {reviews_df['user_id'].nunique():,}")
     print(f"  Unique books: {reviews_df['book_id'].nunique():,}")
+
+    # Get set of book_ids we need metadata for
+    needed_book_ids = set(reviews_df['book_id'].unique())
+    print(f"  Need metadata for {len(needed_book_ids):,} unique books")
+
+    # Load book metadata ONLY for books in reviews (much faster!)
+    print(f"\nLoading book metadata...")
+    metadata_df = load_book_metadata(metadata_file, needed_book_ids)
 
     # Filter to ratings 1-5 only (exclude 0 ratings)
     print(f"\nFiltering to ratings 1-5...")
@@ -117,7 +142,6 @@ def process_data(reviews_file, metadata_file, output_file):
     merged_df.to_parquet(output_file, index=False, compression='snappy')
 
     # Verify saved file
-    file_size_mb = pd.io.common.get_filepath_or_buffer(output_file)[0]
     import os
     file_size_mb = os.path.getsize(output_file) / (1024 * 1024)
     print(f"  File size: {file_size_mb:.2f} MB")
@@ -156,7 +180,7 @@ Examples:
     )
     parser.add_argument(
         '--output',
-        default='./processed_reviews.parquet',
+        default='/data/user_data/sheels/Spring2026/10718_mlip/data/processed_reviews.parquet',
         help='Output parquet file'
     )
 
