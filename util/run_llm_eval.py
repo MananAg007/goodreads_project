@@ -87,6 +87,8 @@ def build_prompt(template, entry, user_reviews, x, y):
 
 def load_model_and_tokenizer(model_name, device):
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code = True)
+    # Set left padding for decoder-only models (required for correct batch inference)
+    tokenizer.padding_side = 'left'
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     model = AutoModelForCausalLM.from_pretrained(
@@ -151,7 +153,7 @@ def compute_metrics(results):
     if n_parsed == 0:
         return {
             "accuracy": 0.0,
-            "preference_score": 0.0,
+            "n_correct": 0,
             "n_total": n_total,
             "n_parsed": n_parsed,
             "n_parse_failed": n_parse_failed,
@@ -160,17 +162,9 @@ def compute_metrics(results):
     n_correct = sum(1 for r in parsed if r["predicted"] == r["ground_truth"])
     accuracy = n_correct / n_parsed
 
-    preference_scores = []
-    for r in parsed:
-        if r["predicted"] == r["ground_truth"]:
-            preference_scores.append(r["rating_difference"])
-        else:
-            preference_scores.append(-r["rating_difference"])
-    preference_score = sum(preference_scores) / len(preference_scores)
-
     return {
         "accuracy": accuracy,
-        "preference_score": preference_score,
+        "n_correct": n_correct,
         "n_total": n_total,
         "n_parsed": n_parsed,
         "n_parse_failed": n_parse_failed,
@@ -178,9 +172,13 @@ def compute_metrics(results):
 
 
 def save_raw_outputs(results, output_dir):
+    """Save only successfully parsed results to the output file."""
     path = os.path.join(output_dir, "raw_outputs.jsonl")
+    # Filter to only parsed results
+    parsed_results = [r for r in results if r["parse_success"]]
+
     with open(path, "w") as f:
-        for r in results:
+        for r in parsed_results:
             f.write(json.dumps({
                 "entry_idx": r["entry_idx"],
                 "user_id": r["user_id"],
@@ -193,6 +191,8 @@ def save_raw_outputs(results, output_dir):
                 "raw_response": r["raw_response"],
                 "parse_success": r["parse_success"],
             }) + "\n")
+
+    print(f"  Saved {len(parsed_results)} successfully parsed results (out of {len(results)} total)")
 
 
 def save_metrics(metrics, output_dir):
@@ -256,8 +256,7 @@ def main():
     metrics = compute_metrics(results)
     save_metrics(metrics, args.output_dir)
 
-    print(f"Accuracy:         {metrics['accuracy']:.4f}")
-    print(f"Preference score: {metrics['preference_score']:.4f}")
+    print(f"Accuracy:         {metrics['n_correct']}/{metrics['n_parsed']}")
     print(f"Parsed:           {metrics['n_parsed']}/{metrics['n_total']}")
 
 
