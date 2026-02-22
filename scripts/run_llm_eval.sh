@@ -17,7 +17,7 @@ export HUGGINGFACE_HUB_CACHE=/data/user_data/mananaga/huggingface/hub
 export TRANSFORMERS_CACHE=/data/user_data/mananaga/huggingface/transformers
 
 python util/run_llm_eval.py \
-    --input util/book_preference_dataset.jsonl \
+    --input data/book_preference_dataset.jsonl \
     --output_dir /home/mananaga/goodreads/results \
     --template util/templates/default_prompt.txt \
     --model Qwen/Qwen2.5-7B-Instruct \
