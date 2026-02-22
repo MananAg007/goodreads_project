@@ -21,6 +21,7 @@ def parse_args():
     parser.add_argument("--batch_size", type = int, default = 4)
     parser.add_argument("--random_seed", type = int, default = 86)
     parser.add_argument("--device", type = str, default = "auto")
+    parser.add_argument("--num_entries", type = int, default = None, help = "Number of entries to process (default: all)")
     parser.add_argument("--debug", action = "store_true")
     return parser.parse_args()
 
@@ -207,6 +208,11 @@ def main():
         template = f.read()
 
     entries = load_entries(args.input)
+    if args.num_entries is not None:
+        entries = entries[:args.num_entries]
+        print(f"Processing {len(entries)} entries (limited by --num_entries)")
+    else:
+        print(f"Processing all {len(entries)} entries")
     user_review_map = build_user_review_map(entries)
 
     prompts = []
