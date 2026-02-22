@@ -18,7 +18,7 @@ export TRANSFORMERS_CACHE=/data/user_data/mananaga/huggingface/transformers
 
 python util/run_llm_eval.py \
     --input util/book_preference_dataset.jsonl \
-    --output_dir /data/user_data/mananaga/llm_eval_results \
+    --output_dir /home/mananaga/goodreads/results \
     --template util/templates/default_prompt.txt \
     --model Qwen/Qwen2.5-7B-Instruct \
     --num_book_reviews 5 \

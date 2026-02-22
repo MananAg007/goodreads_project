@@ -189,6 +189,7 @@ def save_raw_outputs(results, output_dir):
                 "ground_truth": r["ground_truth"],
                 "predicted": r["predicted"],
                 "rating_difference": r["rating_difference"],
+                "raw_input": r["raw_input"],
                 "raw_response": r["raw_response"],
                 "parse_success": r["parse_success"],
             }) + "\n")
@@ -245,6 +246,7 @@ def main():
                 "ground_truth": entry["preferred"],
                 "predicted": predicted,
                 "rating_difference": entry["rating_difference"],
+                "raw_input": wrapped_prompts[idx],
                 "raw_response": raw_response,
                 "parse_success": parse_success,
             })
