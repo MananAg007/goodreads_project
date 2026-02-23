@@ -16,7 +16,7 @@ def parse_args():
     parser.add_argument("--template", type = str, default = "util/templates/default_prompt.txt")
     parser.add_argument("--model", type = str, default = "Qwen/Qwen2.5-7B-Instruct")
     parser.add_argument("--num_book_reviews", type = int, default = 5)
-    parser.add_argument("--num_user_reviews", type = int, default = 1)
+    parser.add_argument("--num_user_reviews", type = int, default = 5)
     parser.add_argument("--max_new_tokens", type = int, default = 256)
     parser.add_argument("--batch_size", type = int, default = 4)
     parser.add_argument("--random_seed", type = int, default = 86)
@@ -40,19 +40,24 @@ def build_user_review_map(entries):
     seen = set()
     for entry in entries:
         user_id = entry["user_id"]
-        ref = entry["reference_book"]
-        key = (user_id, ref["book_id"])
-        if key in seen:
-            continue
-        seen.add(key)
-        review = {
-            "title": ref["title"],
-            "rating": ref["rating"],
-            "review_text": ref["review_text"],
-        }
-        if user_id not in user_reviews:
-            user_reviews[user_id] = []
-        user_reviews[user_id].append(review)
+        # Handle both old format (reference_book) and new format (reference_books)
+        ref_books = entry.get("reference_books", [entry.get("reference_book")] if "reference_book" in entry else [])
+
+        for ref in ref_books:
+            if ref is None:
+                continue
+            key = (user_id, ref["book_id"])
+            if key in seen:
+                continue
+            seen.add(key)
+            review = {
+                "title": ref["title"],
+                "rating": ref["rating"],
+                "review_text": ref["review_text"],
+            }
+            if user_id not in user_reviews:
+                user_reviews[user_id] = []
+            user_reviews[user_id].append(review)
     return user_reviews
 
 
@@ -138,7 +143,7 @@ def run_batch_inference(prompts, model, tokenizer, max_new_tokens, device):
 
 
 def parse_response(raw_response):
-    match = re.search(r"ANSWER:\s*(A|B)", raw_response, re.IGNORECASE)
+    match = re.search(r"ANSWER:\s*\[?(A|B)\]?", raw_response, re.IGNORECASE)
     if match:
         return match.group(1).upper(), True
     return None, False
@@ -172,13 +177,11 @@ def compute_metrics(results):
 
 
 def save_raw_outputs(results, output_dir):
-    """Save only successfully parsed results to the output file."""
+    """Save all results (both parsed and unparsed) to the output file."""
     path = os.path.join(output_dir, "raw_outputs.jsonl")
-    # Filter to only parsed results
-    parsed_results = [r for r in results if r["parse_success"]]
 
     with open(path, "w") as f:
-        for r in parsed_results:
+        for r in results:
             f.write(json.dumps({
                 "entry_idx": r["entry_idx"],
                 "user_id": r["user_id"],
@@ -192,7 +195,9 @@ def save_raw_outputs(results, output_dir):
                 "parse_success": r["parse_success"],
             }) + "\n")
 
-    print(f"  Saved {len(parsed_results)} successfully parsed results (out of {len(results)} total)")
+    parsed_count = sum(1 for r in results if r["parse_success"])
+    failed_count = len(results) - parsed_count
+    print(f"  Saved {len(results)} total results ({parsed_count} parsed, {failed_count} parse failed)")
 
 
 def save_metrics(metrics, output_dir):
