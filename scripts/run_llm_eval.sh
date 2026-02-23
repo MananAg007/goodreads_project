@@ -21,13 +21,13 @@ INPUT_FILE="data/book_preference_dataset.jsonl"
 TEMPLATE="util/templates/strict_format_prompt.txt"
 BASE_OUTPUT_DIR="/home/mananaga/goodreads/results"
 MAX_NEW_TOKENS=256
-BATCH_SIZE=16
+BATCH_SIZE=4
 RANDOM_SEED=86
 DEVICE="auto"
 NUM_ENTRIES=100
 
 # Define the values to iterate over
-MODELS=("Qwen/Qwen2.5-0.5B-Instruct" "Qwen/Qwen2.5-1.5B-Instruct" "Qwen/Qwen2.5-3B-Instruct")
+MODELS=("Qwen/Qwen2.5-14B-Instruct")
 NUM_BOOK_REVIEWS_LIST=(8)
 NUM_USER_REVIEWS_LIST=(1)
 
