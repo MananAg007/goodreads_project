@@ -21,13 +21,13 @@ INPUT_FILE="data/book_preference_dataset.jsonl"
 TEMPLATE="util/templates/strict_format_prompt.txt"
 BASE_OUTPUT_DIR="/home/mananaga/goodreads/results"
 MAX_NEW_TOKENS=256
-BATCH_SIZE=4
+BATCH_SIZE=8
 RANDOM_SEED=86
 DEVICE="auto"
 NUM_ENTRIES=100
 
 # Define the values to iterate over
-MODELS=("Qwen/Qwen2.5-14B-Instruct")
+MODELS=("Qwen/Qwen2.5-7B-Instruct")
 NUM_BOOK_REVIEWS_LIST=(8)
 NUM_USER_REVIEWS_LIST=(1)
 
@@ -44,7 +44,8 @@ for MODEL in "${MODELS[@]}"; do
     for num_book_reviews in "${NUM_BOOK_REVIEWS_LIST[@]}"; do
         # Iterate over num_user_reviews
         for num_user_reviews in "${NUM_USER_REVIEWS_LIST[@]}"; do
-            OUTPUT_DIR="${BASE_OUTPUT_DIR}/model_${MODEL_SIZE}_num_book_reviews_${num_book_reviews}_num_user_reviews_${num_user_reviews}"
+            #OUTPUT_DIR="${BASE_OUTPUT_DIR}/model_${MODEL_SIZE}_num_book_reviews_${num_book_reviews}_num_user_reviews_${num_user_reviews}"
+            OUTPUT_DIR="${BASE_OUTPUT_DIR}/num_book_reviews_${num_book_reviews}_num_user_reviews_${num_user_reviews}"
 
             echo ""
             echo "========================================"

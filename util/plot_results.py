@@ -201,7 +201,7 @@ def plot_accuracy_vs_book_reviews(results, output_dir, num_book_reviews_list=Non
     # Aesthetic improvements
     ax.legend(frameon=True, shadow=True, fancybox=True, fontsize=11)
     ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
-    ax.set_ylim(0, 1.15)
+    ax.set_ylim(0.5, 1.0)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.set_axisbelow(True)
@@ -311,7 +311,7 @@ def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=Non
     # Aesthetic improvements
     ax.legend(frameon=True, shadow=True, fancybox=True, fontsize=11)
     ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
-    ax.set_ylim(0, 1.15)
+    ax.set_ylim(0.5, 1.0)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.set_axisbelow(True)
@@ -333,8 +333,8 @@ def plot_accuracy_vs_llm_model(results, output_dir, num_book_reviews=None, num_u
         num_book_reviews: Specific num_book_reviews value to compare (required)
         num_user_reviews: Specific num_user_reviews value to compare (required)
     """
-    # Filter results that have model_size information
-    filtered_results = [r for r in results if r["model_size"] is not None]
+    # Filter results that have model_size information and exclude 0.5B model
+    filtered_results = [r for r in results if r["model_size"] is not None and r["model_size"] != "0.5B"]
 
     if not filtered_results:
         print("No results with model information found. Skipping accuracy vs LLM model plot.")
@@ -397,13 +397,66 @@ def plot_accuracy_vs_llm_model(results, output_dir, num_book_reviews=None, num_u
 
     # Aesthetic improvements
     ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
-    ax.set_ylim(0, 1.15)
+    ax.set_ylim(0.5, 1.0)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.set_axisbelow(True)
 
     plt.tight_layout()
     output_path = os.path.join(output_dir, "accuracy_vs_llm_model.png")
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
+    print(f"Saved plot: {output_path}")
+    plt.close()
+
+
+def plot_accuracy_vs_algorithm(output_dir):
+    """Plot accuracy comparison across different algorithms with hardcoded values.
+
+    Args:
+        output_dir: Directory to save the plot
+    """
+    # Hardcoded algorithm names and their accuracies
+    algorithms = ['random', 'book-rating', 'collaborative-filtering', 'llm']
+    accuracies = [0.50, 0.64, 0.61, 0.69]  # TODO: Replace with actual values
+
+    # Square-shaped figure with better aesthetics
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    # Define aesthetic color palette
+    colors = ['#2E86AB', '#A23B72', '#F18F01', '#C73E1D']
+
+    # Create bars
+    x_positions = np.arange(len(algorithms))
+    bars = ax.bar(x_positions, accuracies,
+                 color=colors,
+                 alpha=0.85,
+                 edgecolor='white',
+                 linewidth=1.5)
+
+    # Add value labels on top of bars
+    for bar, acc in zip(bars, accuracies):
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2., height + 0.02,
+               f'{acc:.3f}',
+               ha='center', va='bottom', fontsize=10, fontweight='bold')
+
+    ax.set_xlabel("Algorithm", fontsize=13, fontweight='bold')
+    ax.set_ylabel("Accuracy", fontsize=13, fontweight='bold')
+    ax.set_title("Accuracy vs Algorithm", fontsize=15, fontweight='bold', pad=20)
+
+    ax.set_xticks(x_positions)
+    ax.set_xticklabels(algorithms, fontsize=11)
+    ax.tick_params(axis='y', labelsize=11)
+
+    # Aesthetic improvements
+    ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
+    ax.set_ylim(0.5, 1.0)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.set_axisbelow(True)
+
+    plt.tight_layout()
+    output_path = os.path.join(output_dir, "accuracy_vs_algorithm.png")
     plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
     print(f"Saved plot: {output_path}")
     plt.close()
@@ -481,6 +534,7 @@ def main():
     plot_accuracy_vs_llm_model(results, args.output_dir,
                               num_book_reviews=8,
                               num_user_reviews=1)
+    plot_accuracy_vs_algorithm(args.output_dir)
 
     print(f"\nAll plots saved to {args.output_dir}")
 
