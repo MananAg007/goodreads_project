@@ -5,17 +5,17 @@ Samples random books instead of filtering for specific series.
 Prerequisites:
 - Run process_data.py first to create preprocessed reviews file with metadata
 
-For each user who has reviewed at least 3 books:
-- Select 1 reference book with the user's review
+For each user who has reviewed at least 7 books:
+- Select 5 reference books with the user's reviews
 - Select 2 other books (A and B) that the user has rated DIFFERENTLY (no ties)
 - Get sample reviews from other users for each of books A and B
 - Create JSONL entry with all this information
 
-The LLM task: Given a user's reference review and sample reviews of books A and B,
+The LLM task: Given a user's reference reviews and sample reviews of books A and B,
 predict which book the user will prefer (higher rating).
 
 Output includes:
-- Reference book: title, user's rating, review text, average_rating
+- Reference books: list of 5 books with title, user's rating, review text, average_rating
 - Book A: title, user's rating, user_review, average_rating, sample reviews
 - Book B: title, user's rating, user_review, average_rating, sample reviews
 - Preferred book (A or B)
@@ -94,7 +94,7 @@ def get_reviews_for_book(df: pd.DataFrame, book_id: int, exclude_user_id: str,
 
 
 def create_dataset(reviews_file: str, output_file: str,
-                   dataset_size: int = 100, min_books_per_user: int = 3,
+                   dataset_size: int = 100, min_books_per_user: int = 7,
                    num_reviews_per_book: int = 10, min_reviews_per_book: int = 10,
                    seed: int = 42):
     """
@@ -105,7 +105,7 @@ def create_dataset(reviews_file: str, output_file: str,
         reviews_file: Path to preprocessed reviews file (parquet with metadata merged)
         output_file: Path to save JSONL output
         dataset_size: Total number of dataset points to create (default 100)
-        min_books_per_user: Minimum books a user must have reviewed (default 3)
+        min_books_per_user: Minimum books a user must have reviewed (default 7: 5 reference + 2 comparison)
         num_reviews_per_book: Number of sample reviews to include per book
         min_reviews_per_book: Minimum reviews a book must have to be eligible
         seed: Random seed for reproducibility
@@ -185,31 +185,43 @@ def create_dataset(reviews_file: str, output_file: str,
         while not success and attempts < max_attempts:
             attempts += 1
 
-            # Select reference book (prefer one with review text)
-            if len(reviews_with_text) > 0:
+            # Select 5 reference books (prefer ones with review text)
+            num_ref_books = 5
+            if len(reviews_with_text) >= num_ref_books:
                 ref_book_candidates = reviews_with_text['book_id'].unique().tolist()
             else:
                 ref_book_candidates = user_book_ids
 
-            if len(ref_book_candidates) < 1:
+            if len(ref_book_candidates) < num_ref_books:
                 break
 
-            ref_book_id = random.choice(ref_book_candidates)
+            ref_book_ids = random.sample(ref_book_candidates, num_ref_books)
 
             # Get remaining books for A and B
-            remaining_books = [b for b in user_book_ids if b != ref_book_id]
+            remaining_books = [b for b in user_book_ids if b not in ref_book_ids]
             if len(remaining_books) < 2:
                 break
 
             # Randomly select books A and B
             book_a_id, book_b_id = random.sample(remaining_books, 2)
 
-            # Get user's reference review
-            ref_review_row = user_reviews[user_reviews['book_id'] == ref_book_id].iloc[0]
-            ref_review_text = ref_review_row['review_text'] if pd.notna(ref_review_row['review_text']) else ""
-            ref_rating = int(ref_review_row['rating'])
-            ref_title = ref_review_row['title']
-            ref_avg = ref_review_row['average_rating']
+            # Get user's reference reviews (5 books)
+            reference_books = []
+            for ref_book_id in ref_book_ids:
+                ref_review_row = user_reviews[user_reviews['book_id'] == ref_book_id].iloc[0]
+                ref_review_text = ref_review_row['review_text'] if pd.notna(ref_review_row['review_text']) else ""
+                ref_rating = int(ref_review_row['rating'])
+                ref_title = ref_review_row['title']
+                ref_avg = ref_review_row['average_rating']
+                ref_avg_val = float(ref_avg) if pd.notna(ref_avg) else None
+
+                reference_books.append({
+                    'book_id': int(ref_book_id),
+                    'title': ref_title,
+                    'rating': ref_rating,
+                    'review_text': ref_review_text,
+                    'average_rating': ref_avg_val
+                })
 
             # Get user's ratings and reviews for A and B
             book_a_row = user_reviews[user_reviews['book_id'] == book_a_id].iloc[0]
@@ -246,19 +258,12 @@ def create_dataset(reviews_file: str, output_file: str,
 
             # Create dataset entry
             # Handle NaN average ratings
-            ref_avg_val = float(ref_avg) if pd.notna(ref_avg) else None
             a_avg_val = float(avg_a) if pd.notna(avg_a) else None
             b_avg_val = float(avg_b) if pd.notna(avg_b) else None
 
             entry = {
                 'user_id': user_id,
-                'reference_book': {
-                    'book_id': int(ref_book_id),
-                    'title': ref_title,
-                    'rating': ref_rating,
-                    'review_text': ref_review_text,
-                    'average_rating': ref_avg_val
-                },
+                'reference_books': reference_books,
                 'book_a': {
                     'book_id': int(book_a_id),
                     'title': title_a,
@@ -314,7 +319,8 @@ def create_dataset(reviews_file: str, output_file: str,
     # Analyze book diversity
     unique_books = set()
     for entry in dataset:
-        unique_books.add(entry['reference_book']['book_id'])
+        for ref_book in entry['reference_books']:
+            unique_books.add(ref_book['book_id'])
         unique_books.add(entry['book_a']['book_id'])
         unique_books.add(entry['book_b']['book_id'])
     print(f"\nBook diversity:")
@@ -351,7 +357,7 @@ Examples:
       --reviews ./processed_reviews.parquet \\
       --output ./book_preference_dataset.jsonl \\
       --dataset-size 100 \\
-      --min-books 3 \\
+      --min-books 7 \\
       --reviews-per-book 10
 
 Note: You must run process_data.py first to create the preprocessed reviews file.
@@ -371,14 +377,14 @@ Note: You must run process_data.py first to create the preprocessed reviews file
     parser.add_argument(
         '--dataset-size',
         type=int,
-        default=100,
+        default=1000,
         help='Total number of data points to create (default: 100)'
     )
     parser.add_argument(
         '--min-books',
         type=int,
-        default=3,
-        help='Minimum books a user must have reviewed (default: 3)'
+        default=7,
+        help='Minimum books a user must have reviewed (default: 7: 5 reference + 2 comparison)'
     )
     parser.add_argument(
         '--reviews-per-book',

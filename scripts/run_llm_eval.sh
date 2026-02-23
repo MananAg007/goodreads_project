@@ -24,10 +24,10 @@ python util/run_llm_eval.py \
     --num_book_reviews 5 \
     --num_user_reviews 1 \
     --max_new_tokens 256 \
-    --batch_size 4 \
+    --batch_size 16 \
     --random_seed 86 \
     --device auto \
-    --num_entries 10
+    --num_entries 100
 
 echo "========================================"
 echo "End time: $(date)"
