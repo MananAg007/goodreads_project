@@ -28,8 +28,8 @@ def parse_directory_name(dir_name):
         tuple: (model_size, num_book_reviews, num_user_reviews) or None if parsing fails
         model_size will be None for legacy format
     """
-    # Try new format with model size
-    pattern_with_model = r"model_(\w+)_num_book_reviews_(\d+)_num_user_reviews_(\d+)"
+    # Try new format with model size (handles decimal sizes like "0.5B", "1.5B", "3B", etc.)
+    pattern_with_model = r"model_([\d.]+B)_num_book_reviews_(\d+)_num_user_reviews_(\d+)"
     match = re.match(pattern_with_model, dir_name)
     if match:
         return match.group(1), int(match.group(2)), int(match.group(3))
@@ -299,8 +299,14 @@ def plot_accuracy_vs_llm_model(results, output_dir, num_book_reviews=None, num_u
         print("Skipping accuracy vs LLM model plot (no variation in model sizes)")
         return
 
-    # Sort by model size for consistent ordering
-    filtered_results.sort(key=lambda x: x["model_size"])
+    # Sort by model size numerically (extract number from "0.5B", "1.5B", "3B", etc.)
+    def extract_numeric_size(model_size):
+        """Extract numeric value from model size string (e.g., "0.5B" -> 0.5)"""
+        import re
+        match = re.match(r'([\d.]+)B', model_size)
+        return float(match.group(1)) if match else 0
+
+    filtered_results.sort(key=lambda x: extract_numeric_size(x["model_size"]))
 
     # Extract data
     model_sizes = [r["model_size"] for r in filtered_results]

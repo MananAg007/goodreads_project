@@ -27,7 +27,7 @@ DEVICE="auto"
 NUM_ENTRIES=100
 
 # Define the values to iterate over
-MODELS=("Qwen/Qwen2.5-3B-Instruct" "Qwen/Qwen2.5-7B-Instruct")
+MODELS=("Qwen/Qwen2.5-0.5B-Instruct" "Qwen/Qwen2.5-1.5B-Instruct" "Qwen/Qwen2.5-3B-Instruct")
 NUM_BOOK_REVIEWS_LIST=(8)
 NUM_USER_REVIEWS_LIST=(1)
 
@@ -37,8 +37,8 @@ echo "========================================"
 
 # Iterate over models
 for MODEL in "${MODELS[@]}"; do
-    # Extract model size from model name (e.g., "3B" or "7B")
-    MODEL_SIZE=$(echo ${MODEL} | grep -oP '\d+B')
+    # Extract model size from model name (e.g., "0.5B", "1.5B", "3B", "7B")
+    MODEL_SIZE=$(echo ${MODEL} | grep -oP '\d+\.?\d*B')
 
     # Iterate over num_book_reviews
     for num_book_reviews in "${NUM_BOOK_REVIEWS_LIST[@]}"; do
