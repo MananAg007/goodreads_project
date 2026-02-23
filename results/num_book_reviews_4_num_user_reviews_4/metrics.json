@@ -1,6 +1,6 @@
 {
-  "accuracy": 0.62,
-  "n_correct": 62,
+  "accuracy": 0.55,
+  "n_correct": 55,
   "n_total": 100,
   "n_parsed": 100,
   "n_parse_failed": 0

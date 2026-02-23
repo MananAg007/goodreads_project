@@ -25,11 +25,11 @@ MAX_NEW_TOKENS=256
 BATCH_SIZE=16
 RANDOM_SEED=86
 DEVICE="auto"
-NUM_ENTRIES=16
+NUM_ENTRIES=100
 
 # Define the values to iterate over
-NUM_BOOK_REVIEWS_LIST=(8)
-NUM_USER_REVIEWS_LIST=(1)
+NUM_BOOK_REVIEWS_LIST=(4)
+NUM_USER_REVIEWS_LIST=(1 2 4)
 
 echo "========================================"
 echo "Starting evaluation runs: $(date)"
