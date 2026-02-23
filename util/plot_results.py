@@ -18,17 +18,28 @@ import numpy as np
 
 def parse_directory_name(dir_name):
     """
-    Parse directory name to extract num_book_reviews and num_user_reviews.
+    Parse directory name to extract model_size, num_book_reviews and num_user_reviews.
 
-    Expected format: num_book_reviews_{X}_num_user_reviews_{Y}
+    Expected formats:
+        - model_{SIZE}_num_book_reviews_{X}_num_user_reviews_{Y}
+        - num_book_reviews_{X}_num_user_reviews_{Y} (legacy format)
 
     Returns:
-        tuple: (num_book_reviews, num_user_reviews) or None if parsing fails
+        tuple: (model_size, num_book_reviews, num_user_reviews) or None if parsing fails
+        model_size will be None for legacy format
     """
+    # Try new format with model size
+    pattern_with_model = r"model_(\w+)_num_book_reviews_(\d+)_num_user_reviews_(\d+)"
+    match = re.match(pattern_with_model, dir_name)
+    if match:
+        return match.group(1), int(match.group(2)), int(match.group(3))
+
+    # Try legacy format without model size
     pattern = r"num_book_reviews_(\d+)_num_user_reviews_(\d+)"
     match = re.match(pattern, dir_name)
     if match:
-        return int(match.group(1)), int(match.group(2))
+        return None, int(match.group(1)), int(match.group(2))
+
     return None
 
 
@@ -40,7 +51,7 @@ def load_results(results_dir):
         results_dir: Path to results directory
 
     Returns:
-        list: List of dicts with keys: num_book_reviews, num_user_reviews, metrics
+        list: List of dicts with keys: model_size, num_book_reviews, num_user_reviews, metrics
     """
     results = []
     results_path = Path(results_dir)
@@ -60,7 +71,7 @@ def load_results(results_dir):
             print(f"Warning: Skipping directory with unexpected name: {subdir.name}")
             continue
 
-        num_book_reviews, num_user_reviews = parsed
+        model_size, num_book_reviews, num_user_reviews = parsed
 
         # Load metrics.json
         metrics_file = subdir / "metrics.json"
@@ -72,6 +83,7 @@ def load_results(results_dir):
             metrics = json.load(f)
 
         results.append({
+            "model_size": model_size,
             "num_book_reviews": num_book_reviews,
             "num_user_reviews": num_user_reviews,
             "metrics": metrics
@@ -256,28 +268,115 @@ def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=Non
     plt.close()
 
 
+def plot_accuracy_vs_llm_model(results, output_dir, num_book_reviews=None, num_user_reviews=None):
+    """Plot accuracy vs LLM model for a specific configuration.
+
+    Args:
+        results: List of result dictionaries
+        output_dir: Directory to save the plot
+        num_book_reviews: Specific num_book_reviews value to compare (required)
+        num_user_reviews: Specific num_user_reviews value to compare (required)
+    """
+    # Filter results that have model_size information
+    filtered_results = [r for r in results if r["model_size"] is not None]
+
+    if not filtered_results:
+        print("No results with model information found. Skipping accuracy vs LLM model plot.")
+        return
+
+    # Filter by specific num_book_reviews and num_user_reviews
+    if num_book_reviews is not None:
+        filtered_results = [r for r in filtered_results if r["num_book_reviews"] == num_book_reviews]
+    if num_user_reviews is not None:
+        filtered_results = [r for r in filtered_results if r["num_user_reviews"] == num_user_reviews]
+
+    if not filtered_results:
+        print(f"No results found for num_book_reviews={num_book_reviews}, num_user_reviews={num_user_reviews}")
+        return
+
+    # Only plot if we have variation in model_size
+    if len(set(r["model_size"] for r in filtered_results)) < 2:
+        print("Skipping accuracy vs LLM model plot (no variation in model sizes)")
+        return
+
+    # Sort by model size for consistent ordering
+    filtered_results.sort(key=lambda x: x["model_size"])
+
+    # Extract data
+    model_sizes = [r["model_size"] for r in filtered_results]
+    accuracies = [r["metrics"]["accuracy"] for r in filtered_results]
+
+    # Square-shaped figure with better aesthetics
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    # Define aesthetic color palette
+    colors = ['#2E86AB', '#A23B72', '#F18F01', '#C73E1D', '#6A994E']
+
+    # Create bars
+    x_positions = np.arange(len(model_sizes))
+    bars = ax.bar(x_positions, accuracies,
+                 color=[colors[i % len(colors)] for i in range(len(model_sizes))],
+                 alpha=0.85,
+                 edgecolor='white',
+                 linewidth=1.5)
+
+    # Add value labels on top of bars
+    for i, (bar, acc) in enumerate(zip(bars, accuracies)):
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2., height + 0.02,
+               f'{acc:.3f}',
+               ha='center', va='bottom', fontsize=10, fontweight='bold')
+
+    ax.set_xlabel("LLM Model Size", fontsize=13, fontweight='bold')
+    ax.set_ylabel("Accuracy", fontsize=13, fontweight='bold')
+
+    title = f"Accuracy vs LLM Model Size"
+    if num_book_reviews is not None and num_user_reviews is not None:
+        title += f"\n(Book Reviews={num_book_reviews}, User Reviews={num_user_reviews})"
+    ax.set_title(title, fontsize=15, fontweight='bold', pad=20)
+
+    ax.set_xticks(x_positions)
+    ax.set_xticklabels(model_sizes, fontsize=11)
+    ax.tick_params(axis='y', labelsize=11)
+
+    # Aesthetic improvements
+    ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
+    ax.set_ylim(0, 1.15)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.set_axisbelow(True)
+
+    plt.tight_layout()
+    output_path = os.path.join(output_dir, "accuracy_vs_llm_model.png")
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
+    print(f"Saved plot: {output_path}")
+    plt.close()
+
+
 def print_summary(results):
     """Print a summary table of all results."""
-    print("\n" + "="*70)
+    print("\n" + "="*85)
     print("RESULTS SUMMARY")
-    print("="*70)
-    print(f"{'Book Reviews':<15} {'User Reviews':<15} {'Accuracy':<12} {'Parsed':<12} {'Total':<10}")
-    print("-"*70)
+    print("="*85)
+    print(f"{'Model':<12} {'Book Reviews':<15} {'User Reviews':<15} {'Accuracy':<12} {'Parsed':<12} {'Total':<10}")
+    print("-"*85)
 
-    # Sort by num_book_reviews, then num_user_reviews
-    sorted_results = sorted(results, key=lambda x: (x["num_book_reviews"], x["num_user_reviews"]))
+    # Sort by model_size, num_book_reviews, then num_user_reviews
+    sorted_results = sorted(results, key=lambda x: (x["model_size"] or "", x["num_book_reviews"], x["num_user_reviews"]))
 
     for r in sorted_results:
         m = r["metrics"]
-        print(f"{r['num_book_reviews']:<15} {r['num_user_reviews']:<15} "
+        model_str = r["model_size"] if r["model_size"] else "N/A"
+        print(f"{model_str:<12} {r['num_book_reviews']:<15} {r['num_user_reviews']:<15} "
               f"{m['accuracy']:.4f}      {m['n_parsed']:<12} {m['n_total']:<10}")
 
-    print("="*70)
+    print("="*85)
 
     # Find best configuration
     best = max(results, key=lambda x: x["metrics"]["accuracy"])
     print(f"\nBest configuration:")
-    print(f"  num_book_reviews={best['num_book_reviews']}, "
+    model_info = f"model={best['model_size']}, " if best['model_size'] else ""
+    print(f"  {model_info}num_book_reviews={best['num_book_reviews']}, "
           f"num_user_reviews={best['num_user_reviews']}")
     print(f"  Accuracy: {best['metrics']['accuracy']:.4f}")
     print(f"  Parsed: {best['metrics']['n_parsed']}/{best['metrics']['n_total']}")
@@ -321,9 +420,11 @@ def main():
                                   num_book_reviews_list=[1, 2, 4, 8],
                                   num_user_reviews_list=[1])
     plot_accuracy_vs_user_reviews(results, args.output_dir,
-                                  num_book_reviews_list=[5],
+                                  num_book_reviews_list=[4],
                                   num_user_reviews_list=[1, 2, 4])
-
+    plot_accuracy_vs_llm_model(results, args.output_dir,
+                              num_book_reviews=8,
+                              num_user_reviews=1)
 
     print(f"\nAll plots saved to {args.output_dir}")
 
