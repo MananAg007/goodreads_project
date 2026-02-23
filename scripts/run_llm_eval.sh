@@ -16,19 +16,57 @@ export HF_HOME=/data/user_data/mananaga/huggingface
 export HUGGINGFACE_HUB_CACHE=/data/user_data/mananaga/huggingface/hub
 export TRANSFORMERS_CACHE=/data/user_data/mananaga/huggingface/transformers
 
-python util/run_llm_eval.py \
-    --input data/book_preference_dataset.jsonl \
-    --output_dir /home/mananaga/goodreads/results \
-    --template util/templates/default_prompt.txt \
-    --model Qwen/Qwen2.5-7B-Instruct \
-    --num_book_reviews 5 \
-    --num_user_reviews 1 \
-    --max_new_tokens 256 \
-    --batch_size 16 \
-    --random_seed 86 \
-    --device auto \
-    --num_entries 64
+# Configuration
+MODEL="Qwen/Qwen2.5-7B-Instruct"
+INPUT_FILE="data/book_preference_dataset.jsonl"
+TEMPLATE="util/templates/default_prompt.txt"
+BASE_OUTPUT_DIR="/home/mananaga/goodreads/results"
+MAX_NEW_TOKENS=256
+BATCH_SIZE=16
+RANDOM_SEED=86
+DEVICE="auto"
+NUM_ENTRIES=100
+
+# Define the values to iterate over
+NUM_BOOK_REVIEWS_LIST=(1 2 4 8)
+NUM_USER_REVIEWS_LIST=(1)
 
 echo "========================================"
-echo "End time: $(date)"
+echo "Starting evaluation runs: $(date)"
+echo "========================================"
+
+# Iterate over num_book_reviews
+for num_book_reviews in "${NUM_BOOK_REVIEWS_LIST[@]}"; do
+    # Iterate over num_user_reviews
+    for num_user_reviews in "${NUM_USER_REVIEWS_LIST[@]}"; do
+        OUTPUT_DIR="${BASE_OUTPUT_DIR}/num_book_reviews_${num_book_reviews}_num_user_reviews_${num_user_reviews}"
+
+        echo ""
+        echo "========================================"
+        echo "Running: num_book_reviews=${num_book_reviews}, num_user_reviews=${num_user_reviews}"
+        echo "Output directory: ${OUTPUT_DIR}"
+        echo "Start time: $(date)"
+        echo "========================================"
+
+        python util/run_llm_eval.py \
+            --input "${INPUT_FILE}" \
+            --output_dir "${OUTPUT_DIR}" \
+            --template "${TEMPLATE}" \
+            --model "${MODEL}" \
+            --num_book_reviews ${num_book_reviews} \
+            --num_user_reviews ${num_user_reviews} \
+            --max_new_tokens ${MAX_NEW_TOKENS} \
+            --batch_size ${BATCH_SIZE} \
+            --random_seed ${RANDOM_SEED} \
+            --device ${DEVICE} \
+            --num_entries ${NUM_ENTRIES}
+
+        echo "Completed: num_book_reviews=${num_book_reviews}, num_user_reviews=${num_user_reviews}"
+        echo "End time: $(date)"
+    done
+done
+
+echo ""
+echo "========================================"
+echo "All evaluation runs completed: $(date)"
 echo "========================================"
