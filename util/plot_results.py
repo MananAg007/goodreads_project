@@ -198,10 +198,13 @@ def plot_accuracy_vs_book_reviews(results, output_dir, num_book_reviews_list=Non
     ax.set_xticklabels(all_book_reviews, fontsize=11)
     ax.tick_params(axis='y', labelsize=11)
 
+    # Add random baseline on top of bars
+    ax.axhline(0.5, color='red', linestyle='-', linewidth=4, alpha=0.7, zorder=10)
+
     # Aesthetic improvements
     ax.legend(frameon=True, shadow=True, fancybox=True, fontsize=11)
     ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
-    ax.set_ylim(0.5, 1.0)
+    ax.set_ylim(0.45, 0.75)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.set_axisbelow(True)
@@ -308,10 +311,13 @@ def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=Non
     ax.set_xticklabels(all_user_reviews, fontsize=11)
     ax.tick_params(axis='y', labelsize=11)
 
+    # Add random baseline on top of bars
+    ax.axhline(0.5, color='red', linestyle='-', linewidth=4, alpha=0.7, zorder=10)
+
     # Aesthetic improvements
     ax.legend(frameon=True, shadow=True, fancybox=True, fontsize=11)
     ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
-    ax.set_ylim(0.5, 1.0)
+    ax.set_ylim(0.45, 0.75)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.set_axisbelow(True)
@@ -395,9 +401,12 @@ def plot_accuracy_vs_llm_model(results, output_dir, num_book_reviews=None, num_u
     ax.set_xticklabels(model_sizes, fontsize=11)
     ax.tick_params(axis='y', labelsize=11)
 
+    # Add random baseline on top of bars
+    ax.axhline(0.5, color='red', linestyle='-', linewidth=4, alpha=0.7, zorder=10)
+
     # Aesthetic improvements
     ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
-    ax.set_ylim(0.5, 1.0)
+    ax.set_ylim(0.45, 0.75)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.set_axisbelow(True)
@@ -448,9 +457,12 @@ def plot_accuracy_vs_algorithm(output_dir):
     ax.set_xticklabels(algorithms, fontsize=11)
     ax.tick_params(axis='y', labelsize=11)
 
+    # Add random baseline on top of bars
+    ax.axhline(0.5, color='red', linestyle='-', linewidth=4, alpha=0.7, zorder=10)
+
     # Aesthetic improvements
     ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
-    ax.set_ylim(0.5, 1.0)
+    ax.set_ylim(0.45, 0.75)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.set_axisbelow(True)
