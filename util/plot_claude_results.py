@@ -331,7 +331,7 @@ def plot_accuracy_vs_book_reviews(results, output_dir, num_book_reviews_list=Non
         grouped[key].append(r)
 
     # Square-shaped figure with better aesthetics
-    fig, ax = plt.subplots(figsize=(8, 8))
+    fig, ax = plt.subplots(figsize=(10, 8))
 
     # Define aesthetic color palette
     colors = ['#2E86AB', '#A23B72', '#F18F01', '#C73E1D', '#6A994E']
@@ -437,7 +437,7 @@ def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=Non
         grouped[key].append(r)
 
     # Square-shaped figure with better aesthetics
-    fig, ax = plt.subplots(figsize=(8, 8))
+    fig, ax = plt.subplots(figsize=(10, 8))
 
     # Define aesthetic color palette
     colors = ['#2E86AB', '#A23B72', '#F18F01', '#C73E1D', '#6A994E']
@@ -519,7 +519,7 @@ def plot_accuracy_vs_algorithm(output_dir):
     accuracies = [0.50, 0.61, 0.64, 0.71]  # TODO: Replace with actual values
 
     # Square-shaped figure with better aesthetics
-    fig, ax = plt.subplots(figsize=(8, 8))
+    fig, ax = plt.subplots(figsize=(10, 8))
 
     # Define aesthetic color palette
     colors = ['#2E86AB', '#A23B72', '#F18F01', '#C73E1D']
