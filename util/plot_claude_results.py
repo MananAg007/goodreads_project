@@ -293,6 +293,62 @@ def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=Non
     plt.close()
 
 
+def plot_accuracy_vs_algorithm(output_dir):
+    """Plot accuracy comparison across different algorithms with hardcoded values.
+
+    Args:
+        output_dir: Directory to save the plot
+    """
+    # Hardcoded algorithm names and their accuracies
+    algorithms = ['random', 'collaborative-filtering', 'book-rating', 'llm']
+    accuracies = [0.50, 0.61, 0.64, 0.71]  # TODO: Replace with actual values
+
+    # Square-shaped figure with better aesthetics
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    # Define aesthetic color palette
+    colors = ['#2E86AB', '#A23B72', '#F18F01', '#C73E1D']
+
+    # Create bars
+    x_positions = np.arange(len(algorithms))
+    bars = ax.bar(x_positions, accuracies,
+                 color=colors,
+                 alpha=0.85,
+                 edgecolor='white',
+                 linewidth=1.5)
+
+    # Add value labels on top of bars
+    for bar, acc in zip(bars, accuracies):
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2., height + 0.02,
+               f'{acc:.3f}',
+               ha='center', va='bottom', fontsize=10, fontweight='bold')
+
+    ax.set_xlabel("Algorithm", fontsize=13, fontweight='bold')
+    ax.set_ylabel("Accuracy", fontsize=13, fontweight='bold')
+    ax.set_title("Accuracy vs Algorithm", fontsize=15, fontweight='bold', pad=20)
+
+    ax.set_xticks(x_positions)
+    ax.set_xticklabels(algorithms, fontsize=11)
+    ax.tick_params(axis='y', labelsize=11)
+
+    # Add random baseline on top of bars
+    ax.axhline(0.5, color='red', linestyle='-', linewidth=4, alpha=0.7, zorder=10)
+
+    # Aesthetic improvements
+    ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
+    ax.set_ylim(0.45, 0.75)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.set_axisbelow(True)
+
+    plt.tight_layout()
+    output_path = os.path.join(output_dir, "claude_accuracy_vs_algorithm.png")
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
+    print(f"Saved plot: {output_path}")
+    plt.close()
+
+
 def print_summary(results):
     """Print a summary table of all results."""
     print("\n" + "="*85)
@@ -362,6 +418,9 @@ def main():
     plot_accuracy_vs_user_reviews(results, args.output_dir,
                                   num_book_reviews_list=[8],
                                   num_user_reviews_list=[1, 2, 4])
+
+    # Plot algorithm comparison
+    plot_accuracy_vs_algorithm(args.output_dir)
 
     print(f"\nAll plots saved to {args.output_dir}")
 
