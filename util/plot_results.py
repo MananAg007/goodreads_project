@@ -16,6 +16,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+def extract_numeric_model_size(model_size):
+    """
+    Extract numeric value from model size string for sorting.
+
+    Args:
+        model_size: String like "0.5B", "1.5B", "3B", "7B", etc., or None
+
+    Returns:
+        float: Numeric value (e.g., 0.5, 1.5, 3.0, 7.0) or 0 if None/invalid
+    """
+    if model_size is None:
+        return 0
+    match = re.match(r'([\d.]+)B', model_size)
+    return float(match.group(1)) if match else 0
+
+
 def parse_directory_name(dir_name):
     """
     Parse directory name to extract model_size, num_book_reviews and num_user_reviews.
@@ -93,7 +109,7 @@ def load_results(results_dir):
     return results
 
 
-def plot_accuracy_vs_book_reviews(results, output_dir, num_book_reviews_list=None, num_user_reviews_list=None):
+def plot_accuracy_vs_book_reviews(results, output_dir, num_book_reviews_list=None, num_user_reviews_list=None, model_size=None):
     """Plot accuracy vs num_book_reviews for each num_user_reviews value.
 
     Args:
@@ -101,6 +117,7 @@ def plot_accuracy_vs_book_reviews(results, output_dir, num_book_reviews_list=Non
         output_dir: Directory to save the plot
         num_book_reviews_list: List of num_book_reviews values to include (None = all)
         num_user_reviews_list: List of num_user_reviews values to include (None = all)
+        model_size: Specific model size to filter by (e.g., "3B", "7B") (None = all)
     """
     # Filter results based on input lists
     filtered_results = results
@@ -108,15 +125,25 @@ def plot_accuracy_vs_book_reviews(results, output_dir, num_book_reviews_list=Non
         filtered_results = [r for r in filtered_results if r["num_book_reviews"] in num_book_reviews_list]
     if num_user_reviews_list is not None:
         filtered_results = [r for r in filtered_results if r["num_user_reviews"] in num_user_reviews_list]
+    if model_size is not None:
+        filtered_results = [r for r in filtered_results if r["model_size"] == model_size]
+    else:
+        # If no model specified, only use results without model info (legacy) OR all from the same model
+        models_in_results = set(r["model_size"] for r in filtered_results)
+        if None in models_in_results and len(models_in_results) > 1:
+            # Mixed legacy and new results - use only legacy (None)
+            filtered_results = [r for r in filtered_results if r["model_size"] is None]
+            print("Note: Using only legacy results (without model info) for this plot")
 
     if not filtered_results:
         print("No results to plot after filtering")
         return
 
-    # Group by num_user_reviews
+    # Group by (num_user_reviews, model_size) to avoid mixing models
     grouped = defaultdict(list)
     for r in filtered_results:
-        grouped[r["num_user_reviews"]].append(r)
+        key = (r["num_user_reviews"], r["model_size"])
+        grouped[key].append(r)
 
     # Square-shaped figure with better aesthetics
     fig, ax = plt.subplots(figsize=(8, 8))
@@ -133,16 +160,20 @@ def plot_accuracy_vs_book_reviews(results, output_dir, num_book_reviews_list=Non
     # Generate x positions for bars
     x_base = np.arange(num_groups)
 
-    for idx, num_user_reviews in enumerate(sorted(grouped.keys())):
-        data = grouped[num_user_reviews]
+    for idx, (num_user_reviews, model) in enumerate(sorted(grouped.keys())):
+        data = grouped[(num_user_reviews, model)]
         # Sort by num_book_reviews
         data.sort(key=lambda x: x["num_book_reviews"])
 
         y = [r["metrics"]["accuracy"] for r in data]
         x_positions = x_base + (idx - num_series/2 + 0.5) * bar_width
 
+        label = f"num_user_reviews={num_user_reviews}"
+        if model is not None and len(set(r["model_size"] for r in filtered_results)) > 1:
+            label += f" ({model})"
+
         bars = ax.bar(x_positions, y, bar_width,
-                     label=f"num_user_reviews={num_user_reviews}",
+                     label=label,
                      color=colors[idx % len(colors)],
                      alpha=0.85,
                      edgecolor='white',
@@ -157,8 +188,12 @@ def plot_accuracy_vs_book_reviews(results, output_dir, num_book_reviews_list=Non
 
     ax.set_xlabel("Number of Book Reviews (Community Reviews)", fontsize=13, fontweight='bold')
     ax.set_ylabel("Accuracy", fontsize=13, fontweight='bold')
-    ax.set_title("Accuracy vs Number of Community Reviews per Book",
-                fontsize=15, fontweight='bold', pad=20)
+
+    title = "Accuracy vs Number of Community Reviews per Book"
+    if model_size is not None:
+        title += f"\n(Model: {model_size})"
+    ax.set_title(title, fontsize=15, fontweight='bold', pad=20)
+
     ax.set_xticks(x_base)
     ax.set_xticklabels(all_book_reviews, fontsize=11)
     ax.tick_params(axis='y', labelsize=11)
@@ -172,13 +207,14 @@ def plot_accuracy_vs_book_reviews(results, output_dir, num_book_reviews_list=Non
     ax.set_axisbelow(True)
 
     plt.tight_layout()
-    output_path = os.path.join(output_dir, "accuracy_vs_book_reviews.png")
+    filename = f"accuracy_vs_book_reviews_{model_size}.png" if model_size else "accuracy_vs_book_reviews.png"
+    output_path = os.path.join(output_dir, filename)
     plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
     print(f"Saved plot: {output_path}")
     plt.close()
 
 
-def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=None, num_user_reviews_list=None):
+def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=None, num_user_reviews_list=None, model_size=None):
     """Plot accuracy vs num_user_reviews for each num_book_reviews value.
 
     Args:
@@ -186,6 +222,7 @@ def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=Non
         output_dir: Directory to save the plot
         num_book_reviews_list: List of num_book_reviews values to include (None = all)
         num_user_reviews_list: List of num_user_reviews values to include (None = all)
+        model_size: Specific model size to filter by (e.g., "3B", "7B") (None = all)
     """
     # Filter results based on input lists
     filtered_results = results
@@ -193,6 +230,15 @@ def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=Non
         filtered_results = [r for r in filtered_results if r["num_book_reviews"] in num_book_reviews_list]
     if num_user_reviews_list is not None:
         filtered_results = [r for r in filtered_results if r["num_user_reviews"] in num_user_reviews_list]
+    if model_size is not None:
+        filtered_results = [r for r in filtered_results if r["model_size"] == model_size]
+    else:
+        # If no model specified, only use results without model info (legacy) OR all from the same model
+        models_in_results = set(r["model_size"] for r in filtered_results)
+        if None in models_in_results and len(models_in_results) > 1:
+            # Mixed legacy and new results - use only legacy (None)
+            filtered_results = [r for r in filtered_results if r["model_size"] is None]
+            print("Note: Using only legacy results (without model info) for this plot")
 
     if not filtered_results:
         print("No results to plot after filtering")
@@ -203,10 +249,11 @@ def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=Non
         print("Skipping accuracy vs user reviews plot (no variation in num_user_reviews)")
         return
 
-    # Group by num_book_reviews
+    # Group by (num_book_reviews, model_size) to avoid mixing models
     grouped = defaultdict(list)
     for r in filtered_results:
-        grouped[r["num_book_reviews"]].append(r)
+        key = (r["num_book_reviews"], r["model_size"])
+        grouped[key].append(r)
 
     # Square-shaped figure with better aesthetics
     fig, ax = plt.subplots(figsize=(8, 8))
@@ -223,16 +270,20 @@ def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=Non
     # Generate x positions for bars
     x_base = np.arange(num_groups)
 
-    for idx, num_book_reviews in enumerate(sorted(grouped.keys())):
-        data = grouped[num_book_reviews]
+    for idx, (num_book_reviews, model) in enumerate(sorted(grouped.keys())):
+        data = grouped[(num_book_reviews, model)]
         # Sort by num_user_reviews
         data.sort(key=lambda x: x["num_user_reviews"])
 
         y = [r["metrics"]["accuracy"] for r in data]
         x_positions = x_base + (idx - num_series/2 + 0.5) * bar_width
 
+        label = f"num_book_reviews={num_book_reviews}"
+        if model is not None and len(set(r["model_size"] for r in filtered_results)) > 1:
+            label += f" ({model})"
+
         bars = ax.bar(x_positions, y, bar_width,
-                     label=f"num_book_reviews={num_book_reviews}",
+                     label=label,
                      color=colors[idx % len(colors)],
                      alpha=0.85,
                      edgecolor='white',
@@ -247,8 +298,12 @@ def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=Non
 
     ax.set_xlabel("Number of User Reviews (Reference Reviews)", fontsize=13, fontweight='bold')
     ax.set_ylabel("Accuracy", fontsize=13, fontweight='bold')
-    ax.set_title("Accuracy vs Number of User Reference Reviews",
-                fontsize=15, fontweight='bold', pad=20)
+
+    title = "Accuracy vs Number of User Reference Reviews"
+    if model_size is not None:
+        title += f"\n(Model: {model_size})"
+    ax.set_title(title, fontsize=15, fontweight='bold', pad=20)
+
     ax.set_xticks(x_base)
     ax.set_xticklabels(all_user_reviews, fontsize=11)
     ax.tick_params(axis='y', labelsize=11)
@@ -262,7 +317,8 @@ def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=Non
     ax.set_axisbelow(True)
 
     plt.tight_layout()
-    output_path = os.path.join(output_dir, "accuracy_vs_user_reviews.png")
+    filename = f"accuracy_vs_user_reviews_{model_size}.png" if model_size else "accuracy_vs_user_reviews.png"
+    output_path = os.path.join(output_dir, filename)
     plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
     print(f"Saved plot: {output_path}")
     plt.close()
@@ -299,14 +355,8 @@ def plot_accuracy_vs_llm_model(results, output_dir, num_book_reviews=None, num_u
         print("Skipping accuracy vs LLM model plot (no variation in model sizes)")
         return
 
-    # Sort by model size numerically (extract number from "0.5B", "1.5B", "3B", etc.)
-    def extract_numeric_size(model_size):
-        """Extract numeric value from model size string (e.g., "0.5B" -> 0.5)"""
-        import re
-        match = re.match(r'([\d.]+)B', model_size)
-        return float(match.group(1)) if match else 0
-
-    filtered_results.sort(key=lambda x: extract_numeric_size(x["model_size"]))
+    # Sort by model size numerically (e.g., 0.5B -> 1.5B -> 3B -> 7B)
+    filtered_results.sort(key=lambda x: extract_numeric_model_size(x["model_size"]))
 
     # Extract data
     model_sizes = [r["model_size"] for r in filtered_results]
@@ -367,8 +417,8 @@ def print_summary(results):
     print(f"{'Model':<12} {'Book Reviews':<15} {'User Reviews':<15} {'Accuracy':<12} {'Parsed':<12} {'Total':<10}")
     print("-"*85)
 
-    # Sort by model_size, num_book_reviews, then num_user_reviews
-    sorted_results = sorted(results, key=lambda x: (x["model_size"] or "", x["num_book_reviews"], x["num_user_reviews"]))
+    # Sort by model_size (numerically), num_book_reviews, then num_user_reviews
+    sorted_results = sorted(results, key=lambda x: (extract_numeric_model_size(x["model_size"]), x["num_book_reviews"], x["num_user_reviews"]))
 
     for r in sorted_results:
         m = r["metrics"]
