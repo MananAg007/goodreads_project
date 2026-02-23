@@ -121,10 +121,16 @@ def run_batch_inference(prompts, model, tokenizer, max_new_tokens, device):
         return_tensors = "pt",
         padding = True,
         truncation = True,
-        max_length = 3072,
+        max_length = 8192,  # Increased from 3072 to accommodate more reviews
     )
     input_ids = inputs["input_ids"].to(model.device)
     attention_mask = inputs["attention_mask"].to(model.device)
+
+    # Log token lengths to detect truncation
+    token_lengths = [len(ids) for ids in inputs["input_ids"]]
+    max_tokens = max(token_lengths)
+    if max_tokens >= 8192:
+        print(f"  WARNING: Truncation occurring! Max tokens in batch: {max_tokens}")
 
     with torch.no_grad():
         outputs = model.generate(
