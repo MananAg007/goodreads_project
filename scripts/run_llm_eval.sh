@@ -19,17 +19,17 @@ export TRANSFORMERS_CACHE=/data/user_data/mananaga/huggingface/transformers
 # Configuration
 MODEL="Qwen/Qwen2.5-7B-Instruct"
 INPUT_FILE="data/book_preference_dataset.jsonl"
-TEMPLATE="util/templates/default_prompt.txt"
+TEMPLATE="util/templates/strict_format_prompt.txt"
 BASE_OUTPUT_DIR="/home/mananaga/goodreads/results"
 MAX_NEW_TOKENS=256
 BATCH_SIZE=16
 RANDOM_SEED=86
 DEVICE="auto"
-NUM_ENTRIES=100
+NUM_ENTRIES=16
 
 # Define the values to iterate over
-NUM_BOOK_REVIEWS_LIST=(5)
-NUM_USER_REVIEWS_LIST=(1 2 4)
+NUM_BOOK_REVIEWS_LIST=(8)
+NUM_USER_REVIEWS_LIST=(1)
 
 echo "========================================"
 echo "Starting evaluation runs: $(date)"

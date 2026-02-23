@@ -1,7 +1,7 @@
 {
-  "accuracy": 0.6206896551724138,
-  "n_correct": 36,
-  "n_total": 100,
-  "n_parsed": 58,
-  "n_parse_failed": 42
+  "accuracy": 0.7142857142857143,
+  "n_correct": 5,
+  "n_total": 16,
+  "n_parsed": 7,
+  "n_parse_failed": 9
 }
