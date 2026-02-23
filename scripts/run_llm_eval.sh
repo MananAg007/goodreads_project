@@ -29,7 +29,7 @@ NUM_ENTRIES=100
 # Define the values to iterate over
 MODELS=("Qwen/Qwen2.5-7B-Instruct")
 NUM_BOOK_REVIEWS_LIST=(8)
-NUM_USER_REVIEWS_LIST=(1)
+NUM_USER_REVIEWS_LIST=(2 4)
 
 echo "========================================"
 echo "Starting evaluation runs: $(date)"

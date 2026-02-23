@@ -22,14 +22,15 @@ def parse_args():
     parser.add_argument("--num_user_reviews", type=int, default=1)
     parser.add_argument("--max_tokens", type=int, default=1024,
                         help="Max tokens in response (not max_new_tokens)")
-    parser.add_argument("--concurrent_requests", type=int, default=5,
-                        help="Number of concurrent API requests (respect rate limits)")
-    parser.add_argument("--random_seed", type=int, default=86)
+    parser.add_argument("--concurrent_requests", type=int, default=20,
+                        help="Number of concurrent API requests (default: 20 for Build tier, use 50+ for Scale tier)")
+    parser.add_argument("--temperature", type=float, default=0.0,
+                        help="Sampling temperature (0 = deterministic, 1 = default randomness)")
     parser.add_argument("--num_entries", type=int, default=None,
                         help="Number of entries to process (default: all)")
     parser.add_argument("--debug", action="store_true")
-    parser.add_argument("--rate_limit_delay", type=float, default=0.1,
-                        help="Delay between batches of requests in seconds")
+    parser.add_argument("--rate_limit_delay", type=float, default=0.05,
+                        help="Delay between batches of requests in seconds (default: 0.05, use 0 to disable)")
     return parser.parse_args()
 
 
@@ -101,12 +102,14 @@ def build_prompt(template: str, entry: Dict, user_reviews: List[Dict], x: int, y
     })
 
 
-async def call_claude_api(client: anthropic.AsyncAnthropic, prompt: str, model: str, max_tokens: int) -> Tuple[str, bool]:
+async def call_claude_api(client: anthropic.AsyncAnthropic, prompt: str, model: str,
+                         max_tokens: int, temperature: float) -> Tuple[str, bool]:
     """Make an async call to Claude API."""
     try:
         message = await client.messages.create(
             model=model,
             max_tokens=max_tokens,
+            temperature=temperature,
             messages=[
                 {"role": "user", "content": prompt}
             ]
@@ -119,11 +122,11 @@ async def call_claude_api(client: anthropic.AsyncAnthropic, prompt: str, model: 
 
 
 async def process_batch(client: anthropic.AsyncAnthropic, prompts: List[str], model: str,
-                       max_tokens: int, start_idx: int) -> List[Tuple[int, str, bool]]:
+                       max_tokens: int, temperature: float, start_idx: int) -> List[Tuple[int, str, bool]]:
     """Process a batch of prompts concurrently."""
     tasks = []
     for i, prompt in enumerate(prompts):
-        task = call_claude_api(client, prompt, model, max_tokens)
+        task = call_claude_api(client, prompt, model, max_tokens, temperature)
         tasks.append((start_idx + i, task))
 
     results = []
@@ -247,6 +250,7 @@ async def main():
     print(f"Processing with {args.concurrent_requests} concurrent requests...")
     print(f"Model: {args.model}")
     print(f"Max tokens: {args.max_tokens}")
+    print(f"Temperature: {args.temperature}")
 
     results = []
     batch_size = args.concurrent_requests
@@ -258,7 +262,7 @@ async def main():
 
         # Process batch concurrently
         batch_results = await process_batch(
-            client, batch_prompts, args.model, args.max_tokens, batch_start
+            client, batch_prompts, args.model, args.max_tokens, args.temperature, batch_start
         )
 
         # Parse and store results

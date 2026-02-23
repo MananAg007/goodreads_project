@@ -11,15 +11,15 @@ INPUT_FILE="data/book_preference_dataset.jsonl"
 TEMPLATE="util/templates/strict_format_prompt.txt"
 BASE_OUTPUT_DIR="/home/mananaga/goodreads/results/claude"
 MAX_TOKENS=1024
-CONCURRENT_REQUESTS=5  # Number of parallel API requests (adjust based on rate limits)
-RANDOM_SEED=86
+CONCURRENT_REQUESTS=10  # Number of parallel API requests (adjust based on rate limits)
+TEMPERATURE=0.0  # 0 = deterministic, 1 = default randomness
 NUM_ENTRIES=100
-RATE_LIMIT_DELAY=0.1
+RATE_LIMIT_DELAY=0.01  # Very small delay for Build tier (1000 req/min). Use 0 to disable
 
 # Define the values to iterate over
 MODELS=("claude-3-haiku-20240307")
 NUM_BOOK_REVIEWS_LIST=(8)
-NUM_USER_REVIEWS_LIST=(1)
+NUM_USER_REVIEWS_LIST=(2 4)
 
 echo "========================================"
 echo "Starting Claude API evaluation runs: $(date)"
@@ -67,7 +67,7 @@ for MODEL in "${MODELS[@]}"; do
                 --num_user_reviews ${num_user_reviews} \
                 --max_tokens ${MAX_TOKENS} \
                 --concurrent_requests ${CONCURRENT_REQUESTS} \
-                --random_seed ${RANDOM_SEED} \
+                --temperature ${TEMPERATURE} \
                 --num_entries ${NUM_ENTRIES} \
                 --rate_limit_delay ${RATE_LIMIT_DELAY}
 
