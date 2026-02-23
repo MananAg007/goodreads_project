@@ -28,8 +28,8 @@ DEVICE="auto"
 NUM_ENTRIES=100
 
 # Define the values to iterate over
-NUM_BOOK_REVIEWS_LIST=(1 2 4 8)
-NUM_USER_REVIEWS_LIST=(1)
+NUM_BOOK_REVIEWS_LIST=(5)
+NUM_USER_REVIEWS_LIST=(1 2 4)
 
 echo "========================================"
 echo "Starting evaluation runs: $(date)"

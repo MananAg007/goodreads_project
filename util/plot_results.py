@@ -81,11 +81,29 @@ def load_results(results_dir):
     return results
 
 
-def plot_accuracy_vs_book_reviews(results, output_dir):
-    """Plot accuracy vs num_book_reviews for each num_user_reviews value."""
+def plot_accuracy_vs_book_reviews(results, output_dir, num_book_reviews_list=None, num_user_reviews_list=None):
+    """Plot accuracy vs num_book_reviews for each num_user_reviews value.
+
+    Args:
+        results: List of result dictionaries
+        output_dir: Directory to save the plot
+        num_book_reviews_list: List of num_book_reviews values to include (None = all)
+        num_user_reviews_list: List of num_user_reviews values to include (None = all)
+    """
+    # Filter results based on input lists
+    filtered_results = results
+    if num_book_reviews_list is not None:
+        filtered_results = [r for r in filtered_results if r["num_book_reviews"] in num_book_reviews_list]
+    if num_user_reviews_list is not None:
+        filtered_results = [r for r in filtered_results if r["num_user_reviews"] in num_user_reviews_list]
+
+    if not filtered_results:
+        print("No results to plot after filtering")
+        return
+
     # Group by num_user_reviews
     grouped = defaultdict(list)
-    for r in results:
+    for r in filtered_results:
         grouped[r["num_user_reviews"]].append(r)
 
     # Square-shaped figure with better aesthetics
@@ -95,7 +113,7 @@ def plot_accuracy_vs_book_reviews(results, output_dir):
     colors = ['#2E86AB', '#A23B72', '#F18F01', '#C73E1D', '#6A994E']
 
     # Get all unique book review values
-    all_book_reviews = sorted(set(r["num_book_reviews"] for r in results))
+    all_book_reviews = sorted(set(r["num_book_reviews"] for r in filtered_results))
     num_groups = len(all_book_reviews)
     num_series = len(grouped)
     bar_width = 0.7 / num_series
@@ -148,17 +166,35 @@ def plot_accuracy_vs_book_reviews(results, output_dir):
     plt.close()
 
 
-def plot_accuracy_vs_user_reviews(results, output_dir):
-    """Plot accuracy vs num_user_reviews for each num_book_reviews value."""
-    # Group by num_book_reviews
-    grouped = defaultdict(list)
-    for r in results:
-        grouped[r["num_book_reviews"]].append(r)
+def plot_accuracy_vs_user_reviews(results, output_dir, num_book_reviews_list=None, num_user_reviews_list=None):
+    """Plot accuracy vs num_user_reviews for each num_book_reviews value.
+
+    Args:
+        results: List of result dictionaries
+        output_dir: Directory to save the plot
+        num_book_reviews_list: List of num_book_reviews values to include (None = all)
+        num_user_reviews_list: List of num_user_reviews values to include (None = all)
+    """
+    # Filter results based on input lists
+    filtered_results = results
+    if num_book_reviews_list is not None:
+        filtered_results = [r for r in filtered_results if r["num_book_reviews"] in num_book_reviews_list]
+    if num_user_reviews_list is not None:
+        filtered_results = [r for r in filtered_results if r["num_user_reviews"] in num_user_reviews_list]
+
+    if not filtered_results:
+        print("No results to plot after filtering")
+        return
 
     # Only plot if we have variation in num_user_reviews
-    if len(set(r["num_user_reviews"] for r in results)) < 2:
+    if len(set(r["num_user_reviews"] for r in filtered_results)) < 2:
         print("Skipping accuracy vs user reviews plot (no variation in num_user_reviews)")
         return
+
+    # Group by num_book_reviews
+    grouped = defaultdict(list)
+    for r in filtered_results:
+        grouped[r["num_book_reviews"]].append(r)
 
     # Square-shaped figure with better aesthetics
     fig, ax = plt.subplots(figsize=(8, 8))
@@ -167,7 +203,7 @@ def plot_accuracy_vs_user_reviews(results, output_dir):
     colors = ['#2E86AB', '#A23B72', '#F18F01', '#C73E1D', '#6A994E']
 
     # Get all unique user review values
-    all_user_reviews = sorted(set(r["num_user_reviews"] for r in results))
+    all_user_reviews = sorted(set(r["num_user_reviews"] for r in filtered_results))
     num_groups = len(all_user_reviews)
     num_series = len(grouped)
     bar_width = 0.7 / num_series
@@ -279,10 +315,15 @@ def main():
 
     # Create plots
     print(f"\nGenerating plots in {args.output_dir}...")
-    plot_accuracy_vs_book_reviews(results, args.output_dir)
-    #plot_accuracy_vs_user_reviews(results, args.output_dir)
-    #plot_parse_success_rate(results, args.output_dir)
-    #plot_heatmap(results, args.output_dir)
+
+    # Hardcoded filters for each plot
+    plot_accuracy_vs_book_reviews(results, args.output_dir,
+                                  num_book_reviews_list=[1, 2, 4, 8],
+                                  num_user_reviews_list=[1])
+    plot_accuracy_vs_user_reviews(results, args.output_dir,
+                                  num_book_reviews_list=[5],
+                                  num_user_reviews_list=[1, 2, 4])
+
 
     print(f"\nAll plots saved to {args.output_dir}")
 
