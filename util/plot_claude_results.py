@@ -564,6 +564,87 @@ def plot_accuracy_vs_algorithm(output_dir):
     plt.close()
 
 
+def plot_reasoning_quality(output_dir):
+    """Plot reasoning quality comparison for correct vs incorrect predictions with hardcoded values.
+
+    Args:
+        output_dir: Directory to save the plot
+    """
+    # Hardcoded values from reasoning evaluation
+    # Correct predictions: Sound: 8, Vague: 2
+    # Incorrect predictions: Sound: 7, Vague: 3
+    # Categories renamed: Sound -> Strong, Vague -> Weak
+    categories = ['Strong', 'Weak']
+    correct_counts = [8, 2]
+    incorrect_counts = [7, 3]
+
+    # Convert to percentages
+    total_correct = sum(correct_counts)
+    total_incorrect = sum(incorrect_counts)
+    correct_percentages = [c / total_correct * 100 for c in correct_counts]
+    incorrect_percentages = [c / total_incorrect * 100 for c in incorrect_counts]
+
+    # Square-shaped figure with better aesthetics
+    fig, ax = plt.subplots(figsize=(10, 8))
+
+    # Define aesthetic color palette
+    colors = ['#2E86AB', '#A23B72']  # Blue for correct, Purple for incorrect
+
+    # Set up bar positions
+    x_positions = np.arange(len(categories))
+    bar_width = 0.35
+
+    # Create grouped bars
+    bars1 = ax.bar(x_positions - bar_width/2, correct_percentages, bar_width,
+                   label='Correct Predictions',
+                   color=colors[0],
+                   alpha=0.85,
+                   edgecolor='white',
+                   linewidth=1.5)
+
+    bars2 = ax.bar(x_positions + bar_width/2, incorrect_percentages, bar_width,
+                   label='Incorrect Predictions',
+                   color=colors[1],
+                   alpha=0.85,
+                   edgecolor='white',
+                   linewidth=1.5)
+
+    # Add value labels on top of bars
+    for bar, count, pct in zip(bars1, correct_counts, correct_percentages):
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2., height + 2,
+               f'{count}\n({pct:.0f}%)',
+               ha='center', va='bottom', fontsize=10, fontweight='bold')
+
+    for bar, count, pct in zip(bars2, incorrect_counts, incorrect_percentages):
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2., height + 2,
+               f'{count}\n({pct:.0f}%)',
+               ha='center', va='bottom', fontsize=10, fontweight='bold')
+
+    ax.set_xlabel("Reasoning Quality Category", fontsize=13, fontweight='bold')
+    ax.set_ylabel("Percentage (%)", fontsize=13, fontweight='bold')
+    ax.set_title("Reasoning Quality: Correct vs Incorrect Predictions", fontsize=15, fontweight='bold', pad=20)
+
+    ax.set_xticks(x_positions)
+    ax.set_xticklabels(categories, fontsize=11)
+    ax.tick_params(axis='y', labelsize=11)
+
+    # Aesthetic improvements
+    ax.legend(frameon=True, shadow=True, fancybox=True, fontsize=11, loc='upper right')
+    ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
+    ax.set_ylim(0, 110)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.set_axisbelow(True)
+
+    plt.tight_layout()
+    output_path = os.path.join(output_dir, "reasoning_quality_comparison.png")
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
+    print(f"Saved plot: {output_path}")
+    plt.close()
+
+
 def print_summary(results):
     """Print a summary table of all results."""
     print("\n" + "="*85)
@@ -646,6 +727,10 @@ def main():
     print("\nGenerating model comparison plot (Qwen + Claude)...")
     plot_accuracy_vs_model(args.results_dir, args.qwen_results_dir, args.output_dir,
                           num_book_reviews=8, num_user_reviews=1)
+
+    # Plot reasoning quality comparison
+    print("\nGenerating reasoning quality comparison plot...")
+    plot_reasoning_quality(args.output_dir)
 
     print(f"\nAll plots saved to {args.output_dir}")
 

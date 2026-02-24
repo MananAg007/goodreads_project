@@ -1,0 +1,11 @@
+{
+  "prediction_type": "correct",
+  "total_predictions": 10,
+  "sound_reasoning": 8,
+  "vague_reasoning": 2,
+  "flawed_reasoning": 0,
+  "evaluation_errors": 0,
+  "sound_reasoning_rate": 0.8,
+  "vague_reasoning_rate": 0.2,
+  "flawed_reasoning_rate": 0.0
+}
