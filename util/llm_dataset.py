@@ -15,9 +15,9 @@ The LLM task: Given a user's reference reviews and sample reviews of books A and
 predict which book the user will prefer (higher rating).
 
 Output includes:
-- Reference books: list of 5 books with title, user's rating, review text, average_rating
-- Book A: title, user's rating, user_review, average_rating, sample reviews (with n_votes if available)
-- Book B: title, user's rating, user_review, average_rating, sample reviews (with n_votes if available)
+- Reference books: list of 5 books with title, user's rating, review text, average_rating, genres (if available)
+- Book A: title, user's rating, user_review, average_rating, genres (if available), sample reviews (with n_votes if available)
+- Book B: title, user's rating, user_review, average_rating, genres (if available), sample reviews (with n_votes if available)
 - Preferred book (A or B)
 - Rating difference
 
@@ -218,13 +218,15 @@ def create_dataset(reviews_file: str, output_file: str,
                 ref_title = ref_review_row['title']
                 ref_avg = ref_review_row['average_rating']
                 ref_avg_val = float(ref_avg) if pd.notna(ref_avg) else None
+                ref_genres = ref_review_row['genres'] if 'genres' in ref_review_row.index and pd.notna(ref_review_row['genres']) else None
 
                 reference_books.append({
                     'book_id': int(ref_book_id),
                     'title': ref_title,
                     'rating': ref_rating,
                     'review_text': ref_review_text,
-                    'average_rating': ref_avg_val
+                    'average_rating': ref_avg_val,
+                    'genres': ref_genres
                 })
 
             # Get user's ratings and reviews for A and B
@@ -245,6 +247,8 @@ def create_dataset(reviews_file: str, output_file: str,
             title_b = book_b_row['title']
             avg_a = book_a_row['average_rating']
             avg_b = book_b_row['average_rating']
+            genres_a = book_a_row['genres'] if 'genres' in book_a_row.index and pd.notna(book_a_row['genres']) else None
+            genres_b = book_b_row['genres'] if 'genres' in book_b_row.index and pd.notna(book_b_row['genres']) else None
 
             # Get sample reviews for books A and B (from other users)
             reviews_a = get_reviews_for_book(df, book_a_id, user_id, num_reviews_per_book)
@@ -274,6 +278,7 @@ def create_dataset(reviews_file: str, output_file: str,
                     'user_rating': rating_a,
                     'user_review': review_a,
                     'average_rating': a_avg_val,
+                    'genres': genres_a,
                     'sample_reviews': reviews_a
                 },
                 'book_b': {
@@ -282,6 +287,7 @@ def create_dataset(reviews_file: str, output_file: str,
                     'user_rating': rating_b,
                     'user_review': review_b,
                     'average_rating': b_avg_val,
+                    'genres': genres_b,
                     'sample_reviews': reviews_b
                 },
                 'preferred': preferred,
@@ -381,7 +387,7 @@ Note: You must run process_data.py first to create the preprocessed reviews file
     parser.add_argument(
         '--dataset-size',
         type=int,
-        default=1000,
+        default=10,
         help='Total number of data points to create (default: 100)'
     )
     parser.add_argument(

@@ -54,6 +54,8 @@ def load_book_metadata(metadata_file, needed_book_ids):
             cols_to_keep.append('average_rating')
         if 'n_votes' in chunk.columns:
             cols_to_keep.append('n_votes')
+        if 'genres' in chunk.columns:
+            cols_to_keep.append('genres')
 
         chunk = chunk[cols_to_keep]
         chunks.append(chunk)
@@ -66,7 +68,7 @@ def load_book_metadata(metadata_file, needed_book_ids):
 
     if len(chunks) == 0:
         print("Warning: No matching books found in metadata!")
-        return pd.DataFrame(columns=['book_id', 'title', 'average_rating', 'n_votes'])
+        return pd.DataFrame(columns=['book_id', 'title', 'average_rating', 'n_votes', 'genres'])
 
     metadata_df = pd.concat(chunks, ignore_index=True)
 
