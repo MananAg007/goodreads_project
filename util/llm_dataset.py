@@ -16,8 +16,8 @@ predict which book the user will prefer (higher rating).
 
 Output includes:
 - Reference books: list of 5 books with title, user's rating, review text, average_rating
-- Book A: title, user's rating, user_review, average_rating, sample reviews
-- Book B: title, user's rating, user_review, average_rating, sample reviews
+- Book A: title, user's rating, user_review, average_rating, sample reviews (with n_votes if available)
+- Book B: title, user's rating, user_review, average_rating, sample reviews (with n_votes if available)
 - Preferred book (A or B)
 - Rating difference
 
@@ -88,6 +88,10 @@ def get_reviews_for_book(df: pd.DataFrame, book_id: int, exclude_user_id: str,
             'rating': int(review['rating']),
             'review_text': review['review_text'] if pd.notna(review['review_text']) else ""
         }
+        # Add n_votes if available
+        if 'n_votes' in review.index:
+            n_votes = review['n_votes']
+            review_dict['n_votes'] = int(n_votes) if pd.notna(n_votes) else 0
         reviews_list.append(review_dict)
 
     return reviews_list
@@ -366,12 +370,12 @@ Note: You must run process_data.py first to create the preprocessed reviews file
 
     parser.add_argument(
         '--reviews',
-        default='/data/user_data/sheels/Spring2026/10718_mlip/data/processed_reviews.parquet',
+        default='/home/mananaga/goodreads_dataset/processed_reviews.parquet',
         help='Preprocessed reviews file (output from process_data.py)'
     )
     parser.add_argument(
         '--output',
-        default='../data/book_preference_dataset.jsonl',
+        default='../data/book_preference_dataset_new.jsonl',
         help='Output JSONL file for LLM training'
     )
     parser.add_argument(

@@ -6,6 +6,7 @@ import argparse
 import asyncio
 import json
 import os
+import random
 import re
 import time
 from typing import List, Dict, Tuple
@@ -31,6 +32,9 @@ def parse_args():
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("--rate_limit_delay", type=float, default=0.05,
                         help="Delay between batches of requests in seconds (default: 0.05, use 0 to disable)")
+    parser.add_argument("--average_ratings_mode", type=str, default="true",
+                        choices=["true", "random", "flipped", "unavailable"],
+                        help="How to handle average ratings: true (actual), random (uniform 1-5), flipped (swap A/B), unavailable (show N/A)")
     return parser.parse_args()
 
 
@@ -79,20 +83,66 @@ def format_user_reviews_block(reviews: List[Dict], y: int) -> str:
     return "\n\n".join(parts)
 
 
-def format_sample_reviews_block(sample_reviews: List[Dict], x: int) -> str:
-    """Format community reviews for a book."""
+def get_average_rating(actual_rating: float, mode: str, book_name: str = "book") -> str:
+    """
+    Get the average rating string based on the specified mode.
+
+    Args:
+        actual_rating: The true average rating from the data
+        mode: One of "true", "random", "flipped", "unavailable"
+        book_name: For flipped mode, use "book_a" or "book_b" to identify which to flip
+
+    Returns:
+        A string representation of the average rating for the prompt.
+        Returns "NONE" for unavailable mode (skip showing it entirely).
+    """
+    if mode == "true":
+        return f"{actual_rating:.2f}"
+    elif mode == "random":
+        random_rating = random.uniform(1.0, 5.0)
+        return f"{random_rating:.2f}"
+    elif mode == "flipped":
+        # Will be handled differently - return marker that we'll replace later
+        return f"__FLIP__{book_name}__"
+    elif mode == "unavailable":
+        return "NONE"  # Signal to skip showing average rating entirely
+    else:
+        return f"{actual_rating:.2f}"
+
+
+def format_sample_reviews_block(sample_reviews: List[Dict], x: int, average_rating: str = None) -> str:
+    """Format community reviews for a book, optionally including average rating."""
     selected = sample_reviews[:x]
     parts = []
+
+    # Add average rating header if provided and not "NONE" (unavailable mode)
+    if average_rating is not None and average_rating != "NONE" and not average_rating.startswith("__FLIP__"):
+        parts.append(f"Community Average Rating: {average_rating}/5")
+
     for i, r in enumerate(selected, start=1):
         parts.append(f'Review {i} (rated {r["rating"]}/5): "{r["review_text"]}"')
     return "\n\n".join(parts)
 
 
-def build_prompt(template: str, entry: Dict, user_reviews: List[Dict], x: int, y: int) -> str:
+def build_prompt(template: str, entry: Dict, user_reviews: List[Dict], x: int, y: int,
+                 average_ratings_mode: str = "true") -> str:
     """Build the prompt for a single entry."""
     user_reviews_block = format_user_reviews_block(user_reviews, y)
-    book_a_reviews_block = format_sample_reviews_block(entry["book_a"]["sample_reviews"], x)
-    book_b_reviews_block = format_sample_reviews_block(entry["book_b"]["sample_reviews"], x)
+
+    # Get average ratings based on mode
+    book_a_actual_rating = entry["book_a"]["average_rating"]
+    book_b_actual_rating = entry["book_b"]["average_rating"]
+
+    if average_ratings_mode == "flipped":
+        # Swap the ratings
+        book_a_rating_str = get_average_rating(book_b_actual_rating, "true")
+        book_b_rating_str = get_average_rating(book_a_actual_rating, "true")
+    else:
+        book_a_rating_str = get_average_rating(book_a_actual_rating, average_ratings_mode, "book_a")
+        book_b_rating_str = get_average_rating(book_b_actual_rating, average_ratings_mode, "book_b")
+
+    book_a_reviews_block = format_sample_reviews_block(entry["book_a"]["sample_reviews"], x, book_a_rating_str)
+    book_b_reviews_block = format_sample_reviews_block(entry["book_b"]["sample_reviews"], x, book_b_rating_str)
     return template.format_map({
         "user_reviews_block": user_reviews_block,
         "book_a_title": entry["book_a"]["title"],
@@ -191,6 +241,7 @@ def save_raw_outputs(results: List[Dict], output_dir: str):
                 "raw_response": r["raw_response"],
                 "parse_success": r["parse_success"],
                 "api_success": r["api_success"],
+                "average_ratings_mode": r["average_ratings_mode"],
             }) + "\n")
 
     parsed_count = sum(1 for r in results if r["parse_success"])
@@ -234,7 +285,8 @@ async def main():
     prompts = []
     for entry in entries:
         user_reviews = user_review_map[entry["user_id"]]
-        prompt = build_prompt(template, entry, user_reviews, args.num_book_reviews, args.num_user_reviews)
+        prompt = build_prompt(template, entry, user_reviews, args.num_book_reviews, args.num_user_reviews,
+                            args.average_ratings_mode)
         prompts.append(prompt)
 
     if args.debug and len(prompts) > 0:
@@ -251,6 +303,7 @@ async def main():
     print(f"Model: {args.model}")
     print(f"Max tokens: {args.max_tokens}")
     print(f"Temperature: {args.temperature}")
+    print(f"Average ratings mode: {args.average_ratings_mode}")
 
     results = []
     batch_size = args.concurrent_requests
@@ -282,6 +335,7 @@ async def main():
                 "raw_response": raw_response,
                 "parse_success": parse_success,
                 "api_success": api_success,
+                "average_ratings_mode": args.average_ratings_mode,
             })
 
         processed = min(batch_start + batch_size, len(entries))

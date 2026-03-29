@@ -24,11 +24,18 @@ def parse_directory_name(dir_name):
         - model_{MODEL_NAME}_num_book_reviews_{X}_num_user_reviews_{Y}
         where MODEL_NAME can be: haiku, sonnet, opus, etc.
 
+    Does NOT match directories with _avg_ratings_ suffix (those are handled by parse_directory_name_with_avg_ratings).
+
     Returns:
         tuple: (model_name, num_book_reviews, num_user_reviews) or None if parsing fails
     """
+    # Skip directories with avg_ratings in the name
+    if "_avg_ratings_" in dir_name:
+        return None
+
     # Try format with model name (e.g., haiku, sonnet, opus)
-    pattern = r"model_([a-zA-Z0-9_-]+)_num_book_reviews_(\d+)_num_user_reviews_(\d+)"
+    # Match the pattern and ensure it ends after num_user_reviews (no additional suffix)
+    pattern = r"^model_([a-zA-Z0-9_-]+)_num_book_reviews_(\d+)_num_user_reviews_(\d+)$"
     match = re.match(pattern, dir_name)
     if match:
         return match.group(1), int(match.group(2)), int(match.group(3))
@@ -53,6 +60,27 @@ def parse_qwen_directory_name(dir_name):
     if match:
         return match.group(1), int(match.group(2)), int(match.group(3))
 
+    return None
+
+
+def parse_directory_name_with_avg_ratings(dir_name):
+    """
+    Parse directory name to extract model_name, num_book_reviews, num_user_reviews, and avg_ratings_mode.
+    Extends parse_directory_name to handle average ratings experiments.
+
+    Expected formats:
+        - model_{MODEL_NAME}_num_book_reviews_{X}_num_user_reviews_{Y}_avg_ratings_{MODE}
+        where MODEL_NAME can be: haiku, sonnet, opus, etc.
+        MODE can be: true, random, flipped, unavailable
+
+    Returns:
+        tuple: (model_name, num_book_reviews, num_user_reviews, avg_ratings_mode)
+               or None if parsing fails
+    """
+    pattern = r"model_([a-zA-Z0-9_-]+)_num_book_reviews_(\d+)_num_user_reviews_(\d+)_avg_ratings_([a-z]+)"
+    match = re.match(pattern, dir_name)
+    if match:
+        return match.group(1), int(match.group(2)), int(match.group(3)), match.group(4)
     return None
 
 
@@ -117,6 +145,56 @@ def load_results(results_dir):
         })
 
     print(f"Loaded {len(results)} result files")
+    return results
+
+
+def load_results_with_avg_ratings(results_dir):
+    """
+    Load all metrics.json files from results directory, including average_ratings_mode variants.
+
+    Args:
+        results_dir: Path to results directory
+
+    Returns:
+        list: List of dicts with keys: model_name, num_book_reviews, num_user_reviews, avg_ratings_mode, metrics
+    """
+    results = []
+    results_path = Path(results_dir)
+
+    if not results_path.exists():
+        print(f"Error: Results directory not found: {results_dir}")
+        return results
+
+    # Iterate through subdirectories
+    for subdir in results_path.iterdir():
+        if not subdir.is_dir():
+            continue
+
+        # Try parsing with average_ratings_mode
+        parsed = parse_directory_name_with_avg_ratings(subdir.name)
+        if parsed is None:
+            continue  # Skip directories that don't have avg_ratings in name
+
+        model_name, num_book_reviews, num_user_reviews, avg_ratings_mode = parsed
+
+        # Load metrics.json
+        metrics_file = subdir / "metrics.json"
+        if not metrics_file.exists():
+            print(f"Warning: No metrics.json found in {subdir.name}")
+            continue
+
+        with open(metrics_file) as f:
+            metrics = json.load(f)
+
+        results.append({
+            "model_name": model_name,
+            "num_book_reviews": num_book_reviews,
+            "num_user_reviews": num_user_reviews,
+            "avg_ratings_mode": avg_ratings_mode,
+            "metrics": metrics
+        })
+
+    print(f"Loaded {len(results)} result files with average_ratings modes")
     return results
 
 
@@ -645,6 +723,124 @@ def plot_reasoning_quality(output_dir):
     plt.close()
 
 
+def plot_accuracy_vs_avg_ratings_mode(results, output_dir, num_book_reviews=8, num_user_reviews=1, model_name=None):
+    """
+    Plot accuracy vs average_ratings_mode to show robustness to corrupted/missing average ratings.
+
+    Args:
+        results: List of result dictionaries (from load_results_with_avg_ratings)
+        output_dir: Directory to save the plot
+        num_book_reviews: Filter for specific num_book_reviews
+        num_user_reviews: Filter for specific num_user_reviews
+        model_name: Filter for specific model (e.g., "haiku") (None = all)
+    """
+    # Filter results
+    filtered_results = results
+    if num_book_reviews is not None:
+        filtered_results = [r for r in filtered_results if r["num_book_reviews"] == num_book_reviews]
+    if num_user_reviews is not None:
+        filtered_results = [r for r in filtered_results if r["num_user_reviews"] == num_user_reviews]
+    if model_name is not None:
+        filtered_results = [r for r in filtered_results if r["model_name"] == model_name]
+
+    if not filtered_results:
+        print(f"No results found for robustness plot (books={num_book_reviews}, users={num_user_reviews}, model={model_name})")
+        return
+
+    # Group by model_name to create separate series if multiple models
+    grouped = defaultdict(list)
+    for r in filtered_results:
+        grouped[r["model_name"]].append(r)
+
+    # Define mode order and display names
+    mode_order = ["random", "flipped", "provided", "unavailable"]
+    mode_display = {"random": "random", "flipped": "flipped", "provided": "provided", "unavailable": "unavailable"}
+    # Map true -> provided for display
+    mode_mapping = {"true": "provided"}
+
+    # Square-shaped figure with better aesthetics
+    fig, ax = plt.subplots(figsize=(10, 8))
+
+    # Define aesthetic color palette
+    colors = ['#2E86AB', '#A23B72', '#F18F01', '#C73E1D', '#6A994E']
+
+    num_modes = len(mode_order)
+    num_models = len(grouped)
+    bar_width = 0.7 / num_models if num_models > 1 else 0.6
+
+    # Generate x positions for bars
+    x_base = np.arange(num_modes)
+
+    for idx, model in enumerate(sorted(grouped.keys())):
+        data = grouped[model]
+        # Map true -> provided for display
+        data_by_mode = {}
+        for r in data:
+            mode = r["avg_ratings_mode"]
+            # Map "true" to "provided" for consistent naming
+            display_mode = mode_mapping.get(mode, mode)
+            data_by_mode[display_mode] = r
+
+        y = []
+        for mode in mode_order:
+            if mode in data_by_mode:
+                y.append(data_by_mode[mode]["metrics"]["accuracy"])
+            else:
+                y.append(0)  # Placeholder if mode missing
+
+        # Calculate x positions
+        if num_models > 1:
+            x_positions = x_base + (idx - num_models/2 + 0.5) * bar_width
+        else:
+            x_positions = x_base
+
+        label = f"Claude-{model}"
+
+        bars = ax.bar(x_positions, y, bar_width,
+                     label=label,
+                     color=colors[idx % len(colors)],
+                     alpha=0.85,
+                     edgecolor='white',
+                     linewidth=1.5)
+
+        # Add value labels on top of bars
+        for bar, acc in zip(bars, y):
+            if acc > 0:  # Only label non-zero values
+                height = bar.get_height()
+                ax.text(bar.get_x() + bar.get_width()/2., height + 0.02,
+                       f'{acc:.3f}',
+                       ha='center', va='bottom', fontsize=10, fontweight='bold')
+
+    ax.set_xlabel("Average Ratings Mode", fontsize=13, fontweight='bold')
+    ax.set_ylabel("Accuracy", fontsize=13, fontweight='bold')
+
+    title = f"Robustness: Accuracy vs Average Ratings Mode"
+    title += f"\n(Book Reviews={num_book_reviews}, User Reviews={num_user_reviews})"
+    ax.set_title(title, fontsize=15, fontweight='bold', pad=20)
+
+    ax.set_xticks(x_base)
+    ax.set_xticklabels(mode_order, fontsize=11)
+    ax.tick_params(axis='y', labelsize=11)
+
+    # Add random baseline (no legend label)
+    ax.axhline(0.5, color='red', linestyle='-', linewidth=4, alpha=0.7, zorder=10)
+
+    # Aesthetic improvements
+    ax.legend(frameon=True, shadow=True, fancybox=True, fontsize=11)
+    ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
+    ax.set_ylim(0.45, 0.75)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.set_axisbelow(True)
+
+    plt.tight_layout()
+    filename = f"claude_robustness_avg_ratings_{model_name}.png" if model_name else "claude_robustness_avg_ratings.png"
+    output_path = os.path.join(output_dir, filename)
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
+    print(f"Saved robustness plot: {output_path}")
+    plt.close()
+
+
 def print_summary(results):
     """Print a summary table of all results."""
     print("\n" + "="*85)
@@ -731,6 +927,17 @@ def main():
     # Plot reasoning quality comparison
     print("\nGenerating reasoning quality comparison plot...")
     plot_reasoning_quality(args.output_dir)
+
+    # Plot robustness experiment (if average_ratings results available)
+    print("\nChecking for robustness (average_ratings) experiment results...")
+    avg_ratings_results = load_results_with_avg_ratings(args.results_dir)
+    if len(avg_ratings_results) > 0:
+        print(f"Found {len(avg_ratings_results)} robustness experiment runs")
+        print("\nGenerating robustness plots...")
+        plot_accuracy_vs_avg_ratings_mode(avg_ratings_results, args.output_dir,
+                                         num_book_reviews=8, num_user_reviews=1)
+    else:
+        print("No robustness (average_ratings) experiment results found")
 
     print(f"\nAll plots saved to {args.output_dir}")
 
