@@ -18,7 +18,7 @@ RATE_LIMIT_DELAY=0.01  # Very small delay for Build tier (1000 req/min). Use 0 t
 
 # Define the values to iterate over
 MODELS=("claude-3-haiku-20240307")
-NUM_BOOK_REVIEWS_LIST=(1 2 4)
+NUM_BOOK_REVIEWS_LIST=(8)
 NUM_USER_REVIEWS_LIST=(1)
 
 echo "========================================"
