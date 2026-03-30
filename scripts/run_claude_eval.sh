@@ -20,7 +20,8 @@ RATE_LIMIT_DELAY=0.01  # Very small delay for Build tier (1000 req/min). Use 0 t
 MODELS=("claude-3-haiku-20240307")
 NUM_BOOK_REVIEWS_LIST=(8)
 NUM_USER_REVIEWS_LIST=(1)
-AVERAGE_RATINGS_LIST=("true" "random" "flipped" "unavailable")
+AVERAGE_RATINGS_LIST=("true")
+REVIEWS_FILTER_MODE_LIST=("none" "most_popular" "least_popular")
 
 echo "========================================"
 echo "Starting Claude API evaluation runs: $(date)"
@@ -52,31 +53,35 @@ for MODEL in "${MODELS[@]}"; do
         for num_user_reviews in "${NUM_USER_REVIEWS_LIST[@]}"; do
             # Iterate over average_ratings_mode
             for avg_ratings_mode in "${AVERAGE_RATINGS_LIST[@]}"; do
-                OUTPUT_DIR="${BASE_OUTPUT_DIR}/model_${MODEL_NAME}_num_book_reviews_${num_book_reviews}_num_user_reviews_${num_user_reviews}_avg_ratings_${avg_ratings_mode}"
+                # Iterate over reviews_filter_mode
+                for reviews_filter_mode in "${REVIEWS_FILTER_MODE_LIST[@]}"; do
+                    OUTPUT_DIR="${BASE_OUTPUT_DIR}/model_${MODEL_NAME}_num_book_reviews_${num_book_reviews}_num_user_reviews_${num_user_reviews}_avg_ratings_${avg_ratings_mode}_filter_${reviews_filter_mode}"
 
-                echo ""
-                echo "========================================"
-                echo "Running: model=${MODEL}, num_book_reviews=${num_book_reviews}, num_user_reviews=${num_user_reviews}, avg_ratings=${avg_ratings_mode}"
-                echo "Output directory: ${OUTPUT_DIR}"
-                echo "Start time: $(date)"
-                echo "========================================"
+                    echo ""
+                    echo "========================================"
+                    echo "Running: model=${MODEL}, num_book_reviews=${num_book_reviews}, num_user_reviews=${num_user_reviews}, avg_ratings=${avg_ratings_mode}, filter=${reviews_filter_mode}"
+                    echo "Output directory: ${OUTPUT_DIR}"
+                    echo "Start time: $(date)"
+                    echo "========================================"
 
-                python util/run_claude_eval.py \
-                    --input "${INPUT_FILE}" \
-                    --output_dir "${OUTPUT_DIR}" \
-                    --template "${TEMPLATE}" \
-                    --model "${MODEL}" \
-                    --num_book_reviews ${num_book_reviews} \
-                    --num_user_reviews ${num_user_reviews} \
-                    --max_tokens ${MAX_TOKENS} \
-                    --concurrent_requests ${CONCURRENT_REQUESTS} \
-                    --temperature ${TEMPERATURE} \
-                    --num_entries ${NUM_ENTRIES} \
-                    --rate_limit_delay ${RATE_LIMIT_DELAY} \
-                    --average_ratings_mode ${avg_ratings_mode}
+                    python util/run_claude_eval.py \
+                        --input "${INPUT_FILE}" \
+                        --output_dir "${OUTPUT_DIR}" \
+                        --template "${TEMPLATE}" \
+                        --model "${MODEL}" \
+                        --num_book_reviews ${num_book_reviews} \
+                        --num_user_reviews ${num_user_reviews} \
+                        --max_tokens ${MAX_TOKENS} \
+                        --concurrent_requests ${CONCURRENT_REQUESTS} \
+                        --temperature ${TEMPERATURE} \
+                        --num_entries ${NUM_ENTRIES} \
+                        --rate_limit_delay ${RATE_LIMIT_DELAY} \
+                        --average_ratings_mode ${avg_ratings_mode} \
+                        --reviews_filter_mode ${reviews_filter_mode}
 
-                echo "Completed: model=${MODEL}, num_book_reviews=${num_book_reviews}, num_user_reviews=${num_user_reviews}, avg_ratings=${avg_ratings_mode}"
-                echo "End time: $(date)"
+                    echo "Completed: model=${MODEL}, num_book_reviews=${num_book_reviews}, num_user_reviews=${num_user_reviews}, avg_ratings=${avg_ratings_mode}, filter=${reviews_filter_mode}"
+                    echo "End time: $(date)"
+                done
             done
         done
     done

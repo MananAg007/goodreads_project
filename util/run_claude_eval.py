@@ -35,6 +35,9 @@ def parse_args():
     parser.add_argument("--average_ratings_mode", type=str, default="true",
                         choices=["true", "random", "flipped", "unavailable"],
                         help="How to handle average ratings: true (actual), random (uniform 1-5), flipped (swap A/B), unavailable (show N/A)")
+    parser.add_argument("--reviews_filter_mode", type=str, default="none",
+                        choices=["none", "most_popular", "least_popular"],
+                        help="How to filter/sort reviews by n_votes: none (first X as-is), most_popular (X highest voted), least_popular (X lowest voted)")
     return parser.parse_args()
 
 
@@ -110,9 +113,33 @@ def get_average_rating(actual_rating: float, mode: str, book_name: str = "book")
         return f"{actual_rating:.2f}"
 
 
-def format_sample_reviews_block(sample_reviews: List[Dict], x: int, average_rating: str = None) -> str:
-    """Format community reviews for a book, optionally including average rating."""
-    selected = sample_reviews[:x]
+def format_sample_reviews_block(sample_reviews: List[Dict], x: int, average_rating: str = None,
+                                filter_mode: str = "none") -> str:
+    """
+    Format community reviews for a book, optionally including average rating.
+
+    Args:
+        sample_reviews: List of review dictionaries
+        x: Number of reviews to select
+        average_rating: Average rating string to include in header
+        filter_mode: How to filter reviews by n_votes:
+                     "none" (first X as-is),
+                     "most_popular" (X highest voted),
+                     "least_popular" (X lowest voted)
+    """
+    # Sort by n_votes if filter mode is specified
+    if filter_mode == "most_popular":
+        # Sort by n_votes descending (highest first)
+        sorted_reviews = sorted(sample_reviews, key=lambda r: r.get('n_votes', 0), reverse=True)
+        selected = sorted_reviews[:x]
+    elif filter_mode == "least_popular":
+        # Sort by n_votes ascending (lowest first)
+        sorted_reviews = sorted(sample_reviews, key=lambda r: r.get('n_votes', 0))
+        selected = sorted_reviews[:x]
+    else:
+        # "none" - take first x as-is (original behavior)
+        selected = sample_reviews[:x]
+
     parts = []
 
     # Add average rating header if provided and not "NONE" (unavailable mode)
@@ -125,7 +152,7 @@ def format_sample_reviews_block(sample_reviews: List[Dict], x: int, average_rati
 
 
 def build_prompt(template: str, entry: Dict, user_reviews: List[Dict], x: int, y: int,
-                 average_ratings_mode: str = "true") -> str:
+                 average_ratings_mode: str = "true", reviews_filter_mode: str = "none") -> str:
     """Build the prompt for a single entry."""
     user_reviews_block = format_user_reviews_block(user_reviews, y)
 
@@ -141,8 +168,8 @@ def build_prompt(template: str, entry: Dict, user_reviews: List[Dict], x: int, y
         book_a_rating_str = get_average_rating(book_a_actual_rating, average_ratings_mode, "book_a")
         book_b_rating_str = get_average_rating(book_b_actual_rating, average_ratings_mode, "book_b")
 
-    book_a_reviews_block = format_sample_reviews_block(entry["book_a"]["sample_reviews"], x, book_a_rating_str)
-    book_b_reviews_block = format_sample_reviews_block(entry["book_b"]["sample_reviews"], x, book_b_rating_str)
+    book_a_reviews_block = format_sample_reviews_block(entry["book_a"]["sample_reviews"], x, book_a_rating_str, reviews_filter_mode)
+    book_b_reviews_block = format_sample_reviews_block(entry["book_b"]["sample_reviews"], x, book_b_rating_str, reviews_filter_mode)
     return template.format_map({
         "user_reviews_block": user_reviews_block,
         "book_a_title": entry["book_a"]["title"],
@@ -242,6 +269,7 @@ def save_raw_outputs(results: List[Dict], output_dir: str):
                 "parse_success": r["parse_success"],
                 "api_success": r["api_success"],
                 "average_ratings_mode": r["average_ratings_mode"],
+                "reviews_filter_mode": r["reviews_filter_mode"],
             }) + "\n")
 
     parsed_count = sum(1 for r in results if r["parse_success"])
@@ -286,7 +314,7 @@ async def main():
     for entry in entries:
         user_reviews = user_review_map[entry["user_id"]]
         prompt = build_prompt(template, entry, user_reviews, args.num_book_reviews, args.num_user_reviews,
-                            args.average_ratings_mode)
+                            args.average_ratings_mode, args.reviews_filter_mode)
         prompts.append(prompt)
 
     if args.debug and len(prompts) > 0:
@@ -304,6 +332,7 @@ async def main():
     print(f"Max tokens: {args.max_tokens}")
     print(f"Temperature: {args.temperature}")
     print(f"Average ratings mode: {args.average_ratings_mode}")
+    print(f"Reviews filter mode: {args.reviews_filter_mode}")
 
     results = []
     batch_size = args.concurrent_requests
@@ -336,6 +365,7 @@ async def main():
                 "parse_success": parse_success,
                 "api_success": api_success,
                 "average_ratings_mode": args.average_ratings_mode,
+                "reviews_filter_mode": args.reviews_filter_mode,
             })
 
         processed = min(batch_start + batch_size, len(entries))
