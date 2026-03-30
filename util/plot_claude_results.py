@@ -753,8 +753,8 @@ def plot_accuracy_vs_avg_ratings_mode(results, output_dir, num_book_reviews=8, n
         grouped[r["model_name"]].append(r)
 
     # Define mode order and display names
-    mode_order = ["random", "flipped", "provided", "unavailable"]
-    mode_display = {"random": "random", "flipped": "flipped", "provided": "provided", "unavailable": "unavailable"}
+    mode_order = ["flipped", "random", "unavailable", "provided"]
+    mode_display = {"flipped": "flipped", "random": "random", "unavailable": "unavailable", "provided": "provided"}
     # Map true -> provided for display
     mode_mapping = {"true": "provided"}
 
