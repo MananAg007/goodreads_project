@@ -121,7 +121,46 @@ def process_data(reviews_file, metadata_file, output_file):
     print(f"\nLoading book metadata...")
     metadata_df = load_book_metadata(metadata_file, needed_book_ids, cache_file)
 
-    # Select only core columns for merge (cache has all fields including popular_shelves)
+    # Extract genres from popular_shelves
+    if 'popular_shelves' in metadata_df.columns:
+        print(f"Extracting genres from popular_shelves...")
+
+        EXCLUDE_SHELVES = {
+            'to-read', 'currently-reading', 'read', 'did-not-finish',
+            'dnf', 'have-it', 'own', 'owned', 'wishlist', 'borrowed',
+            're-read', 're-reading', 'rereading', 'favourites', 'favorites'
+        }
+
+        def get_top_shelf(shelves):
+            """Extract the top genre shelf, excluding reading status shelves."""
+            if shelves is None:
+                return None
+            if isinstance(shelves, list) and len(shelves) == 0:
+                return None
+            try:
+                if isinstance(shelves, list):
+                    shelf_list = shelves
+                else:
+                    shelf_list = list(shelves)
+
+                # Filter out reading status shelves
+                genre_shelves = [
+                    s for s in shelf_list
+                    if isinstance(s, dict) and s.get('name', '').lower() not in EXCLUDE_SHELVES
+                ]
+                if not genre_shelves:
+                    return None
+                # Find shelf with highest count
+                top_shelf = max(genre_shelves, key=lambda x: int(x.get('count', 0)))
+                return top_shelf.get('name')
+            except (ValueError, TypeError, AttributeError):
+                return None
+
+        metadata_df['genres'] = metadata_df['popular_shelves'].apply(get_top_shelf)
+        genres_extracted = metadata_df['genres'].notna().sum()
+        print(f"  Extracted genres: {genres_extracted:,} / {len(metadata_df):,}")
+
+    # Select columns for merge (core fields + genres)
     cols_to_keep = ['book_id']
     if 'title' in metadata_df.columns:
         cols_to_keep.append('title')
@@ -129,6 +168,8 @@ def process_data(reviews_file, metadata_file, output_file):
         cols_to_keep.append('average_rating')
     if 'n_votes' in metadata_df.columns:
         cols_to_keep.append('n_votes')
+    if 'genres' in metadata_df.columns:
+        cols_to_keep.append('genres')
 
     metadata_df = metadata_df[cols_to_keep]
 
@@ -205,7 +246,7 @@ Examples:
     )
     parser.add_argument(
         '--output',
-        default='/home/mananaga/goodreads_dataset/processed_reviews_new.parquet',
+        default='/home/mananaga/goodreads_dataset/processed_dataset.parquet',
         help='Output parquet file'
     )
 
