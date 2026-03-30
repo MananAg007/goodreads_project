@@ -376,7 +376,7 @@ Note: You must run process_data.py first to create the preprocessed reviews file
 
     parser.add_argument(
         '--reviews',
-        default='/home/mananaga/goodreads_dataset/processed_reviews.parquet',
+        default='/home/mananaga/goodreads_dataset/processed_reviews_new.parquet',
         help='Preprocessed reviews file (output from process_data.py)'
     )
     parser.add_argument(
@@ -393,19 +393,19 @@ Note: You must run process_data.py first to create the preprocessed reviews file
     parser.add_argument(
         '--min-books',
         type=int,
-        default=7,
+        default=10,
         help='Minimum books a user must have reviewed (default: 7: 5 reference + 2 comparison)'
     )
     parser.add_argument(
         '--reviews-per-book',
         type=int,
-        default=10,
+        default=50,
         help='Number of sample reviews per book (default: 10)'
     )
     parser.add_argument(
         '--min-reviews-per-book',
         type=int,
-        default=10,
+        default=50,
         help='Minimum reviews a book must have to be eligible (default: 10)'
     )
     parser.add_argument(

@@ -1,164 +1,564 @@
 {
-  "user_id": "4c2622753b602e46d14fce9ae4b57882",
+  "user_id": "5c1b340f7ef431ee7a26e3cb81b716a3",
   "reference_books": [
     {
-      "book_id": 12262741,
-      "title": "Wild: From Lost to Found on the Pacific Crest Trail",
-      "rating": 2,
-      "review_text": "I couldn't bond with Cheryl Strayed despite having lost my mother early as well. There didn't seem to be any big revelations other than she didn't feel the need to sleep with as many men afterward and I didn't see the correlation. There seemed to be a lot of focus on how the men hikers were enthralled with her. I wasn't. I have no desire to hike the Pacific Crest Trail partly because I didn't before hand and she didn't make it seem the least bit fun or enlightening.",
-      "average_rating": 3.97,
-      "genres": null
-    },
-    {
-      "book_id": 22557272,
-      "title": "The Girl on the Train",
+      "book_id": 28597587,
+      "title": "The Baller",
       "rating": 4,
-      "review_text": "Read this book in two long evenings. I couldn't put it down. There isn't a single likable character in this book, all of their lives are train wrecks that you can't help but gawk at. The comparisons to Gone Girl are good. This is a great debut novel.",
-      "average_rating": 3.88,
-      "genres": null
+      "review_text": "Good quick read...could have done without the little triangle. \n Of course I loved the H, and of course the h got on my nerves a bit...but they all do....",
+      "average_rating": 4.12,
+      "genres": "romance"
     },
     {
-      "book_id": 853510,
-      "title": "Murder on the Orient Express (Hercule Poirot, #10)",
-      "rating": 4,
-      "review_text": "This was fun and nostalgic for me. I read many of these Agatha Christie books as a kid, and wanted to revisit this one because of the upcoming film adaptation.",
-      "average_rating": 4.16,
-      "genres": null
-    },
-    {
-      "book_id": 9938498,
-      "title": "In the Garden of Beasts: Love, Terror, and an American Family in Hitler's Berlin",
-      "rating": 3,
-      "review_text": "3.5 stars. I liked it a lot. It was a fresh take on the horrors of Nazi Germany including American complacency in some of it.",
-      "average_rating": 3.81,
-      "genres": null
-    },
-    {
-      "book_id": 10739,
-      "title": "The Moviegoer",
+      "book_id": 29844228,
+      "title": "Thirteen Reasons Why",
       "rating": 2,
-      "review_text": "I was sure I'd love this book, maybe that's what went wrong for me. The subject and the setting seemed right up my alley but I couldn't relate to the main character at all. I tried and tried to finish it put couldn't and it's only 240 pages. Maybe someday I'll try again from scratch with lower expectations, or at least not expecting to see any part of me in Binx",
-      "average_rating": 3.7,
-      "genres": null
+      "review_text": "I could not connect at all with this book. I found it boring, and there was no \"ah-ha\" moment...I had way too many questions and all of them left unanswered",
+      "average_rating": 4.02,
+      "genres": "favorites"
+    },
+    {
+      "book_id": 42898,
+      "title": "Lover Revealed (Black Dagger Brotherhood, #4)",
+      "rating": 5,
+      "review_text": "Oh I just don't know where to start. This is my favorite BDB book by far. I love Butch, everything about him. I felt bad for V, but fell for him even more in this book as well. The world building was outstanding, these books just keep getting better and better.",
+      "average_rating": 4.3,
+      "genres": "paranormal-romance"
+    },
+    {
+      "book_id": 17255265,
+      "title": "This Man Confessed (This Man, #3)",
+      "rating": 2,
+      "review_text": "bored out of my mind with this book...",
+      "average_rating": 4.43,
+      "genres": "favorites"
+    },
+    {
+      "book_id": 22296542,
+      "title": "Addicted to You (Addicted, #1)",
+      "rating": 1,
+      "review_text": "What the hell is wrong with me??? I trolled through reviews and EVERYONE likes this book. Me, I will say this book sucked my soul out of my body. Terrible!! This isn't a romance, in fact, it's the opposite. It made me feel ick and mad. \n The H, Lily, is a whiney mess of girl who grates on my nerve every time she opens her mouth. The H, Lo, I can tolerate so much more. \n Oh, and this is a cliffhanger of an ending. Well, big fucking deal!! Ha! I won't be reading the rest of this...not even if Shemar Moore was laying in bed rubbing my back while reading it!!! (Oh, who am I kidding, I would so listen to Shemar Moore read me the rest of this series, as long as he didn't have on a shirt!) \n Sorry guys...I thought this sucked!",
+      "average_rating": 3.89,
+      "genres": "new-adult"
     }
   ],
   "book_a": {
-    "book_id": 11381910,
-    "title": "Heft",
-    "user_rating": 4,
-    "user_review": "I loved this book. I thought it would be hard to relate to a 500 pound shut in but it wasn't. We all have different ways of coping with the weight of our past and there are usually some good reasons for why people are the way they are. I could relate to all of the characters especially Kel, the teenager, who always had lots of friends but never really felt like he fit in. Very well written. It keeps you interested and curious and the ending was quietly inspirational.",
-    "average_rating": 3.96,
-    "genres": null,
+    "book_id": 17880708,
+    "title": "Fueled (Driven, #2)",
+    "user_rating": 5,
+    "user_review": "much much better than the first :)",
+    "average_rating": 4.51,
+    "genres": "favorites",
     "sample_reviews": [
       {
         "rating": 1,
-        "review_text": "Can't seem to get into it.",
-        "n_votes": 0
-      },
-      {
-        "rating": 4,
-        "review_text": "Full disclosure: my boyfriend met Liz Moore at a film screening a few years ago, and his ongoing acquaintanceship with her (which included the three of us having lunch together one day this summer) is what prompted me to check this book out from the library--I'm not sure I would ever have found it otherwise. And even if I had found it, I'm not sure if the flap copy would have inspired me to read it: the description of the book as a \"memorable, heartbreaking, and ultimately redemptive novel about finding sustenance and friendship in the most surprising places\" made me fear it would be sentimental. But my boyfriend said he thought I'd like it, and he knows my taste pretty well. Sure enough: I liked this book a whole lot. \n Heft is narrated in part by Arthur Opp, a former academic who guesses he weighs between 500 and 600 pounds and who hasn't left his Brooklyn home for ten years (since 9/11), and in part by Kel Keller, the teenage son of a former student of Arthur's named Charlene. The very start of the book is a letter Arthur starts writing to Charlene, telling her about his current life and apologizing for what he's omitted to tell her in the previous letters he's written to her (his weight, his lack of a job, his reclusive state): it's prompted by a phone call he got from her three days earlier, in which she said she would send him a letter. The letter, though, turns out not to be a letter at all: it's a photograph of Kel, which is then followed by another phone call from Charlene. Kel needs help with college applications, Charlene says: all he thinks about is baseball. Charlene suggests that she and Kel could visit Arthur, a possibility that's exciting and worrying to him: no one's been in his house in seven years. So he hires a cleaning service, and a maid named Yolanda arrives, and her presence in Arthur's life is better for him than he expected: she doesn't just clean, she's someone to talk with; she's someone who can convince him to talk, and who will listen. \n Kel, meanwhile, lives in Yonkers but goes to school in a wealthier suburb where his mom used to work; he's basically raising himself as best he can because his dad left when he was four, and his mom is dealing with problems of her own (she also, it seems, does not really leave the house). Kel is athletic and popular but also lonely; he's a kid from a poor neighborhood who goes to a school of privileged kids, and he's aware of his difference. He likes baseball and is very good at it; he thinks maybe baseball will be what changes his life and his mom's life, if he can get into the majors instead of going to college. \n Things happen, and it's hard to say anything about any of them without being spoiler-y (while this is largely a character-driven book, it's also a plot-driven book), and people write letters and read letters and are lonely, or have moments of connection, or both. I like the way this book is written, the occasional formality of Arthur's voice and the ease of Kel's, and the details that make each of those voices feel right, like when Kel is driving down a pretty street and there's this: \"There's a horse farm to my right and I watch a woman open and close a fence behind her and call to one of them. The blanketed horse comes to her and she clips a leash-thing onto his face-thing and then the two of them walk toward the barn\" (208). I also really liked the ending (like, so much so that I read it and then stopped and handed the book to my boyfriend and told him to read the last paragraph, because it felt so good and right), though if reviews on Goodreads are representative, I am apparently in the minority--a lot of people apparently really hated the end. (It's an inconclusive ending, which felt right to me for the book and for the characters: it ends at a threshold, with possibility and uncertainty, rather than with some climactic scene.)",
-        "n_votes": 0
-      },
-      {
-        "rating": 3,
-        "review_text": "I really enjoyed the voices in this novel, especially at the onset. I would have given it 4 stars except that I felt a little robbed of a pay off at the end. This novel is what I like to call a fill-in-the-blanker because it leaves the moment you've been waiting for the entire time up to your own imagination. There are obvious plusses (leave them wanting more) and minuses (leave us wanting more) to this approach. This time I was a bit annoyed. But a worthy read nonetheless.",
-        "n_votes": 0
-      },
-      {
-        "rating": 1,
-        "review_text": "Teenage boys who live for baseball and fail English do not sound like 30-something-year-old women with MFA's in creative writing.",
+        "review_text": "I have no one to blame but myself for this one. I read and didn't like book one. I bought Book 2 because, well, I'm stupid. \n This book was worse that the first. A little bit more sex, nothing awesome though. And Oh. my. god. the writing was terrible. The random italics. The over use of using.periods.to.stress.a.point. Totally distracting and pointless. And the whole texging eacher other song titles and lyrics, cute idea, if you are FIFTEEN. \n This book goes like this: \n She runs back to him, he pushes her away again, she runs back to him, he pushes her away again, she runs back to him, he pushes her...think you got it? \n Please, writers, STOP with the weak women and rich/powerful broken man story line. Normal men can be sexy and freaky in the bedroom. Not all women have to be doormats. \n I will again state that Rylee's backstory is heartbreaking and a new twist on a familiar story, but that's where the good ends and the rest is just, meh. \n ETA: \n I forgot to mention, writing several chapters from Colton's point of view didn't really work for me with this book. It can work, but for some reason it just didn't work for me here. It was distracting and honestly, he came across as kind of dumb. I didn't really get the \"powerful rich man vibe\" from him. Just more like \"dumb jock\".",
         "n_votes": 1
       },
       {
-        "rating": 4,
-        "review_text": "Started this book VERY skeptically ... Turns out .. LOVED IT !!! Amazing character development , a book you just won't be able to put down",
-        "n_votes": 0
-      },
-      {
         "rating": 2,
-        "review_text": "This started out pretty good for me. I enjoyed reading about Arthur and Kel and finding out how they were connected. The story was building toward the end and then...nothing. I was very disappointed with the ending, or lack thereof. I didn't feel like either one of them changed, so what is the point of the book?",
+        "review_text": "Entirely too much fu**ing repetition in this book. Not to mention entirely too much use of every variation possible of the work fu**! The unnecessary language detracted from the story.",
         "n_votes": 0
       },
       {
         "rating": 5,
-        "review_text": "I loved HEFT. Wonderful writing; great, nuanced characters. The novel is easy to get into, yet truly thought-provoking. I guess you could say it's got heft. Moore has done a lovely job exploring the nature of loneliness, and the lengths we will go to to connect or to avoid connecting. Read it!",
-        "n_votes": 2
+        "review_text": "Kurzbeschreibung \n Nachdem Rylee und Colton sich bei einer Wohltatigkeitsauktion kennen gelernt haben, sind beide nach einem Katz und Maus spiel zusammen. \n Allerdings nicht so wie sich Rylee das vorgestellt hat, denn Coltons Damonen aus der Vergangenheit sind noch sehr prasent. \n Beide mussen versuchen einen Weg zu finden aus alten Zwangen... \n Cover \n Das Cover ist wie schon vom ersten Teil sehr gut als Titel der Reihe zu erkennen, und bis auf den Titel und eine andere Darstellung der Protagonisten mit demselben tollen Schriftbild in Pink mit weisser Schrift. Fur mich sehr passend zum Inhalt und harmonisch gestaltet. \n Charaktere \n Rylee Thomas ist eine ganz liebe, kann aber auch stur sein, was ihr aber nicht ganz so einfach fallt, denn Rylee ist sehr gefuhlvoll und mitfuhlend. \n Colton Donovan hat Damonen aus seiner Vergangenheit und ist es gewohnt keinen in seine Nahe zu lassen und wenn dann nur zu seinen Bedingungen. \n Schreibstil \n Die Autorin K. Bromberg hat einen tollen flussigen Schreibstil der einen sehr schnell in den zweiten Teil entfuhrt der sehr viel uber die Beziehung der beiden verrat und man eine Achterbahn der Gefuhle erlebt. Bildhaft und emotional... ;) \n Meinung \n Wenn dich Deine Vergangenheit einholt.... \n Dann sind wir bei Rylee und Colton angekommen, die sich von ihren Gefuhlen in einem Sturm befinden der nur die beiden zur Ruhe bringen konnen. \n Aber Colton hat mit seinen inneren Damonen zu kampfen und schiebt Rylee von sich weg indem er ihr sagt dass er sie nur gebraucht hat und jetzt wegwirft wie ein altes Handtuch. \n Aber Rylee lasst sich nachdem der erste Schock uberwunden ist nicht so behandeln und bekommt sehr schnell mit das vor ihr ein anderer Colton steht. \n Nicht der taffe selbstsichere Geschaftsmann sondern ein kleiner Junge innerlich der tief verletzt wurde und nie uber diese Traumata hinweg kam. \n Sie beschliesst ihm eine Chance zu geben und Colton muss sehr bald feststellen das diese Beziehung nicht auf seinen Regeln besteht sondern das hier nur ein miteinander herrschen kann. \n Aber auch fur Rylee ist es schwer denn sie muss Colton die Stirn bieten obwohl sie nichts lieber tate als ihn zu sehen und ihn zu fuhlen. \n Unterstutzung und Zuspruch bekommt Rylee von Haddie die ihr mit Rat und Tat zur Seite steht, und somit beginnt fur beide eine Zeit in der sie beide aufeinander zugehen mussen. \n Aber das Schicksal hat noch vieles parat fur beide. Denn Coltons Eifersucht und sein Besitzanspruch an Rylee sind sehr ausgepragt.... \n Fazit \n Sehr empfehlenswert fur mich wie schon der erste Teil und ich freue mich schon auf den dritten. :D \n 5 von 5 Sternen",
+        "n_votes": 1
       },
       {
         "rating": 4,
-        "review_text": "Very gripping in the beginning. I love the concept of this story. interesting to view the circumstances through the eyes of a person with an eating addiction. Some of this story was a but run-on. I think that the ending could have been written a bit better. I did enjoy this one.",
+        "review_text": "This book was intense!! I had to stop for a while, because I just couldn't take it and had to give myself a break. When I started again, I was mad at Colton. Then I wanted to kick some sense into Rylee, then I could understand why she was acting the way she was. And like everyone else, I can't stand Tawnee! I guess there will be major drama in the next book.",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "DAMN IT....another week until the release of the final book....I thought I was giving series books a break...AGGGHHHHH",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "This book is so amazing. I loved this love story! The characters are so well-developed. I read all three of the books of this series and I was able to read each book in one sitting. Two words: READ THEM!!!",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "OMG that was f***ing awesome. \n Gahhhh....when does No3 come out??????",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "OMG where the hell do I start. \n Until a couple of nights ago I hadn't read Driven, which I got stuck into and could not put down only to be so relieved I had an ARC of Fueled to jump straight into. \n I love Colton and how possessive he is with Rylee and how he couldn't stay away no matter how much he tried. \n This books starts with a prologue written from Colton's POV showing what was going through his head during the last scene of Book 1, Driven and I was so relieved that it jumped straight in the way it did in Chapter 1. \n Throughout the book there are up's and downs in true Colton fashion, but thanks to Colton's best friend things work out. \n One minute I wanted to cry and the next I was laughing 'Roses are Red' OMG so funny. My poor heart didn't know whether to stay in my chest or jump right out!! \n I was so relieved K Bromberg didn't make him unfaithful to Rylee, not sure I could have handled that one. Yeah I want a happily ever after which I guess we won't get until book 3, but I wanted to cry at the end of Fueled and just need crashed to be happy again. \n If I could I'd give these books 10* they are that good, and coming from me who refuses to read books with cliffhangers, that's saying something.",
+        "n_votes": 10
+      },
+      {
+        "rating": 5,
+        "review_text": "Once again K. Bromberg races it off the tracks. I cannot wait until my book allowance allows me to finish this series. Colton & Becks have definitely been added to my collection of \"book boyfriends\"!!!",
+        "n_votes": 0
+      },
+      {
+        "rating": 4,
+        "review_text": "The ending killed me!! I love this series! Colton can be so sweet one moment and an ass the next!",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "Fueled is book #2 in K. Bromberg's trilogy. After screaming my head off because I didn't know that Driven ended with a massive cliffhanger I dove straight into this book and I was not disappointed!! The story continues with the burgeoning romance between Colton and Rylee. There is a lot of angst in this book as well as Colton continues to pursue Rylee. In this book a lot of Colton's past conquests rear their ugly heads and cause Rylee to feel insecure about herself. We learn a lot more about the incidents from both Rylee and Colton's pasts. Can they overcome their own inner demons caused by their pasts to find a way to each other? This story spends a great deal of time focusing on the house that Rylee works with and I dare anyone who reads this book not to fall in love with all of the boys in the house, especially Zander. This poor boy has been traumatized so badly he doesn't speak and can barely interact with anyone. But Colton seems to be one person that Zander attaches himself to and the interactions between these two just melts your heart as well as Rylee's. \n Fueled is a definite roller coaster ride of emotions and you go through hell and back with Rylee who has finally admitted her feelings for Colton. It's one step forward two steps back throughout this book. But man what a ride it is! Jealously and insecurities play a big part in this book. I will fully admit that I want to scratch the eyes right out of Tawny's head! Maybe right after I throat punch her! Tawny is an old friend of Colton's who he has dated in the past and now works for him. Trust me when you read these books you will want to do the same to her. \n This book is a must read and one I will read over and over again along with Driven. I am so anxious for book #3 to come out!",
+        "n_votes": 2
+      },
+      {
+        "rating": 2,
+        "review_text": "Holy batman, Spider-Man. This book was a freaking train wreck. These two drove me bananas BUT I loved their ridiculous over the top drama filled fights. I wanted to beat them both up at times. HA! I was entertained but still not sure if will continue on with book 3. It was hella better than book 1 though. Their narrative was still blah (skimmed) but as a whole I liked it.",
+        "n_votes": 2
+      },
+      {
+        "rating": 5,
+        "review_text": "This is the second book in the Driven trilogy. Did no disappoint. The ending was OMG. Cant wait for book three.",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "OMG I absolutely love this book!!I'm way to hooked with Rylee and Colton's history there's so much going on that I can't help it. \n I have to admit that I almost die with the whole crash thing, Jez thank God I knew about the third book or I for sure would thought that he was going to die. \n Rylee is way to strong, both are amazing characters and very deep, but I usually tend to don't like the girl character cuz they always are so annoying and clingy but no Rylee, how she fights for Ace is impressive, specially when you wouldn't blame her if she wanted to run",
+        "n_votes": 0
+      },
+      {
+        "rating": 3,
+        "review_text": "I skip read some of this book because it seemed that the plot was moving too slow.",
+        "n_votes": 0
+      },
+      {
+        "rating": 4,
+        "review_text": "I loved the fact that I could go straight to book 2, and Colton is starting to open up. His story is heartbreaking. I did find myself rolling my eyes at times and skim reading as they seemed to have the same argument but I think that was how you were supposed to feel. Again I couldn't put this book down.",
+        "n_votes": 0
+      },
+      {
+        "rating": 3,
+        "review_text": "I am still struggling with this series. I like the story but at the same time I am not sure. I wish they would just get their act together and figure their shit out.",
         "n_votes": 0
       },
       {
         "rating": 2,
-        "review_text": "Because of the structure of the novel, I feel that I could give one rating to Arthur's section (two stars) and another to Kel's (four stars). I did not connect or really ever care about Arthur (and was generally annoyed with the use of the \"&\" throughout his section). Kel's section was like reading a good young adult novel, which is not a criticism because I love a good YA read. There was a poignancy and some suspense in Kel's story that wasn't there for me with Arthur.",
+        "review_text": "I hate being right. \n it makes me think I read too much. and can i just just point out to budding authors out there.. you don't need to scream every time you have an arguement. in fact most arguement never reach screaming level, cause that's pretty violent and cops get called",
         "n_votes": 0
       },
       {
+        "rating": 5,
+        "review_text": "Holy mother fucking cliffhanger! I mean really. THAT WAS FUCKING BRILLIANT! I know I'm late to the party - people have been telling me to read these books for a while now. Well no freaking wonder! I want to kick myself in my own ass for not listening! \n My chest hurts after that. I physically freaking ache over the ending of this damn book. \n I read Driven and Fueled back to back, I really liked Driven (4 stars for me) but Fueled is on another planet. You are pummeled with angst from the very first page and it never lets up. Colton's inner turmoil is fucking heartbreaking. If anyone in this lifetime ever needed a damn hug, it's him. \n \"Spiderman. Batman. Superman. Ironman.\" \n Are you fucking kidding me? How am I ever supposed to view those superhero characters in a normal way ever again? I mean holy shit, those 4 words alone will forever make my heart ache. \n I feel like I'm going through stages of grief over this book. First I was shocked. And then I cried. And now I'm pissed and want to know what the hell happens next?! \n And the ending. Sweet baby jesus. That ending will be hard for anyone to ever top. I LOVE a good cliffhanger, I love the shock and awe of it. I love to feel like I've been slapped upside the head by an unexpected ending. Fueled hurt my heart. Made me freaking cry. I feel fucking lost now. \n BEST CLIFFHANGER EVER! \n **** \n Updated: \n I was so overwhelmed by the damn ending that I totally forgot to mention how much the sex in this book rocked. \n I think I'm done now. \n Maybe. \n I'm a mess over this damn book.",
+        "n_votes": 0
+      },
+      {
+        "rating": 4,
+        "review_text": "uhmm! I am so emotional right now. book 3 I need it now! Goodness this book was very hectic I think my blood pressure is sky high lol. It was great though I seriously can't wait for the next book.",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "OMG - it's even better. Colton I race you too;-) bring on Crashed!!!",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "All about Colton's demons... and breaking down walls.. loved it loved it!!! The damn cliffhanger though!! I'm dying!!! Onto Crashed now...",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "Never boring and truly passionate!",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "Wow!! I love it when sequels are just as good, if not better than the first! Fueled definitely falls into that category. These two are such great characters!! There is a lot of back and forth. They want each other so badly, but they still fight it. Things seem to come up all the time to come between them. Mainly a wicked witch named Tawny. She is one of my most hated characters. She's just evil. I can't wait to see her get what's coming to her. Hopefully that'll happen in the next book. I was sucked into this book and couldn't put it down. Then, the damn ending. Another dramatic finish. Wowza! It's been hard waiting for the next one. Come on already!!",
+        "n_votes": 0
+      },
+      {
+        "rating": 4,
+        "review_text": "*3.5 - 4 Stars* \n So Im having a slight dilemma on how to rate and review this book - its obviously captivating and intriguing because I essentially read it in one sitting but Im just not 100% sold. \n I think my main issue is the whiplash I'm constantly feeling with them. One minute they're saying and doing one thing and a sentence later they're doing the complete opposite!! Its hard to respect Rylee when she has no resolve. \n But I do like them, I just dont love them. I like Colton's character and even Rylee's to a point but theyre just not a favourite. \n I will note that I immensely enjoy the topic of the book - with the kids and the home and Colton's back story. Its definitely refreshing and I care about the kids portion of the story as much as Im invested in Colton and Rylee's story. \n With the cliffhanger endings its a definite addicting read! \n Moving on to Crashed now.....",
+        "n_votes": 0
+      },
+      {
+        "rating": 3,
+        "review_text": "3.5-4 stars. Finally some fuel, pun intended, to the story. Had a tough time with the repetitiveness of the first I would say half of the story, but then it got so much better! Rylee gave Colton a \"ride\" for his money and good on her!! Loved the fact that she sucked up her tears and made him accountable for his actions or lack there of! On to book 3!!",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "I can't believe she did it again....I'm dying here!!!!!!!!!! Arghhhhhhhh....I need the next book ASAP!!!!!!!!!",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "Where do I begin? Fueled by K. Bromberg was the kind a book you want to crawl up with and get lost in. Rylee and Colton still do that thing they do. She pushes and he ends up pulling away. This is way more emotional then Driven. It will definitely hit that spot in your heart that you can't forget about. This time around Rylee is more accepting of Colton and his indiscretions. She wants to be with him and she is willing to accept the whole package. K. Bromberg definitely outdid herself, I didn't think it could possibly get better then Driven. I was wrong this book has blown me away! \n First off if you haven't read book one in the series then stop here and go read it like right now. Fueled picks up exactly where Driven ended. Yes you have to experience that heart wrenching ending again, but it's all good. Rylee doesn't let Colton push her away this time. She goes back to him and gives him what he needs. What happens between them is simply beautiful. I can't even put into words the emotions I felt. I am still reeling from it and it's been a few weeks since I finished reading the book. In this book Rylee and Colton discover what they mean to one another. Rylee falls madly in love with Colton she is determined to show him in any way possible what he means to her. The only thing Colton knows is that he can't and won't let Rylee go. She drives him crazy, she makes him feel things he never thought possible. They are simply explosive together. It doesn't get better then what they have. Nothing is easy for them. They both have to work hard to be with one another. There are people determined to keep them a part. It seems Tawny is still in the picture. She is relentless when it comes to getting Colton's attention, and ylee isn't going to fight with all she has for Colton. I wouldn't expect anything less from Rylee. She is sweet and innocent on the outside, but on the inside her heart has had enough. She is a fighter and giving up is not an option. \n I can't tell you enough how much I connected with this story and it's characters. This by far has to be one of the best books I have read this year. I feel so engrossed in this story that I can't stop thinking about how extraordinary the love between Rylee and Colton is. It makes me, happy, mad, and sad all at the same time. I am so in love with Rylee and Colton! I am invested in their happily ever after if ever one exists for them. \n This is a must read. I want to shout from the rooftops for anyone to hear how wonderful this series is. I am so ready for the conclusion to their story. It can't come soon enough. My recommendation is a no brainer stop what your doing and get to it. You may have to join a support group for your ever huge book hangover. It will definitely be worth it though.",
+        "n_votes": 1
+      },
+      {
+        "rating": 4,
+        "review_text": "Well book two read and this one was better than book one. This one is full of developing feelings, angst, and sorrow. I was really devouring through every word of the angst trying to get to something anything that would let me breathe again. So very glad that I already have book three because if I was waiting months for it to come out to read what happens next I would be crushed. I am rushing off now to book three.",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "Usually the second book is never as good as the first, but that is NOT the case with Fueled. I almost liked this one more than the first. This book is not roses and butterflies. It's hard to read at times and it breaks your heart. It's like watching your 2 best friends fight against loving each other and hurting each other and you can't do anything about it. Kristy makes you feel their pain and she makes you part of the story and part of the fight. You are hurt when they are apart and you are cheering when they are together. The sex is off the charts hot and steamy! I caught myself yelling at my kindle and when it was over I closed the cover and hugged it and sighed. Seriously. And as other reviewers have said it does turn you into a facebook/goodreads stalker. But, Kristy loves her fans and it's worth it :) All the fangirls are proud to admit it!",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "The story of rylee Thomas and Colton Donovan continues... \n This book was so much better than the first \n The cliffhanger at the end of Driven needed to be solved - it was beautifully!!!! \n It was going to be interesting how Bromberg continued to develop these characters during this 2nd book - and she did so with flair. \n Rylees love of the boys that she work with is unquestionable and no fault can be found. However she does not seem to have the same understanding when dealing with Colton. \n Colton just seems to continue on in his own merry way. Although it is obvious that he is falling in love but is not willing to admit that fact to himself. \n The ending of this book bought me to tears. Numerous tissues were needed. \n Cannot wait for the final conclusion in Crashed \n Kristy, you have once again excelled!!!!",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "Love love love it. I read the Driven series when it first came out, and am still in love with Colton and Rylee",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "Loved, loved, loved. Not sure if I loved it more or less than #1....maybe more for some reasons, less for others. Either way, LOVED it! Can't wait to read CRASHED!",
+        "n_votes": 0
+      },
+      {
+        "rating": 3,
+        "review_text": "2.5...still eye roll inducing and yet I can't help but move on to book 3.",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "This series has it's ups and downs for me. At times I'm like seriously.. I don't like how the rylee doubts herself at times and her annoying insecurities. I don't like how Colton sometimes talks (more the third then second maybe because of his povs it's just the random swear words sound so out of place) but I still love this book and series. I love more intense romances and this would be one of them. Amazing book Colton is everything. I also loved the parts where they were fighting and screaming things at each other I couldn't help but laugh",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "Colton outshines in this second installment of the Driven Trilogy by making a tremendous effort in his turbulent relationship with Rylee. He is courageous in the shadows of his creeping memories. He becomes a hero worth rooting for. \n Rylee, on the other hand, is the sum of everything I despise in a leading lady. She's unattractively catty, immature, passive-aggressive, whimper-y, and avoids communication in lieu of running off her mouth. She doesn't listen. She runs away. Always running. Always whimpering. \n The conflict is wholly based on a misunderstanding, made worse by Colton and Rylee's failure to discuss it. Would there have been a story if she'd just shut up and let him talk? No, but the constant relationship drama and the pages and pages of spiteful bickering keeps you engaged in a nerve-shredding, spit-flinging, positively frustrating way. Especially when you already know how things will end. You'll predict the cliffhanger chapters in advance. Everything about this story is predictable, because there's nothing unique here. \n But I loved it. When I was forced to put the book down, I did so relunctantly. Maybe it's the evocative way it's written. Maybe it's all the raw heat blazing between Colton and Rylee, and the hot, hot, scorching hot sex scenes. Maybe it's the merciless drive to screw with your emotions until you're ready to become a beserker right along with the characters. Whatever it is, it puts you through the wringer and turns you into a glutton for more messy emotional chaos. \n So, while this book is a compilation of all my peeves (cliffhanger, cliches, unlikeable heroine, contrived conflict), Colton and his drama penetrates and hooks. His aboutface will charm you, warm you, and make you care about what happens to him. I'd put up with the most unsavory of heroines just to spend more time with Ace.",
+        "n_votes": 18
+      },
+      {
+        "rating": 5,
+        "review_text": "I'm not sure that I can handle the suspense of waiting for the third book! This book kept me locked in just as the first one did!",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "I was so happy when things seemed to be working out at the end of the book. I love Colton and Rylee. I've laughed and cried while reading this series. Hopefully we won't have to wait too long for Crashed. Love this series.",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "I loved it!! I would love to give this book 10 stars!! Can not wait for Crashed!!",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "4.5 \"Spiderman. Batman. Superman. Ironman.\" \"My spark.\" Kisses \n So...I can't lie, I was mad at Colton when I read the last few paragraphs of \n Driven \n . Did the Prologue of Fueled make me feel a little shitty for that? Oh heck yes....but after I got through that, suffered through the emotional torment of Ryles and Colton...and then read the last few paragraphs of Fueled...I'm back to being pissed again! WTF K. Bromberg?!!?!? \n Rylee Jade...damn it I love this girl. I want to hug her for about 5 minutes solid and then go out for drinks because she is so freakin relatable, it's scary. She's brave and sassy but still has that glimmer of insecurity and fear that all women have. She's compassionate and smart and freaking real. I connected with her even more over the course of this book. She just squeezed my heart so much, I felt every emotion, her happiness and glee, her sadness and devastation...it was such a rollercoaster, I'm mentally exhausted. She made me cry...almost as much as Colton did. I'm an emotional reader and when I connect with a heroine as much as I connected with Rylee, it's really hard for me to disconnect myself...so the entire tumultuous journey that she just experienced, I was right there with her, holding her hand. GAH!!! I just can't even tell you. \n \"I don't think I could ever get my fill of you.\" Proving my point exactly. Words that say it but don't really say it. \"You're always so reserved, but when I'm in you...\" he shakes his head, a low hum deep in his throat \"...you lose all sense of everything, become mine, submit completely to me.\" \n Colton FUCKIN Donavan...I dunno what to do with him. The prologue killed me. And then I went back and forth on my wonderful love-him-and-hate-him routine that I perfected during Driven. He is not an easy man to love, by any stretch of the imagination. But I will say having a glimpse at being inside his head was...helpful. Insightful. I liked it. Well, I didn't like it but...it was necessary to get to know why he does what he does. Being inside Colton's head was absolutely necessary in this book, there is no other way to hear and see some of the things that are needed, without being in his POV. You never knew when it was going to happen, it wasn't regular or routine, but it always made an impact. And understanding him more helped ease the pain on my heart just a little and okay...I'll admit it...I did love him more than I hated him. It's really impossible not to...even as exasperating as he can be. Until he did what I knew he was going to do and broke me just as quickly as he broke Rylee. \n \"I swear to God it's you!\" \n \"Me?\" I stutter flabbergasted. What did I have to do with what just happened? \n \"Mmm-hmm,\" he murmurs, staring at me intently. \"I've never let my guard down. Never opened myself up to...\" He shakes his head, his confusion and clarity written on his face. \"I've been able to block things out for so long. Ignore emotions. Ignore everything, but you? You tear down walls I didn't even know I was building. You make me feel, Rylee.\" \n Ace and Ryles...what can I say - don't read this book if you're of the faint of heart because it's a mother freakin angsty roller coaster of epic proportions. I'm happy, I'm sad, I'm ecstatic and then I wanna knee Colton in the balls (sound familiar? I said it in my Driven review too...I have a feeling that this is a reoccurring theme). I wanna fuck his brains out and then strangle him...yes, those familiar bi-polar crazy feelings are back in full force. I...was...all...over...the...place. I loved Rylee and Colton together...they're magic...they're this passionate burst of amazingness when they are together and happy. GOD BLESS AMERICA they are made for each other if that jack ass would just get it thru his head!!! GRRRR!!! (see...he's making me GRRR again!) I guess the part that makes me 'grrr' is the fact that Colton is his own worst enemy. There is one thing stopping Rylee and Colton from being amazing together...and that's Colton and his past. Not that his past isn't a minefield of fucked up and he has every right to feel the way he does but he's fucking up one of the few good things in his life and Rylee is SO amazingly awesome...I cannot fathom them not being together. And if he only knew how much Rylee could help him...if he only let her. \n \"Stop.\" His voice is stern, and I can't help but look up to meet his bemused eyes. \"Look, I don't know how to explain it.\" His voice softens and he shakes his head. \"I can't really. All I know it that with you, things were just different from the start. You broke the mold, Rylee.\" \n There are a lot of skeletons that get revealed in this book...a few more from Rylee that I wasn't expecting and we start to see more and more from Colton and his horrible past, which obviously needed to happen. Badly. The only way for both of them to move forward is complete honesty...on both sides and I really liked that. And then Rylee goes and does something insanely stupid. I screamed, I cried, I stopped reading. The second I read it, I dropped my kindle and almost refused to continue. Because I knew what was going to happen next...and it did...and I cried more...and it sucked. For the next 25%+ it SUCKED. Ripped my heart out, stomped on it and drug me along for a painful suckville ride. It wasn't pretty...I didn't know if I was going to survive. \n \"Just remember what I always say; don't lose yourself trying to hold onto someone who doesn't care about losing you.\" \n I love angsty books, I've said this over and over...and this part of the book was probably one of the most angsty books I've read. The entire time I am warring with myself because I know the truth, but I see Rylee's point and I'm CHEERING her on because she's being so smart and standing up for herself but at the cost of her fuckin spirit. She loves him so much. SO much it makes me tear up thinking about it. And I know he loves her, as much as his fucked up little heart can. Them together is brilliance written on paper and the torture of them being apart cannot be fully expressed in words. They're both shell's of the people they could be when they are apart...hence my total devastation. I just can't even begin to tell you the pain that was inflicted on my soul...I might never recover from it. It was beautiful torture but it still fuckin hurts. \n '\"I might not be able to tell you the things you need to hear with the traditional words you need to hear them in, but I swear to God, Rylee, I will try. And if I can't, then I'll show you. I'll show you with everything I have - anything it takes - where you place is in my life,\" he murmurs to me, shattering every last form of protection I have guarding my heart. \n He just stole it completely. \n And I just more than willingly handed it over.' \n So after I've cried I dunno how many times, I'm just begging for someone to kill them or me or both...or maybe I'll just climb into the book and commit murder/suicide....thats when it happens. When the heaven's open up and I'm put out of my misery...I'm elated, thrilled, cloud mother fuckin' 9. HA! Yeah...that was short lived because then I get to the end and it's another freaking cliffhanger. NOT COOL Ms. Bromberg!!!! I'm not asking for an HEA but Jesus lord have mercy on my book loving soul, is it too much to ask for them to at least be happy for once?!?!?! GAH!!!! You're killin me smalls! Two back-to-back cliffhangers is a little rough on me, not going to lie. \n 'My storm before the calm. \n My angel breaking through the darkness. \n My ace.' \n So the moments after reading Fueled were not pretty. I was pissed...there is no easy way to say it. Like livid, seething, wanted to hurt all my friends that TOLD me to read this book because W....T....H....friends don't tell other friends to read cliffhanger books that do that to a person! You just don't....at least not without giving a heads up. After taking a step back...yes, it was probably one of the more severe cliffhangers that I've read and probably reading Driven and Fueled right after each other, I was a little more sensitive on the cliff endings than I normally would be...but the intended result is what it is...and as a result, I am going to be wallowing in a pit of my own tears and despair until Crashed is released. FML :-(",
+        "n_votes": 8
+      },
+      {
+        "rating": 1,
+        "review_text": "IRRITATING!!FRUSTRATING!! \n I thought the first book was okay- a bit sensible. \n But this book was worthless!!! \n It's full of drama and it's worthless. \n Rylee.I thought Rylee was sensible. But this book completely disappointed me. \n Colton.Colton, as usual, was irritating. \n The book in short was: \n Sex. Drama. Sex. Drama... \n Please. Give me a break. \n The whole thing was so confusing. \n At one point of the book, I was all.. \n Colton battling his inner demons?? \n CRAP!! \n Colton was all.. \n And, Tawny, a BITCH(like there aren't enough already) was just a character to account to the drama in this book. \n It was stereotyped. \n Like every book, Rylee and Colton have very \"STABLE\" friends- who are very sensible and talk sense into them. \n In the end, Colton's car crashes. I really wished he died. \n Damn- there is a third book- so he must be alive. I don't think I can take any more of Colton's Shit. \n I hated this book. \n The first book was seriously better- Colton was a little less irritating and Rylee had some self respect. \n Check out my review of Driven.",
+        "n_votes": 1
+      },
+      {
+        "rating": 4,
+        "review_text": "CLIFFHANGER ENDING and the next book is not out yet. Damnit. I loved this book and hated Colton and loved him at the same time. He was infuriating and heartbreaking.",
+        "n_votes": 1
+      },
+      {
         "rating": 2,
-        "review_text": "Forced; it required that I suspend disbelief on multiple fronts. The ending felt like one too many deadlines had been missed and the book had to be abruptly finished.",
+        "review_text": "I'm so confused. Why are random sentences italicized all over this book? \n The prologue in this book was really great. As soon as I read it, I felt like this installment of the series would be much more promising than the first. The first book was a huge disappointment in my eyes, with more flaws than anything else. The cliffhanger at the end made me decide to read on to see what happened next. \n And to be honest, the first 40% of this book was marginally impressive. I felt like the authors writing had improved considerably since Driven. But as soon as I made up my mind that this book was in fact better, everything started falling apart. The dialogue between the characters was, again, so cheesy. People don't talk that way. I get it, you're trying to up the heat factor. But even the conversations between Rylee and Haddie, or Quinlan and Rylee... it was all just so ridiculous. It did not come naturally at all. \n The gala where all the women in the state of California decided to verbally harass Rylee... I mean, really? Tawny, ok, fine. But five, six different women... no. It's overkill and no one believes that would really happen. Not even in fiction. I'm sorry, but it was absurd. And then Rylee overhearing the cliche conversation in the bathroom. I'm so beyond over that scenario. It's been done... and when it was done, it was done better. The dialogue in the bathroom, once again, was just silly. \n Rylee, as much as I try to like the girl when I'm just hearing her inner monologue, was verging on pathetic in this book. I mean, I wanted to punch her. No one, I don't care how love sick you are, would put up with the stupid drama in this story. I love a controlling alpha male, broken and damaged from a childhood ridden with abuse and neglect... who grows up unable to open himself to love, and who acts out so as to push the female counterpart away. I love all that stuff. Do you know how I know I love that theme? Because it's been done and done and done again in other books. In this one, however, the delivery was so flawed, it just came off like a hot mess. \n I think the last 30% of the book was the same old drawn out, redundant argument between Rylee and Colton. I mean, how many times can you beat a dead horse? Yes, high schoolers in juvenile relationships would continually talk in circles. Adults, especially a celebrity who refuses to commit, and a supposedly strong woman who is done taking his crap would not continue to have this ridiculous argument in a public place. Enough is enough. This series could possibly have been condensed into one long book if all the ridiculousness was cut out. \n Cliche. That's all I kept thinking while reading. There were chunks of this book that I read before... in Beautiful Disaster. I distinctly remember Shepley telling Abby Abernathy that Travis would eventually do something catastrophic to their relationship and she'd need to push through it. That exact scenario was repeated in this book, but with Beck warning Rylee. And that's honestly just the top of the iceberg. \n I really wanted to three star this book because it was, by degrees, better than the first. But I three star a lot of stories that I like and I don't think it'd be fair to group this book, as flawed as it is, with those other stories. I know this review is one of my more brutal takes on a story, but I can't justify a two star review without explaining myself. \n The cliffhanger at the end of Driven was a good enough selling point to get me into reading Fueled. The cliffhanger at the end of Fueled? I don't think it's working for me. My prediction for book 3? Colton lives because there be no book if he died. The creepy guy on the street... that's Zander's dad, who also peeps in the windows of the foster home. Colton proposes (I got that much from Facebook spoilers, so thanks a bunch for those....yes, that's sarcasm.) \n I'd say this book had potential, but in reality, it's a lot of the same old stories thrown into one series. It's so wordy, I just needed it to get to the point. Obviously lots of readers feel like this series is a huge hit, but I'm just not getting it. It's not for me.",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "Loved it!!",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "I just freaking loved it!! I can't put into words how ready for crashed I am!",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "Spiderman. Batman. Superman. Ironman. \n The emotions and storyline in the second book are even more intense. We get a deeper glimpse into who they are and what they truly desire. There is a cliffhanger at the end of the book so if you are the type who can't wait, I suggest not to read at all YET. \n Oh yes, Colton still makes me go... \n And that.... \n Don't forget this... \n Rylee sometimes me make go... in fact, both of them. \n But overall...",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "Wow if I could give more stars I would, what a roller coaster ride!!!!!!!! I hate cliff hangers though so hurry up, K Bromberg!!!!",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "OH WOW!!!! This book was truly amazing... the twist in the story ... the fights between Colton and Ryles ... the emotions ... OMG I have no words",
+        "n_votes": 0
+      },
+      {
+        "rating": 3,
+        "review_text": "I caught myself comparing and thinking of 50 shades and the crossfire series a lot. The sex sense were okay, I skipped a lot of them. I also caught myself rolling my eyes in some of the senses in the book. This book was better than the first book. Close to the end I almost stop reading because Ry was overreacting and very slow.( I was screaming at her) I love music but the author went overboard with the music in this book as well.",
+        "n_votes": 0
+      },
+      {
+        "rating": 4,
+        "review_text": "Great series.",
         "n_votes": 0
       }
     ]
   },
   "book_b": {
-    "book_id": 9439303,
-    "title": "Life",
-    "user_rating": 3,
-    "user_review": "A must read for Stones fans, and a fun read for anyone who likes rock and roll. There are lots of interesting tidbits including, creating creative interesting sounds with low-fi, seeing where some lyrics came from and understanding Keith's rocky relationship with Mick. \n Keith is certainly an interesting character. This book shows that there's more to him than meets the eye. Even with the sex, drugs, & rock n roll, he's quite a romantic. Relationships are very important to him despite the fact that he screwed many of them up with drug abuse. \n Also, for anyone beating themselves up about what you may have done wrong as a parent, when you see how Keith was raised versus how his son was raised, and how each of them turned out, you might be a little easier on yourself.",
-    "average_rating": 3.84,
-    "genres": null,
+    "book_id": 13453301,
+    "title": "Until the Sun Falls from the Sky (The Three, #1)",
+    "user_rating": 4,
+    "user_review": "As good as I thought this book was, I really wanted it to be more. So many people loved this book, I was just a bit (not a lot!) disappointed. I plan on reading the next book...and not a bad deal considering it was 99 cents!",
+    "average_rating": 4.09,
+    "genres": "vampires",
     "sample_reviews": [
       {
-        "rating": 5,
-        "review_text": "By Keith Richards \n Back Bay Books 576 pgs \n 978-0316034418 \n From my library \n Rating: 5 - Sheer Perfection \n Full disclosure: I am hopelessly in love with Keith Richards \n OK, now that you know that I'd like to talk about rock and roll for a minute. Rock and roll is a force of nature. It can and does work radical change on every culture it touches. Remember back in the day when parents were horrified by it and teachers warned of a break down in discipline and preachers were calling rock and roll the devil's music? Everyone was running around hyperventilating and claiming that this music was all about sex and the ruination of western civilization was at hand. I always thought that claim about sex was utterly ridiculous. But you know what? It is about sex. It's sexy, exciting, feverish, sweaty and little dirty (come on you know it.) Hedonism personified. So is Keith Richards. \n Mr. Richards is living quite a life and shows no signs of slacking off after some 50 years as a guitarist, vocalist, songwriter and co-founder of the Rolling Stones. He spent his childhood in Dartford, England as an only child. He joined a boys' choir and sang in Westminster Abbey for the queen. Then his voice began to change with puberty and that was all she wrote for that choir. They kicked him out. Keith was devastated. It was a betrayal. And so he turned into a delinquent, sort of, and to this day carries with him a deeply felt contempt for anyone or anything claiming authority. His grandfather Gus gave him a guitar. \n Keith discovered rock and roll while listening to the radio late at night in his room under the covers because he was supposed to be asleep. \"Heartbreak Hotel.\" Then he began to hunt down rock and roll and it's predecessor, American blues. Muddy Waters, Howlin' Wolf. He taught himself to play these songs. Then one day he happened into a man on a train platform with a couple of these records under his arm. Mick Jagger. They began to get together to play and Mick knew a couple of other guys and pretty soon they had a band. They played covers of rhythm and blues songs. The Stones played the club circuit where they were very successful. The band had accomplished what Keith and Mick had envisioned: they were a highly successful London rhythm and blues band. Then along came Andrew Oldham. Turns out that old story about his locking Keith and Mick in a kitchen until they came out with a song is true. \"As Tears Go By.\" \n And then Toad's Wild Ride. \n Keith's personal relationships have been tumultuous, let's say. A decade long relationship with Anita Pallenberg gave him two children, Marlon and Angela. Another baby died as an infant of CIDS. Keith doesn't say much about that and I wouldn't either. His relationship with Anita finally fell apart due to a devastating heroin addiction. Keith finally got clean and Anita couldn't. A few years later he met and fell in love with Patti Hansen, a model in New York. They have been married for almost 30 years and have two daughters, Theodora and Alexandra. \n This book is also deeply satisfying. It is candid, the good and the bad, the ugly and the sublime, and as a reader you are grateful for that. Keith is not a tease. My conclusions in the end are that this is a moral man. He knows right and wrong in a cosmic sense. He gives and demands loyalty most of all. And he is a loyal father, son, husband, band mate and friend. In the end the best thing about this book is the style in which it is told. There's a riff behind the words. Life is written as if you were sitting at the kitchen table having a drink, a smoke or two, and telling stories. \n Please visit the author: http://www.keithrichards.com/ \n And http://www.rollingstones.com/",
-        "n_votes": 0
-      },
-      {
-        "rating": 5,
-        "review_text": "Wish I could give this book 6 stars!! What else can I say FANTASTIC!!!!!",
+        "rating": 1,
+        "review_text": "I don't care for paranormal storylines but since this book was written by my favorite author, I hoped it would be okay. I tried to stay with it but I just couldn't get past vampire scenes.",
         "n_votes": 0
       },
       {
         "rating": 1,
-        "review_text": "Very disappointed. I felt like this was going to be the greatest rock n roll story ever told. I got halfway through it. It just meanders all over his childhood and then some early, but boring, Stones in the US stories. I mean, the most exciting part was when they got arrested in Alabama or LA or AR. In other words, not so exciting.",
+        "review_text": "DNF at 62% - I just couldn't do it anymore. I really tried. I've had some issues with Kristen Ashley's books before, but never to the point I couldn't find one. I think it was the whole \"breaking her\" and \"taming her\" thing. You can't love her spirit and want to crush it at the same time. I tried to continue because I wanted to see where it was all leading... but no go. \n I'll stick to the Rock Chick series since I'm enjoying that one!",
         "n_votes": 0
       },
       {
         "rating": 3,
-        "review_text": "Slow going in the first half--the story is \"spoken\" by Keith--obviously to a ghost writer/editor. \n But I must say by the end of the book, Keith charmed me.",
+        "review_text": "** spoiler alert ** \n I usually love Kristen Ashley's books, formula and all....though the formula becomes more obvious with each book. But I figured I love paranormals and I enjoy her alpha heroes, so I would give it a shot. I had a bit of trouble getting into the story at first, mostly because I wanted to hit Leah in the head too much (she reads like a much younger heroine - I was truly surprised she was 40) and the way that Lucien trapped her into their arrangement made me not like him for the first part of the book. The love scenes were still hot, but I really had trouble believing in their love because of the way they treated each other. I just had trouble connecting with Leah, and since a good portion of the book is from her POV...well, it hurt the narrative for me. I wanted more of a confrontation or danger for Leah at the end. The worldbuilding is very light, and it was a relatively easy read. I'm going to keep on with this series because even an \"alright\" book by this author is still enjoyable. I'm hoping the story and worldbuilding really ratchets up with the next book.",
         "n_votes": 0
       },
       {
         "rating": 1,
-        "review_text": "I bailed on it. I decided I don't care as much about the Stones as I thought I did.",
+        "review_text": "I almost feel embarrassed with the rating for this book. There have been a couple of books that were so so, but for them most part I really like this author, but this one was a big fail for me. \n A large part of the reason why is Lucien and Leah. For the first half of the book Lucien was such an ass, he treated Leah like crap, didn't consider her views or thoughts. Even later when we learned more I didn't like him. I found his stalking of Leah for 20 years to be beyond creepy. And then there is his whole nickname for Leah of \"Pet\", don't even get me started on that. \n Leah drove me nuts. I had a hard time remembering that she was 40 years old because she acted like a petulant teenager for most of the book. The way that she treated Lucien was just as bad as he treated her. \n Even with all of my complaints there were some things that I liked. I liked Leah's family, liked their relationships and how they related to each other. Stephanie was funny and just the friend that Leah needed. Edwina was the perfect person to help settle Leah in her house and mother her. I also really liked Lucien's mother and kids, loved that they started out with reservations, but were quickly won over to the couple's relationship. I finally really got interested in the story when Gregor revealed his secret. Until this point I had no desire to read any more in this series, but with the knowledge I want to know more.",
         "n_votes": 0
       },
       {
         "rating": 3,
-        "review_text": "Good book. Not a Rolling Stones fan. Read about 1/2 of the book then it started sounding the same. It would probably be really great if you were a fan.",
-        "n_votes": 0
-      },
-      {
-        "rating": 2,
-        "review_text": "so, i didn't actually finished because my playaway kept dying on me. but i had made it about 4/5 of the way through despite wanting to be done after the first couple of chapters, so whatever. not worth any more time.",
-        "n_votes": 0
-      },
-      {
-        "rating": 2,
-        "review_text": "made it to page 140 then just looked at the pictures. I really wanted to love it, but couldn't get into it for some reason.",
-        "n_votes": 0
-      },
-      {
-        "rating": 3,
-        "review_text": "Good ol' fashioned, \"confessional-style\" autobio that effortlessly shifts from the sublime to the mundane. I liked this much better than Ronnie's book. Kinda wish the publisher woulda included a glossory or footnotes to explain what some of his regional/generational colloquialisms(?) are. Loved following the trajectory of his relationship with Mick. Felt a little like a Greek tragedy. Also liked when he turned to friends to give first hand personal accounts of certain events. I was bugged by some things he seems to have included to pad out some chapters. It felt like he sat down and just thought to himself \"Hmmm, now-what do I feel like writing about today\" How he found his cat (and dog), recipe for bangers and mash, and the name dropping of people in his \"inner circle\" seemed a little contrived. Fans of Keith will love this although those who have been following him over the years are probably familiar with many of the road stories included here.",
+        "review_text": "Am I the only person that just doesn't get this book? \n I don't usually admit this but I'm a pretty huge fan of vampire books. And having read about a million (obviously I'm being dramatic) I felt like this one just didn't make the cut. Don't hate me for saying this but I didn't like the writing or the way the story was told. It felt stunted and confusing and although I'm all for fancy old talk making the vampires seem more authentic, the language in this had me re-reading sentences and saying 'huh?' \n I do think the world building was good but I wanted to know so much more. I needed details and history and all I got were snippets, and being that one of the main reasons I stuck this book out until the end was for details and history, I was not a happy reader. \n I did like the character development and the characters themselves. Leah's personality was great to read and I'm a sucker for an alpha male so Lucian ticked the right boxes. BUT (I know, I'm really picking at this now, eh?) however much I liked Leah I couldn't accept that she was a 40 year old woman. No 40 year old woman I have ever known behaves so immaturely. Hell I'm 23 and half my friends are more mature half the time. It just didn't sit right with me. \n I did enjoy the final few chapters when everything came together but in the end I was left feeling like I'd only read half a book, and uncomfortable with the characters. \n 2-3 Stars.",
         "n_votes": 0
       },
       {
         "rating": 5,
-        "review_text": "Keith Richards is a sound, and listening to the first few licks of \"Gimme Shelter\" should demonstrate this. \n I recognise that I'm the wrong generation to speak about the \"legend\" that is Keith Richards, but I've always been a man out of time when it comes to music. My parents grew me up on AC DC and Aerosmith, and after I discovered Guns N Roses I eventually stumbled onto the Rolling Stones which remain one of my favorite rock bands of all time. Keith Richards especially has remained this kind of mythic figure to me, but NOT because the man did drugs in the seventies. Keith Richards is an incredible man to me for the way his music has helped shape so many musicians who in turn have contributed so much to culture. \n Life, as a book, is nothing like what I was used to with rock biographies. While most deal with drug abuse, a fall from grace, and then an eventual return to rock god-dom, Richards's book really just tackles the man's life which has been contumacious. The man has lived a life that is entirely his own, and even his worst blunders were mistakes which he owned and lived because they were his choices. \n But the reason the reader should take the time to read this book, or at least listen to the audio-book like I did (Johnney Depp and Joe Hurley read everything until Richards takes over at the last chapter), is because the book is not just an effort to record the facts. Richards raps the events of his life as if he's speaking one on one with his reader, and as they hear the events of Altamont, his struggles with Mick Jagger and Anita Pallenburg, or the famous fall from the tree, it never feels that Richards is trying to oversell, or defend himself. He is, as always, just giving what is actually him. There's a power in that, while reading, and it bleeds onto the reader so that finishing this book, you can almost hear the blues in your bones. \n Can't recommend it enough. \n If the reader would like to read my full review, they can follow the link below to my site White Tower Review. Thank you for reading: \n https://jsjammersmith.wordpress.com/2...",
+        "review_text": "5 Until the Sky are Fallen Stars \n In the beginning I was a bit annoyed by both Lucien and Leah but then they kind of grew on me. This is the first book that I'm actually not a big fan of. I didn't get hooked from the beginning and it did kind of dragged on but it got interesting. \n \"Her eyes narrowed. \"You know, Lucien, you need to make up your mind. Either you're this guy or you're the jerky, controlling guy who I met at The Selection or you're the near-miss murder guy last night. Pick one. I'm getting confused.\" \n He pulled slightly away, bent his elbow and rested his head in his hand, looking down at her. \n \"I'm all those... guys.\" \n \"I liked being kissed by a vampire. Worse! I liked being kissed by Lucien, the Big, Bad, Jerky, Controlling Vampire.\" \n \"He spoke them as vow. \n \"Until the sun falls from the sky.\" \n Tears filled her eyes and she pressed deep into his body. \n Unlike his commanding declaration, when she spoke she spoke only to him. \n In a soft voice, Leah repeated, \"Until the sun falls from the sky.\" \n \"Are you hunting your father?\" Stephanie asked his back. \n \"No, he can wait,\" he turned, hand on the doorknob and looked at Stephanie, \"I'm hunting Leah.\" \n \"The instant he got us in this position, before I processed I was in it and therefore was by no means ready for what he was going to say next (not that I ever would be), he stated, \"I'm in love with you, sweetheart.\" \n Oh my God! \n Was he...? \n No. \n No! \n \"Don't,\" I whispered, pain piercing through me and I watched Lucien blink. \n \"Don't?\" he whispered back. \n \"Don't do it again. Don't play me,\" I explained quietly and I watched the gentleness fade from his features as fury infused them. \n I braced. \n \"I'm in love with you,\" he repeated. \n \"Don't,\" I whispered, that word breaking in the middle and his hold on me tightened mightily. \n \"Leah... I'm... in... love with you,\" he growled, I opened my mouth but his arms squeezed so hard all breath left me.\" \n \"There are things I'll explain more fully when I've seen to the woman I love but for now, The Council has amended the Immortal and Mortal Agreement. Vampires are again free to take mortal mates. And I'm taking my mortal as mate. You love me, I love you, we're connected, what we have is beautiful and that's all it'll ever be. For eternity. Until the end of days. Until the sun falls from the sky, all you and I will share is beauty.\" \n I felt my heart leap, tears fill my eyes and hope suffuse my system. \n But what came from my mouth was simply a whispered, breathy, \"Please.\" \n I didn't even know why I said it but Lucien did. \n So he replied in a voice filled with tenderness, \"Yes, my love. I'm not lying. I am not playing you. Swear to God, this is all truth.\" He pulled me even closer. \"I love you, Leah. I've loved you for twenty years and I'll love you for eternity. My beautiful Leah, listen closely. What I say is pure truth. And on this truth, you have my vow.\" \n \"The Mighty Vampire Lucien loved me. \n Oh God. That felt great. \n I pushed my hands that were trapped between us up until my fingers could curl around his neck and I whispered, \"You can be bossy and annoying. I can just be annoying. We're going to fight. So my guess is, we'll clash, like a lot. Therefore it will be awesome but it won't be an eternity of just beauty.\"",
+        "n_votes": 5
+      },
+      {
+        "rating": 3,
+        "review_text": "[image error] \n This book opened in a way that I found extremely confusing. It opened as if I should know what was happening, even though it's a first in the series. It began at her Selection, as if I even knew what that was or what the hell was going on. Once I got on board with what was happening, and seemed to understand the mythology in this story I did end up liking it. But that initial confusion somewhat soured me on KA fantasy books. Maybe I should have read another series first? I don't know. I know that's the case for the Dream Man/Rock Chick series ... so maybe. \n I liked one of these characters more than the other. Can you guess? I liked Lucien more. Leah struck me as a spoiled brat more than once in the course of events here. Geez, clearly you like him, just talk to him and get it all out in the open. \n In the end, I really liked this book for the implication of the rest of the series and a kind of apocalypse coming. Though for most of the book it was just fighting between Leah and Lucien - and it got a bit tedious. When the danger entered - that's when I got into it. \n All that being said, it probably seems like I didn't like it. But I did, just not as much as pretty much all her other books. It almost wasn't by one of my favourite authors. I do look forward to the next one though, werewolves!! \n Kristen Ashley, you nailed it, but barely. \n Check out more of my reviews at http://whatabookbitch.blogspot.ca",
+        "n_votes": 0
+      },
+      {
+        "rating": 3,
+        "review_text": "I liked this one, didn't love it. I think Lucien gets better as the series goes on. He was to much of an ass through most of this one...",
+        "n_votes": 2
+      },
+      {
+        "rating": 5,
+        "review_text": "One word AMAZING!!!",
+        "n_votes": 0
+      },
+      {
+        "rating": 1,
+        "review_text": "I'm not quite halfway into this book. Not sure it's fair rating a pnr after just finishing JR Wards last installment but I suppose it's a fair attempt at the genre if a little clumsy. It IS however the most sexist book I've ever read It moves along nicely and the characters have promise to be likeable so I'm sticking with it to see if this neanderthal approach to romance is justified. \n Alright then ... I must say, that was my least favorite book. Didn't finish the last 30/40 pages. Absolutely disliked her AND him. She continued to be just plain dumber than dirt and acted stupid silly for a 40 year old woman. He was just an asshat. Didn't care at all for the vampire world OR really, anything else about this book \n It's very likely I may try another of this series just because it's KA and surely she won't pen 2 books in the same series that I seriously don't like.",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "Loved this book! Great characters and a story line to keep me flipping the pages! I am off to read the rest of the series, although, each book stands alone.",
+        "n_votes": 0
+      },
+      {
+        "rating": 1,
+        "review_text": "Minor spoilers.. \n So I needed a KA fix in a big way and had just finished re-reading her Fantastical series and thought I'd give this one a try. It is rare that I don't like a Kristen Ashley book, (only happened one other time \n ) and it was tough for me to get through. In fact the only reason I finished was of how much I love and admire KA and I felt I owed it to her to do so. As always the book was well written, I loved the subject and thought KA did the vampire genre proud. But, but I did not like Lucian, like at all and barely tolerated Leah. Ya, I get that Luican is pushing a thousand years old and would have the ego to go with it, but I still couldn't get over the way that he treated Leah or for how Leah just took it. It also bothered me the terms that were used (tamed, broken etc) and how often they appeared. I didn't mind when Etienne used them, hell I expected him to, but with Lucian? No, maybe at first but even after he admitted he loved her? No. Just no. I also didn't like how cold Leah could be toward Lucian one minute and how hot the next. Pick an emotion and stick with it. If I stepped away from this book I could see what KA was going for and even like it and how it ended, I just didnt like how she went about getting there. Leah was too immature (and so not a 40yr old), too quick to judge and also too quick to forgive. \n I really wanted to like this book and kept hoping that Lucian would redeem himself, but in the in it was too little and too late for me.",
+        "n_votes": 0
+      },
+      {
+        "rating": 4,
+        "review_text": "I love me some hot sexy alpha vamps, but Lucien took the cake. I really enjoyed this story. Couldn't pt it down. Talk about hot steamy sex but also sweet cuddle time that just makes your heart melt. Loved the different take on the Vampire/ Human relationship. Leah is a feisty concubine that's note going down without a fight. And Lucien is just the Vamp to try. Cant wait to read more form this series, really enjoyed this one.",
+        "n_votes": 0
+      },
+      {
+        "rating": 2,
+        "review_text": "I was disappointed in this one. Now don't get me wrong there were some excellent parts, but I skipped around a lot during this book, which is unusual for me. I could not fall in love with Lucien in this book, I mostly wanted to hit him, or I wanted Leah to hate him forever. I even thought of nasty lines while I was reading that I thought she should of said to him. I wanted to rewrite in parts that made me feel better. \n There are men in Kristen Ashley books that I adore and call my book boyfriends, Lucien is my book bastard. >.> I just couldn't love him! I tried I totally tried to see where he was coming from and I got some of it, but at the same time I was like I still find you to be a major tool. lol \n The ending to me was also to rushed and felt underwhelmed by it. Even though it's a series we are starting with two new characters in the next book. I felt like we got the roasted marshmallow, but not the graham cracker or chocolate! :/",
+        "n_votes": 0
+      },
+      {
+        "rating": 1,
+        "review_text": "DNF. it was just that bad! I gave up after reading 70% of the book and realizing it just would not get any better.",
+        "n_votes": 0
+      },
+      {
+        "rating": 2,
+        "review_text": "In general, I like Kristen Ashley and don't mind the run on sentences or lack of punctuation in her self-published books. I figure if the story is good, I am able to endure the bad mechanics. But that is only if the story and characters are good... \n Lucien is the baddest vampire in the land. He is an alpha badass with a lot of political power and clout. Though still subject to the Vampire Dominion, he is able to do pretty much whatever he wants. For the last two decades, he has been waiting patiently for Leah Buchanan to be available so he can invite her to a Selection and make her his concubine. When Leah is finally available, Lucien makes his move. But Leah is not really into being a vampire's concubine, meal, plaything - nothing. She just wants to go on with her life. But family pressure makes her put herself out there for Lucien and during the Selection, Lucien takes what he wants. \n For the full review, please go to http://www.thewindowseat13.com/2015/0...",
+        "n_votes": 0
+      },
+      {
+        "rating": 1,
+        "review_text": "Wow. A miracle has happened I've read the first Ashley book that I don't like. I did not like Leah AT ALL. She was an infant and a spoiled one at that with entitlement issues. I felt incredibly bad for Lucien, he was an interesting character and had he actually met his match this would have been a much better read. \n As it was, it took away any slight enjoyment I could have had with this book to have to constantly read about Leah's childish, manipulative antics. She was 40 going on 12 and was proud of it and other characters putting up with her attitude deserved medals. Total cat on a leash. \n Lucien is lifemated to this diva idiot? Poor Lucien. Feel for you buddy, that's gonna be a long haul. \n The world building was okay but I definitely prefer Ashley's contemporary works so I'll go back to devouring those instead.",
         "n_votes": 3
+      },
+      {
+        "rating": 1,
+        "review_text": "** spoiler alert ** \n NO ACTION IN THIS BOOK! what? why? why make over 500 pages of nothing? Aa for the sex scenes? for the I am mighty, you human, you must be tamed? com on! Needless to say the whole I am the \"man\" (vampire), you must obey me, even though I am in love with you was just not ok. romanticized rape that's what it was! \n You can see my full review at https://thebookpanda.wordpress.com/20...",
+        "n_votes": 1
+      },
+      {
+        "rating": 4,
+        "review_text": "My Thoughts: \n This book is a solid 4 for me. I absolutely love KA and everything that she writes. I just had difficulty with the para part. \n I know your thinking, didn't she read what it was about before reading? Yes, I did that is why I am not knocking the book. It is my own personal preference. \n This being said it is an awesomely well written book. Totally descriptive. Totally awesome character development. Totally likeable characters. \n Overall, not my thing, but if you are a para fan you will love this.",
+        "n_votes": 2
+      },
+      {
+        "rating": 2,
+        "review_text": "About 25% in, I flounced. Leah is a whiny mess, Lucien is a demanding kidnapper basically. He doesn't seem to know what \"No\" means. Leah is forty but acts like she's fifteen and says shit like, \"That's the bomb!\" \n I'm out.",
+        "n_votes": 0
+      },
+      {
+        "rating": 4,
+        "review_text": "Its about the Vampire Lucien who defies vampire laws by taking a mortal as his mate. Concept of vampire culture is new, and story is pretty good. I cant wait to read the 2nd & 3rd in the series to see what happens to them. Not a funny book like the Rock Chick series, but at least it has a pretty good storyline.",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "I absolutely love this series. Not only do I get the KA awesome characters and situations, but I also get a bit of the paranormal, which I love. A must read for anyone who loves paranormal romance, romance or Kristen Ashley books.",
+        "n_votes": 0
+      },
+      {
+        "rating": 4,
+        "review_text": "Let me start by saying I love KA and I loved this book. I loved that these vampires are not your typical Twilight vamps (i.e. can't go out in the day, only drink blood, don't sleep). \n In the beginning, I did not care for Leah. For being 40 years old, she was very immature. However, unlike other heroines, I grew to like her and care about her character. She stayed immature, but she grows on you. That is why KA is awesome and just proves what an awesome write she is. \n Lucien, where do I start? He is your alpha, possessive, kick-ass male. I loved him even though he pissed me off at one point in the book and I was nervous he was going to piss me off over and over again. I did not like him misusing his nickname for Leah \"pet.\" That bugged me for a long time. If you give someone you care about a nickname, don't go using it for other people. \n The book had a lot of components I love to read...cat and mouse, catty women, love, drama, and steam. \n One of my favorite exchanges in the book between Lucien and Leah. \n \"I'm going to feed from you, my pet.\" \n My whole body trembled. \n Lucien wasn't done. \n \"And I'm going to do it it everywhere.\" \n Oh yes. That sounded nice. \n He kept going. \n \"There will be places you'll be numb.\" \n Hmm. That didn't sound nice. \n He went on. \n \"But there'll be other, better places where you absolutely will not.\" \n Goodie! \n \"Are you ready?\" He asked. \n Was he crazy? \n \"Yes.\" I breathed. \n Would I recommend this book? Yes \n Did I think I about this book after I was done reading it? To some degree. \n Would I reread this book? Probably. I really did like Leah and Lucien. \n Did I skim through this book? No",
+        "n_votes": 6
+      },
+      {
+        "rating": 5,
+        "review_text": "I love Kristen Ashley's writing. Whenever I'm in the mood for that alpha male hero - even if they are just shy of being an anti-hero, or, in this case, if they are a centuries old vampire, I know that I can count on Kristen to provide that character. She does not disappoint with Lucien, and in fact, really delivered a new type of Vampire for me to love. I'm not an avid paranormal reader, so I don't know if my standards are as high as others that consider that their main genre, but Lucien is definitely one to remember. \n This story starts off with Leah attending her Selection. Her family has been offering its members up, for generations, to be concubines to Vampires. This was an agreement settled upon between vampires and mortals in order to provide some type of order and rule to Vampires feeding off of humans. Leah is not happy about her fate, and she has further tried to avoid that fate by continuing to be in a relationship since coming of age, as they will not take a man or woman from a known relationship. So, this is another factor that I liked about Leah - she was 40 and not that young, naive female character that does not know her mind. \n Lucien, who is somewhat of a legend among his people, has been waiting for Leah since she came of age to be in a Selection, so everyone knows that she belongs to him. Everyone except for Leah, that is. She fights this for weeks, which Lucien actually appreciates and looks forward to, as he feels that the agreement has taken away something elemental from Vampires - the ability to hunt and \"tame\" a mate of their choosing. So, without asking anyone, Lucien actually creates a different type of arrangement with Leah, and this sets off a domino effect within the world of Vampires, as well as other Immortals. It actually begins a set of Prophecies, although more is to be revealed in the coming books. \n As for Lucien and Leah, there are many among Lucien's kind that are against Lucien having the type of relationship with Leah that he wishes to have, so they set about making life difficult for Leah, as she is the most fragile of the two. Lucien finds out that he has more people supporting him, however, than he realized, but he has to find out who he can and can't trust before Leah is hurt.",
+        "n_votes": 0
+      },
+      {
+        "rating": 2,
+        "review_text": "This is a review about the writing, not a rehash of the publishers blurb. \n I can really say that if I had read this and the second in the series first, from this author, I would have never read anymore. And, I am thankful these are not expensive either. \n Neither of the main characters were all that engaging. Their relationship was more like high school and less like adults. Especially when the male lead is much older. \n Sex scenes were your standard fare, and I actually skipped over several because they were pretty much all the same. \n Was not interested in the whole prophecy thing, mostly because it gave away pretty much everything that was going to go on in the next three books. \n Did not hate it, but I have read better from this author.",
+        "n_votes": 0
+      },
+      {
+        "rating": 1,
+        "review_text": "No. I took the book as far as I could. I understand it's romance, I understand it's adult, but I just can't read this book. I could muddle through the male needing to be dominant and wanting to push the woman to submission. Even when she expressly told him she doesn't want to. It is sort of the premise of the book. But after mistreating her in several different ways, when she stops being angry at him because he's so good in bed. Just no.",
+        "n_votes": 0
+      },
+      {
+        "rating": 2,
+        "review_text": "I was conflicted reading this book. on the one hand I like strong dominating males but there is fine line between that and too dominating. At times I felt like Lucien was too much and I was wondering how as a strong woman she would let some of his actions slide. Other times I liked his attitude, confidence, and cockiness.",
+        "n_votes": 0
+      },
+      {
+        "rating": 2,
+        "review_text": "There are two ways to read this book. One way is to listen when Ashley speaks via her hero and says 'Don't judge this by human morals.' She makes it clear that this vampiric species is humanity's natural predator and that the concubine/vampire relationship is actually a form of protection for the human race. Since the concubines provide food for the vampires and are protected by the tenets of vampiric culture, vampires aren't allowed to go hunting for humans. Looked at in this way, the concubine/vampire relationship, on paper, makes sense. However, the other way to read this book is with human morals. If you look at Lucien's and Leah's relationship with ideas like 'free will' and the right to say no in mind, it's rather disturbing. With regards to Leah, the thought of Stockholm Syndrome came to mind at several points and if I'd be in Leah's exact shoes, I'm pretty sure I would have gone catatonic. \n I was perpetually straddling the line between objective reader and outraged woman. If Ashley were to strip this story of all its paranormal elements, Lucien would be so far from a hero, it's not funny. He stalks her for years, forces her to sign herself into indentured servitude, isolates her from her friends and family, strips her of her ability to choose, and is borderline emotionally/physically abusive. Ashley even admits in the book that if the vampire Ruling Council found out that Lucien forced Leah into the contract, he'd be punished. So, in that respect, you can't claim it's a cultural thing because even the vampires think it's wrong! \n I do think this was one of Ashley's strongest examples of world-building. If she had chosen to go more of a 'marriage of convenience' route, where Leah knew what she was getting herself into, it would have been a much stronger book. Lucien, despite being his asshole tendencies, was a consistent character. He never changed who he was, but as Leah fell in love with him (I still don't understand why), the stronger connection to her made him dial back the asshole-ness. Leah, on the other hand, was all over the place. She's forty-years old, but has the maturity level of a twenty-year old. She's strong-willed and she makes some monumentally bad decisions. If she hadn't gotten expelled from Vampire Studies, she would have known her contract was unusual and she could have been free of Lucien right away. She was a media specialist, for cripes sake. Maybe that means something different in the UK, but for me, that means she was a school librarian and nobody knows the power of information more than librarians. \n I'd given Until the Sun Falls from the Sky three stars, but after writing all this, I'm dropping it down to two. I'm going to read the next book when it comes out because it's werewolf/human so I'm hoping Ashley will avoid creating another Lucien.",
+        "n_votes": 1
+      },
+      {
+        "rating": 3,
+        "review_text": "I've been delaying starting this series (and the Fantasyland series) for a while now. I don't usually like paranormal stories, but I'm kind of obsessed with Kristen Ashley's other stories so I wasn't sure what to expect with this book. I think that the letdown came in comparing this to other KA books. In my opinion, it's just not as good as some of my favorites by her. Having said that, I did enjoy this more than I would probably any other paranormal romance. I really liked the world building that was started in this book, and I will definitely be reading the rest of this trilogy. \n First of all, I'm still not sure about my feelings for the main characters. Lucien was somewhat redeemed in the last quarter or so of the book, but until then he drove me nuts. I think he could've worked a little harder to cut Leah some slack. It's difficult enough being uprooted from your family and friends or moving to a new place if it's your own choice, but add in the fact that she was forced to sign that contract and, oh yea, her new bf she just met for the first time is an 800 year old vampire. She was pretty much doomed for failure. And speaking of Leah, 40 years old, really? She acted like a teenager for a pretty good chunk of the story and honestly was treated like one by Lucien and her family. Maybe if they had spoken to her about the situation like an adult she would have behaved more like one. Hmm, guess we'll never know. \n Overall, I liked the story more than I expected. I think that KA did a good job with the world building by keeping things similar to reality and just changing some details. I also liked the way she approached the immortal characters as a whole. I liked seeing Lucien interact with his friends and children. I wish we could have seen a little more of Leah with her family or friends where she was more in her own element. The whole story was set in Lucien's world so it would have been nice to see how Leah acted if she were in more familiar surroundings, or to see how Lucien dealt with the tables being turned on him in that way. \n Even though I'm only rating this with 3 stars, I would certainly call it a success by KA. If she hadn't been the author, I would have never given this book a second look. And now there's no way I'm going to stop before I finish the rest of the trilogy. Who knows? Maybe werewolves will be my immortal of choice.",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "This was an epic book. I should have read it before now. This is my first paranormal read in a year and I was not disappointed. I could not put it down. On to the next in the series.",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "Oooooh KA writes good vampires!!! Loved this.",
+        "n_votes": 0
+      },
+      {
+        "rating": 2,
+        "review_text": "No more books by this author for me. How she can write a really interesting hook and then follow it up with boring and lengthy stories is beyond me. \n I hated Lucien and Leah - honestly pretty sure they hated each other as well. Somewhere around the last 1/3rd of this book it was like a switch flipped and despite all of the shit that they did (Lucien) to each other it was Insta Love.... \n The sex scene every chapter did not help - repetitive and forced honestly. Along with this we are introduced to a handful of side characters that mean next to nothing since our author never explains them. Their actions don't make sense - the story doesn't make sense. \n Kind of bummed I wasted days reading this.",
+        "n_votes": 0
+      },
+      {
+        "rating": 1,
+        "review_text": "DNF. \n I've always at least LIKED Kristen Ashley's books. I like her Contemporary romances and i loved The Golden Dynasty. So i thought, eh why not? If she could write a vampire story anywhere near as good as she did her Fantasyland series then i was totally on board... \n A hit... and a miss... Damn. \n I mean, just \n damn \n . This book: i couldnt finish it. I just couldnt do it. I tried, I legitimately tried. It had the makings of a good Kristen Ashley books: great concept, interesting and well developed side characters, and a mystery that had me intrigued despite fully expecting/wanting a romance story. But the heroine is what inevitably did it for me. \n She's forty years old, acts like a whiny teenager, and is TSTL even when given directions, a gps, and a fucking guide. \n And that's pretty much the gist of why i DNF. To further my point, here's some of my thoughts as i started to read through the first few pages of the book(WARNING SPOILERS AHEAD): \n 1) First impression (first few pages): the heroine, Leah, is confusion personified. Despite her family literally being involved with vampires and this whole \"concubine\" business for generations. Was she REALLY told nothing for however many years she is (im guessing from her attitude late teens/early twenties??) Also on that note, why the FUCK has no one told her anything??? \n 2) Ok now i think she's just plain dumb. she disrespects a room full of vampires simply cause she doesnt know whats going on, which is dumb in itself. Instead of following someone else's lead (someone who- idk- UNDERSTANDS what's happening) she snaps and disrespects a room full of complete, total strangers. Strangers that could drain her dry without batting an eye. She even completely disregards some helpful- if not obvious- advice from a VAMPIRE, proceeds to think \"im not dumb ill listen to her\" and then low and behold COMPLETELY IGNORES SAID ADVICE. \n 3) I think Kristen Ashley is trying to make Leah out to be independent and \"different\" from the other girls but she just comes off whiny instead. Her internal dialogue is pretty much just: \"but i dont wanna be a concubine\" and \"whats going on why wont anyone tell me anything wahhh\" (I may be paraphrasing but you get what I mean). Its frankly annoying. She should have asked these questions BEFORE all this went down and instead it seems she's only NOW wondering whats going on. \n (Also i think its just common courtesy to not be a frigid jerk when first meeting people. Even if you don't want to be there. It's called being an adult. Just food for thought) \n 4) I now know for a fact she's just plain dumb; she just revealed that she had all the chances to study up on vampires and a concubine's role she just choose NOT to. I mean, she doesnt have to like the situation but blatantly choosing to be ignorant is fucking asking to be put in shitty situations. Not to mention all her \"questions\" seem to be pretty fucking common knowledge and thus leads me back to: she could have learned about all this beforehand and been prepared. Just cause she refused to learn about it doesn't mean it would have gone away. Instead she's now just a catty, annoying heroine that im really not starting to like. \n 5) *LOUD GROANING* she's a super special snowflake; she's tall, pretty, has a body to die for, and comes from a prestigious family. idk what about her im supposed to sympathize with or even relate to except for maybe... yeh, no, i don't feel anything for her. She's just annoying tbh. (She's said she has redeeming qualities but honestly i've yet to see them) \n 6) Lucien has been introduced. He's crass and an ass and im loving it. let me bask in your hunky glory oh vampire overlord *bows down* \n 7) I've only just now noticed that Kristen Ashley has this fascination with clothing and tends to describe them to the reader, (me) when i could give two shits. I honestly dont care. She could be wearing a fucking burka and socks with dad sandals and I wouldn't even care/notice. Let's move one and not spend whole paragraphs on people's clothing please. \n 8)Leah's starting to piss me off. The times when she's SUPPOSED to fighting back and causing a ruckus, she's just sitting there doing nothing. Like when her mother and aunts had a copy of the Bonding contract, closed themselves in a room, and perused it for a whole hour without telling her jack shit. THAT'S when you start bitching and moaning about people not telling you stuff. NOT in the middle of a room full of vampires. Not to mention she just lets her family NOT tell her stuff, push her to do things she doesn't want to do at the threat of being disowned, and yet a vampire kindly asks her to not be stupid(aka NOT do something that would cause her death and other people trouble) and she gets all huffy???? dafuck. \n 10) IM DONE. Lucian just revealed that she's forty years old after berating her for not paying attention in vampire history class. She's being berated... at forty... for not paying attention in class and passing notes.... I repeat: she's fucking FORTY YEARS OLD and she acts like a fucking teenager. i just. i cant. i was willing to let a lot of her behavior slide had she been on the younger side. Then she'd just be a silly, young, easily prone to making mistakes youngster. But when she's a forty year old woman and she makes all the shitty choices a fucking teenager would make, its just embarrassing and sad. I mean, it doesn't mean she can't make mistakes but im pretty sure at forty she'd have SOME semblance of self preservation and maturity. But she doesnt. Which is worse imo. \n This on top of the fact that for FORTY YEARS her family kept her in the dark about their vampire/concubine history made me nope so hard. I mean, what the fuck man?? You'd think if it was so \"important\" to your family you'd let your kids know before they hit fucking menopause jfc (not a bag on older women in romance books just a hit at how ridiculous it is that Leah's family kept it from her for so long). How did they even keep it from her for that long??? Generations- GENERATIONS- of her family have been concubines; lived and participated in this vampire/concubine society and she just didn't know?? What? No, seriously: What? \n Ugh, i might try the other books in this series but this one? I give up.",
+        "n_votes": 0
+      },
+      {
+        "rating": 3,
+        "review_text": "Okay so this probably my least favorite Kristen Ashley title. \n Color me crazy or hell, maybe I'm living in the land of rainbows and roses, but hero's should not ever ever never ever enjoy their heroines fear. Ever never! \n It's just wrong. It is not the stuff, in my not so humble opinion, that hot guys are made of. \n So the whole first part of this one was me being all kinds of annoyed/frustrated/pissed off at the hero. He gets better, but not by much. He blatantly lies to her! Grrr... I almost put this down a few times. But almost every other kristen Ashely review I've read all say the same thing...she cannot write a bad story( despite her many, many, many grammar issues ) So I persevered, and ending up not hating the book. \n It was not a favorite, and won't ever be...I may not even read the next book in the three series, I disliked parts of this one so much. Plus the heroine...okay, heres the thing, but what works for the heroine in contemporaries does not work in pnr's...so Leah comes off as a pushover, weakling immature 40 year old. I kept waiting for her to be a little more kickass, a little less doormat. And while I loved the build up of the angst, for a PNR, it gets resolved waaaay to easily. \n So somewhere between 2.5 and 3 stars... \n With the addendum that I probably won't be able to keep myself from reading book 2, but if that ones as disappointing as UtSFFtS, then I'm writing off here pnr's and sticking to her moderns.",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "4.5 stars \n This is great romance story and I love it. I love the Mighty Vampire Lucien and his Leah. Kristen is no doubt a great writer and she creates an alluring world of vampires and their concubines. It's fast-paced and very addictive. I have a hard time putting it down and definately lost many hours of sleep.",
+        "n_votes": 1
+      },
+      {
+        "rating": 5,
+        "review_text": "another 5+ star read from KA! I am not a huge fan of paranormal books but did love this one!! Lucien can suck my blood any time!! :)",
+        "n_votes": 1
+      },
+      {
+        "rating": 3,
+        "review_text": "3.5 STARS! \n I had pretty bothering issues with this book, but I still like it. Review soon!",
+        "n_votes": 0
+      },
+      {
+        "rating": 4,
+        "review_text": "This review will be mostly about why I didn't give this one a Five S. You have all the usual awesome things: alpha huge guy falls for outspoken kinda cute tall woman (yes, this is a huge pro for me. Breath of fresh air not to have the h being a \"petite, tiny, short\" anything), fast paced, things-happening-packed, togetherness (even though sometimes reluctantly), HEA like no other, gorgeous sweet moments amidst really hawt ones, real-like second characters... A Kristen Ashley book, peeps , nothing new here. So, here goes my Justification Review: \n To be completely honest, I'm not overly fond of supernatural-paranormal and whatever types of reads. In fact, if not for the reviews, highly recommended books and in all truth, the type of alpha men one can find in these books, I would not read the at all. In this case, also the fact that I was in a KA-kind-of-book-mood, and unfortunately she only has a limited line of contemporary stories, and one can only read a book so many times until you do need a new book. \n So I grabbed this one. And as usual many emotions engulfed me. Sadly, at first, they were not very good. I love her jerky alphas, her outspoken heroines and the situations she puts them trough, the pace, the writing, the ambience, the things they say, the breaking points, the good, the bad, the ugly, and the beautiful, it all. With Until the Sun Falls From The Sky, however, I found myself thinking something was missing. \n See, I think the error was the way this book was sold as. Or at least how I interpreted it. Or to be more specific, what wasn't said. You see, Lucien could easily be on our anti-heroes lists, our Douchebags-We-Can't-Help-But-Put-Up-With, Hawt-Hateful-Jerks, an others of the sort. Lucien was hard to like at first, there were too many things done and said that plain just, no-no. Not even because they happened, but because the communication was shit at the first half of the book. That's not to say I wasn't right along with Leah in most the ways she acted, and sadly also understood how she involuntarily reacted to him. But still, effing use words, people. \n So what you trying to do to me \n It's like we can't stop, we're enemies \n But we get along when I'm inside you \n You're like a drug that's killing me \n I cut you out entirely \n But I get so high when I'm inside you.. \n But thank heavens, K.A. always makes me end up falling for her heroes. And I did. The second part of the book is much of the same except you understand a great deal more, you have much more wonderful Lucien to outweigh the bad, and everything just falls into place and I got my favorite type of comfort-read: the KA one; only with that heinous ~that turned up not to be so bad~, vampire twist. \n The author also treats us to, what surprised me at first, a regular dual POV. And I loved it. Maybe this was what ultimately didn't allow me to hate Lucien, 'cause being in his head, well, you get to see behind what his 800 years of vampiretude has made him too obtuse to show and say. \n I think all in all, what really put me off was the misunderstandings and miscommunications. -I'm not used to them, and I definitely don't like them. I rather have bombs, fights and cars exploding as long as the H&h are hand-in-hand, than to have them repeatedly turn on each other since they didn't come clean at the right time (or well, Lucien didn't). \n But how could I not give this over four stars? \n KA always goes straight to my heart (my imagination, my alpha lust, and quivering thingies), so kudos once again. After all, if I were ever to be with a vampire, I wouldn't do half bad if a Lucien-A-Like were to sweep me off my feet. Over all, really liked this.",
+        "n_votes": 0
+      },
+      {
+        "rating": 1,
+        "review_text": "I've read a couple of Kristen Ashley's books, and I liked them so much that I gave those a high rating. However, this book was a disaster. The supposed alpha male is instead a controlling abusive jerk that deserves execution in my opinion. You first sympathize with the female lead, however when the Stockholm syndrome asserts itself in a super sappy way, you have to write her off. There was no real relationship between the characters that would induce love. The situation can be describe as 2 vile words: slavery and rape. In her place, I would hate the guy and try to kill him even if I die trying. This book was so disastrous and it's ridiculous that it got so much high ratings.",
+        "n_votes": 0
+      },
+      {
+        "rating": 2,
+        "review_text": "I love KA more than any romance author in the world. I read this book at least two years ago, long before my obsessions with KA began and it just didn't click with me. I thought I had just grown out of my Twilight phase and had no interest in supernaturals, but after reading With Everything I Am and Wild And Free (books 2 and 3 in the series), I decided to go back and give this book another try. I still don't like it. Lucien is too authoritarian (not in KA's typically sexy alpha way) and Leah is too whiney about it. I love KA because her characters come to life on the page. You hear them, see them, feel them. They make you laugh out loud or squeal with excitement. This book has the potential to do that but falls flat.",
+        "n_votes": 0
+      },
+      {
+        "rating": 1,
+        "review_text": "If I could give negative stars, I would. This is one sick book. She has Stockholm Syndrome; she is not in love. This is not a romance novel but a story about rape of the mind and body. I cannot fathom why this book has so many good reviews. I wish she barabaqued his ass.",
+        "n_votes": 0
+      },
+      {
+        "rating": 4,
+        "review_text": "I am a big fan of Kristen Ashley. I love her contemporary romance novels because her heroes are all alpha males who tread the thin line between complete jerk and absolute alpha. I love her heroes because they do the most unbelievably annoying acts but say the most incredibly sweet things. I love how a lot of her books are about redemption, how they show that love truly defies odds and is worth all the trouble. \n I haven't read The Three series because I really loved her contemporary novels that, in a selfish way, I did not want to read another genre from her. I should not have made that mistake. In fact, the moment that this first book from the series was available, I should have read it right away. The only good thing about my stupid decision was the fact that all three books have now been released for this series, so I can read them all right after each other instead of waiting for months and months for the next book to come out. \n Until The Sun Falls From The Sky is a wonderful paranormal romance that is hot, sexy, and out of this world. It goes without a doubt that KA successfully creates communities, families, worlds with her series of books. In this book, however, she has gone way beyond the realms of realistic and contemporary fiction. She has created a world where mortals and immortals lived together, complete with laws, pacts, and history. \n I am going to give this book four red hearts. The hero and the heroine were great together, when they weren't fighting. There were times when I felt that the part where he heroine kept fighting the hero was dragged out. However, after she gave in, everything was amazing until the book ended. Another thing I liked the least was that before Lucien mentioned that Leah was 40 years old, I completely thought she was only in her twenties. There was something truly immature about her thought process and the way she talked. \n I will still say that this is definitely a great book because it leaves you with this yearning to get to the next book right away and find out of the three couples in the prophecy will be triumphant. Kristen Ashley truly does magic with her books, and yes, she can definitely write paranormal just as great as she does anything else.",
+        "n_votes": 1
+      },
+      {
+        "rating": 4,
+        "review_text": "This author is new to me I haven't ever come across her before friend here had recommended her writing. \n I wasn't sure what to expect being new to this author and all but she didn't disappoint, the book is a story of a woman named Leah. Leah wants nothing to do with her families legacy she just wants to live her life her way, not with all these stuffy rules about being a vampires concubine. \n Leah's life takes a few turns and before she realizes it she's exactly where she has no desire to be. She becomes what she never wanted to be flying anger in the face of tradition she's concubine but not willing to be anyone but herself and tradition can go fly a kite. She doesn't care if she was selected by \"the mighty vampire Lucian\" \n Lucian is tall, dark, handsome and a vampire. He's someone even other vampires don't want to cross and he's got his work cut out for himself with Leah. He will change the game to have his victory, what he didn't plan on was losing his heart to a mortal spirited woman. \n Leah is special and she doesn't know it she has abilities that couldn't have been known, needless to say this doesn't leave everyone happy. The governing body of vampire/mortal relations isn't happy either and Leah doesn't know about most of these things or what it might mean for her and her family. \n When the enemy doubles and the decision gets closer will love be enough to protect her from enemies both seen and unseen? Will the mighty vampire Lucian meet his match in a mortal woman? \n In this story; no matter how you deny it love will consume you, the question: is love enough to save you? \n *I like the interaction between them I love her quick wit replies. \n ** I didn't so much like that she forgave his lying ways so quick, I also found sayings/phases repetitive at the beginning and end of the story. \n This book is a good read and surprised me on a consistent basis it wasn't another typical romance, yet it was, thanks Kristen Ashley for making the \"The mighty vampire Lucian\" \n I would recommend this book if you like vampires, sarcasms, love stories \n Favorite quote: \n \"you are forty years old\" Lucian \n \"yes and I am not growing up until I am ninety three\" leah",
+        "n_votes": 2
+      },
+      {
+        "rating": 3,
+        "review_text": "Link: http://lit4ladies.com/2013/10/13/favo... \n Rating: \n Until The Sun Falls From The Sky:(3 Teacups / 3 Handcuffs) \n With Everything I Am:(5 Teacups / 4 Handcuffs) \n Untitled: He's said one word, \"MINE\", we don't know his name, but we are already in love. \n Our Thoughts: \n KA does an excellent job at crossing mythologies. The first novel focuses on vampires, the second on werewolves. There is an overarching narrative woven throughout the series. It will bring the three main couples together to fullfill the prophecy and restore harmony to the races. \n KA knows how to write hawt alpha males. Callum is one of our favorite book boyfriends, in both his human and wolf states. \n Even though these men are mythological, they are still surprisingly normal. They fail to understand women, human or otherwise. A lot of the novels' conflict is the men's inability to understand their women and express their emotions. \n These women are are strong and independent. They are not afraid to go head to head with their men. It takes awhile for them to truly be claimed. \n These men aren't afraid to go against the customs of their kind to claim their mates. They will fight and die if anyone tries to separate them. \n Like most KA novels there is a strong sense of family woven throughout the narrative. The characters discover that family isn't necessarily about blood, but those you love. \n Neither vampires nor werewolves are villainized; like humanity they just have a few bad apples which makes the cultures more relatable. All the main characters want to do is live, find love and happiness! Who doesn't? \n We can not wait for the last installment. We do not know much, but from the short snippet at the end of With Everything I Am, it holds great promise",
+        "n_votes": 0
+      },
+      {
+        "rating": 2,
+        "review_text": "Review of the audio book. 2.5 stars which I'm not going to round up. \n If I were a gal, I don't think I'd be turned on by Lucien or want him in my fantasies or bed. Of course, I could be wrong. As a guy, the heroine, Leah, struck me as an airhead, and definitely was a \"heroine\" about whom I cared little and was aroused by less. \n While the plot idea is interesting (some women in certain families are selected to be concubines for vampires for an indefinite period of time and come away from their time considering it the best years of their lives), it barely progresses. \n The narrator's voice is hard to understand when she lowers it, particularly in a moving car. There is one redeeming feature: the heroine is 40.",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "Omg!!! I finally found it. I finally found a book that measure up to the argeneau novels. This book hook me was the start. I was unable to put it down all day. I haven't even slept since yesterday Morning.Is That good. Crossing my fingers that the next book is as great.",
+        "n_votes": 0
+      },
+      {
+        "rating": 1,
+        "review_text": "boring",
+        "n_votes": 0
+      },
+      {
+        "rating": 2,
+        "review_text": "10/10/2012 \n Still not my favorite...",
+        "n_votes": 0
+      },
+      {
+        "rating": 2,
+        "review_text": "2.5 Stars \n Well, okey let's start: I think the story was good and the male character (Lucien) was really good. But, it is really hard to find a book which is fully good. This book had real potential, but for me it was not so good. \n The main reason is that in my opinion, the main female character was not written well. She is 40 years old, but while you are reading, she sounds like 15-25 years old. Okey, there are people who do not act like their age, but in the book it is written in a way I could not accept it. \n I think she is also very annoying. I loved Lucien so, I wish he was in love with somebody else. (I did not like Leah that much yeah.) \n So, for me this is a book I read once and then forget about it. Although the story has a potential and Lucien is a great character, this potential is kind of wasted. The book started reallly well and I liked it at the beginning but then I lost interest esp. because of Leah. \n edit: I like the title of book btw.",
+        "n_votes": 0
+      },
+      {
+        "rating": 5,
+        "review_text": "OMG !!! THIS WAS phenomenal.. Lucien and Leah !!! MY OH MY !!! Leah, 40 and stubborn, stubborn, stubborn !! refuses to grow up till she's well into her 90s..! KAs world of Vamps are awesome! They can eat, drink, and eat like the rest of us but also drink blood. From the first moment of the Selection by the Vampire Dominion, Leah holds nothing back. Set in her ways she just hysterical !! i laughed a lot and agreed with Leah mostly through the book. Lucien is amazing!!! So bossy ! So hot ! I didn't cry but i was whole heartedly into the book, refusing to sleep until I finished !!! Leah and Lucien's relationship is super cute and gets pretty deep. I hope we see them a lot in the next one. I simply can't wait for the next to come out! The plot of this story is AWESOME. I fell in love with my guy and my stubborn Leah but more importantly i was hooked on what was going on and how things are about to change.. I hate spoilers so Im keeping this review tight lipped. If your not hooked by the 6th chapter in this book, then YOUR CRAZY !! lol, as usual KA has done it AGAIN ! :D",
+        "n_votes": 6
       }
     ]
   },

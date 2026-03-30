@@ -7,24 +7,37 @@ Reads:
 - Book metadata (JSON)
 
 Outputs:
-- Merged parquet file with reviews + book metadata (title, average_rating)
+- Merged parquet file with reviews + book metadata (title, average_rating, n_votes)
+- Filtered metadata cache (parquet) with all original fields including popular_shelves for on-demand genre extraction
 """
 import pandas as pd
 import argparse
+import os
 
 
-def load_book_metadata(metadata_file, needed_book_ids):
+def load_book_metadata(metadata_file, needed_book_ids, cache_file=None):
     """
-    Load book metadata efficiently, keeping only needed columns and books.
+    Load book metadata efficiently, keeping only needed books.
     Only loads metadata for books that appear in needed_book_ids set.
+    Keeps all original fields including popular_shelves for on-demand genre extraction.
+
+    If cache_file is provided and exists, loads from cache instead of JSON.
 
     Args:
         metadata_file: Path to book metadata JSON file
         needed_book_ids: Set of book_ids to load metadata for
+        cache_file: Optional path to save/load filtered metadata parquet
 
     Returns:
-        DataFrame with book_id, title, average_rating for requested books only
+        DataFrame with all original metadata fields for requested books
     """
+    # Try loading from cache if provided
+    if cache_file and os.path.exists(cache_file):
+        print(f"Loading cached book metadata from {cache_file}...")
+        metadata_df = pd.read_parquet(cache_file)
+        print(f"  Loaded {len(metadata_df):,} books from cache")
+        return metadata_df
+
     print(f"Loading book metadata from {metadata_file}...")
     print(f"  Only loading metadata for {len(needed_book_ids):,} books that appear in reviews")
 
@@ -37,7 +50,7 @@ def load_book_metadata(metadata_file, needed_book_ids):
         total_books_scanned += len(chunk)
 
         # Filter to only books we need EARLY (before selecting columns)
-        chunk = chunk[chunk['book_id'].isin(needed_book_ids)]
+        chunk = chunk[chunk['book_id'].isin(needed_book_ids)].copy()
         total_books_kept += len(chunk)
 
         if len(chunk) == 0:
@@ -46,18 +59,7 @@ def load_book_metadata(metadata_file, needed_book_ids):
                 print(f"  Scanned {total_books_scanned:,} books, kept {total_books_kept:,}...")
             continue
 
-        # Only keep columns we need to save memory
-        cols_to_keep = ['book_id']
-        if 'title' in chunk.columns:
-            cols_to_keep.append('title')
-        if 'average_rating' in chunk.columns:
-            cols_to_keep.append('average_rating')
-        if 'n_votes' in chunk.columns:
-            cols_to_keep.append('n_votes')
-        if 'genres' in chunk.columns:
-            cols_to_keep.append('genres')
-
-        chunk = chunk[cols_to_keep]
+        # Keep all original fields including popular_shelves (for genre extraction on-demand)
         chunks.append(chunk)
 
         if (i + 1) % 10 == 0:
@@ -68,13 +70,20 @@ def load_book_metadata(metadata_file, needed_book_ids):
 
     if len(chunks) == 0:
         print("Warning: No matching books found in metadata!")
-        return pd.DataFrame(columns=['book_id', 'title', 'average_rating', 'n_votes', 'genres'])
+        return pd.DataFrame()
 
     metadata_df = pd.concat(chunks, ignore_index=True)
 
     # Drop duplicates (keep first occurrence)
     metadata_df = metadata_df.drop_duplicates(subset=['book_id'], keep='first')
     print(f"  Unique books after deduplication: {len(metadata_df):,}")
+
+    # Save to cache if provided
+    if cache_file:
+        print(f"Saving filtered metadata cache to {cache_file}...")
+        os.makedirs(os.path.dirname(cache_file), exist_ok=True)
+        metadata_df.to_parquet(cache_file, index=False, compression='snappy')
+        print(f"  Cache saved: {len(metadata_df):,} books with {len(metadata_df.columns)} fields (including popular_shelves for genre extraction)")
 
     return metadata_df
 
@@ -107,8 +116,21 @@ def process_data(reviews_file, metadata_file, output_file):
     print(f"  Need metadata for {len(needed_book_ids):,} unique books")
 
     # Load book metadata ONLY for books in reviews (much faster!)
+    # Use cache file for faster iteration on future runs
+    cache_file = os.path.join(os.path.dirname(metadata_file), 'book_metadata_filtered.parquet')
     print(f"\nLoading book metadata...")
-    metadata_df = load_book_metadata(metadata_file, needed_book_ids)
+    metadata_df = load_book_metadata(metadata_file, needed_book_ids, cache_file)
+
+    # Select only core columns for merge (cache has all fields including popular_shelves)
+    cols_to_keep = ['book_id']
+    if 'title' in metadata_df.columns:
+        cols_to_keep.append('title')
+    if 'average_rating' in metadata_df.columns:
+        cols_to_keep.append('average_rating')
+    if 'n_votes' in metadata_df.columns:
+        cols_to_keep.append('n_votes')
+
+    metadata_df = metadata_df[cols_to_keep]
 
     # Filter to ratings 1-5 only (exclude 0 ratings)
     print(f"\nFiltering to ratings 1-5...")
@@ -146,7 +168,6 @@ def process_data(reviews_file, metadata_file, output_file):
     merged_df.to_parquet(output_file, index=False, compression='snappy')
 
     # Verify saved file
-    import os
     file_size_mb = os.path.getsize(output_file) / (1024 * 1024)
     print(f"  File size: {file_size_mb:.2f} MB")
     print(f"  Saved {len(merged_df):,} reviews")
@@ -174,17 +195,17 @@ Examples:
 
     parser.add_argument(
         '--reviews',
-        default='/data/user_data/sheels/Spring2026/10718_mlip/data/subsampled_good_reviews.csv',
+        default='/home/mananaga/goodreads_dataset/subsampled_good_reviews.csv',
         help='Input reviews file (CSV or parquet)'
     )
     parser.add_argument(
         '--metadata',
-        default='/data/user_data/sheels/Spring2026/10718_mlip/data/goodreads_books.json',
+        default='/home/mananaga/goodreads_dataset/goodreads_books.json',
         help='Book metadata JSON file'
     )
     parser.add_argument(
         '--output',
-        default='/data/user_data/sheels/Spring2026/10718_mlip/data/processed_reviews.parquet',
+        default='/home/mananaga/goodreads_dataset/processed_reviews_new.parquet',
         help='Output parquet file'
     )
 
