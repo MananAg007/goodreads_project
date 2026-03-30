@@ -98,7 +98,7 @@ def get_reviews_for_book(df: pd.DataFrame, book_id: int, exclude_user_id: str,
 
 
 def create_dataset(reviews_file: str, output_file: str,
-                   dataset_size: int = 100, min_books_per_user: int = 7,
+                   dataset_size: int = 100, num_reference_books: int = 5,
                    num_reviews_per_book: int = 10, min_reviews_per_book: int = 10,
                    seed: int = 42):
     """
@@ -109,7 +109,8 @@ def create_dataset(reviews_file: str, output_file: str,
         reviews_file: Path to preprocessed reviews file (parquet with metadata merged)
         output_file: Path to save JSONL output
         dataset_size: Total number of dataset points to create (default 100)
-        min_books_per_user: Minimum books a user must have reviewed (default 7: 5 reference + 2 comparison)
+        num_reference_books: Number of reference books from the user (default 5)
+                            Minimum books required per user = num_reference_books + 2 (for comparison books A and B)
         num_reviews_per_book: Number of sample reviews to include per book
         min_reviews_per_book: Minimum reviews a book must have to be eligible
         seed: Random seed for reproducibility
@@ -146,8 +147,12 @@ def create_dataset(reviews_file: str, output_file: str,
     df = df[df['book_id'].isin(eligible_books)]
     print(f"  Kept {len(df):,} reviews")
 
+    # Calculate minimum books required: reference books + 2 comparison books
+    min_books_per_user = num_reference_books + 2
+
     # Group by user to find users with enough books
     print(f"\nFinding users with at least {min_books_per_user} eligible books...")
+    print(f"  ({num_reference_books} reference books + 2 comparison books)")
     user_books = df.groupby('user_id')['book_id'].nunique()
     eligible_users = user_books[user_books >= min_books_per_user].index.tolist()
     print(f"  Found {len(eligible_users):,} eligible users")
@@ -189,17 +194,16 @@ def create_dataset(reviews_file: str, output_file: str,
         while not success and attempts < max_attempts:
             attempts += 1
 
-            # Select 5 reference books (prefer ones with review text)
-            num_ref_books = 5
-            if len(reviews_with_text) >= num_ref_books:
+            # Select reference books (prefer ones with review text)
+            if len(reviews_with_text) >= num_reference_books:
                 ref_book_candidates = reviews_with_text['book_id'].unique().tolist()
             else:
                 ref_book_candidates = user_book_ids
 
-            if len(ref_book_candidates) < num_ref_books:
+            if len(ref_book_candidates) < num_reference_books:
                 break
 
-            ref_book_ids = random.sample(ref_book_candidates, num_ref_books)
+            ref_book_ids = random.sample(ref_book_candidates, num_reference_books)
 
             # Get remaining books for A and B
             remaining_books = [b for b in user_book_ids if b not in ref_book_ids]
@@ -376,25 +380,25 @@ Note: You must run process_data.py first to create the preprocessed reviews file
 
     parser.add_argument(
         '--reviews',
-        default='/home/mananaga/goodreads_dataset/processed_reviews_new.parquet',
+        default='/home/mananaga/goodreads_dataset/processed_dataset.parquet',
         help='Preprocessed reviews file (output from process_data.py)'
     )
     parser.add_argument(
         '--output',
-        default='../data/book_preference_dataset_new.jsonl',
+        default='../data/book_preference_dataset.jsonl',
         help='Output JSONL file for LLM training'
     )
     parser.add_argument(
         '--dataset-size',
         type=int,
-        default=10,
+        default=100,
         help='Total number of data points to create (default: 100)'
     )
     parser.add_argument(
-        '--min-books',
+        '--num-reference-books',
         type=int,
         default=10,
-        help='Minimum books a user must have reviewed (default: 7: 5 reference + 2 comparison)'
+        help='Number of reference books from the user (default: 5). Minimum books required = num-reference-books + 2'
     )
     parser.add_argument(
         '--reviews-per-book',
@@ -421,7 +425,7 @@ Note: You must run process_data.py first to create the preprocessed reviews file
         reviews_file=args.reviews,
         output_file=args.output,
         dataset_size=args.dataset_size,
-        min_books_per_user=args.min_books,
+        num_reference_books=args.num_reference_books,
         num_reviews_per_book=args.reviews_per_book,
         min_reviews_per_book=args.min_reviews_per_book,
         seed=args.seed
