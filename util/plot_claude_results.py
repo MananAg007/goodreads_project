@@ -1030,6 +1030,171 @@ def plot_accuracy_vs_reviews_filter_mode(results, output_dir, avg_ratings_mode="
     plt.close()
 
 
+def parse_directory_name_with_adversarial(dir_name):
+    """
+    Parse directory name to extract all parameters including adversarial_example.
+
+    Expected format:
+        model_{MODEL}_num_book_reviews_{X}_num_user_reviews_{Y}_avg_ratings_{MODE}
+        _filter_{FILTER}_user_filter_{USER_FILTER}_adversarial_{ADV}
+
+    Returns:
+        tuple: (model_name, num_book_reviews, num_user_reviews, avg_ratings_mode,
+                reviews_filter_mode, user_reviews_filter_mode, adversarial_example)
+               or None if parsing fails
+    """
+    pattern = (
+        r"model_([a-zA-Z0-9_-]+)_num_book_reviews_(\d+)_num_user_reviews_(\d+)"
+        r"_avg_ratings_([a-z]+)_filter_(none|most_popular|least_popular)"
+        r"_user_filter_([a-z]+)_adversarial_(none|positive|negative)$"
+    )
+    match = re.match(pattern, dir_name)
+    if match:
+        return (
+            match.group(1), int(match.group(2)), int(match.group(3)),
+            match.group(4), match.group(5), match.group(6), match.group(7),
+        )
+    return None
+
+
+def load_results_with_adversarial(results_dir):
+    """
+    Load all metrics.json files from results directory, including adversarial_example variants.
+
+    Returns:
+        list: List of dicts with keys: model_name, num_book_reviews, num_user_reviews,
+              avg_ratings_mode, reviews_filter_mode, user_reviews_filter_mode,
+              adversarial_example, metrics
+    """
+    results = []
+    results_path = Path(results_dir)
+
+    if not results_path.exists():
+        print(f"Error: Results directory not found: {results_dir}")
+        return results
+
+    for subdir in results_path.iterdir():
+        if not subdir.is_dir():
+            continue
+
+        parsed = parse_directory_name_with_adversarial(subdir.name)
+        if parsed is None:
+            continue
+
+        model_name, num_book_reviews, num_user_reviews, avg_ratings_mode, \
+            reviews_filter_mode, user_reviews_filter_mode, adversarial_example = parsed
+
+        metrics_file = subdir / "metrics.json"
+        if not metrics_file.exists():
+            print(f"Warning: No metrics.json found in {subdir.name}")
+            continue
+
+        with open(metrics_file) as f:
+            metrics = json.load(f)
+
+        results.append({
+            "model_name": model_name,
+            "num_book_reviews": num_book_reviews,
+            "num_user_reviews": num_user_reviews,
+            "avg_ratings_mode": avg_ratings_mode,
+            "reviews_filter_mode": reviews_filter_mode,
+            "user_reviews_filter_mode": user_reviews_filter_mode,
+            "adversarial_example": adversarial_example,
+            "metrics": metrics,
+        })
+
+    print(f"Loaded {len(results)} result files with adversarial_example variants")
+    return results
+
+
+def plot_accuracy_vs_adversarial_example(results, output_dir, avg_ratings_mode="true",
+                                         reviews_filter_mode="none", user_reviews_filter_mode="prefix",
+                                         num_book_reviews=8, num_user_reviews=1, model_name=None):
+    """
+    Plot accuracy as 3 bars: none (baseline), negative, positive adversarial modes.
+
+    Args:
+        results: List of result dicts from load_results_with_adversarial
+        output_dir: Directory to save the plot
+        avg_ratings_mode: Filter for specific avg_ratings_mode (default: "true")
+        reviews_filter_mode: Filter for specific reviews_filter_mode (default: "none")
+        user_reviews_filter_mode: Filter for specific user_reviews_filter_mode (default: "prefix")
+        num_book_reviews: Filter for specific num_book_reviews (default: 8)
+        num_user_reviews: Filter for specific num_user_reviews (default: 1)
+        model_name: Filter for specific model (e.g., "haiku") (None = all)
+    """
+    filtered = [r for r in results
+                if r["avg_ratings_mode"] == avg_ratings_mode
+                and r["reviews_filter_mode"] == reviews_filter_mode
+                and r["user_reviews_filter_mode"] == user_reviews_filter_mode
+                and r["num_book_reviews"] == num_book_reviews
+                and r["num_user_reviews"] == num_user_reviews]
+    if model_name is not None:
+        filtered = [r for r in filtered if r["model_name"] == model_name]
+
+    if not filtered:
+        print(f"No adversarial results found for avg_ratings={avg_ratings_mode}, "
+              f"filter={reviews_filter_mode}, user_filter={user_reviews_filter_mode}, "
+              f"books={num_book_reviews}, users={num_user_reviews}, model={model_name}")
+        return
+
+    adv_order = ["negative", "positive", "none"]
+    adv_colors = ["#C73E1D", "#6A994E", "#2E86AB"]
+
+    data_by_adv = {r["adversarial_example"]: r for r in filtered}
+    accuracies = [data_by_adv[adv]["metrics"]["accuracy"] if adv in data_by_adv else 0
+                  for adv in adv_order]
+
+    x_positions = np.arange(len(adv_order))
+    bar_width = 0.5
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+
+    bars = ax.bar(x_positions, accuracies, bar_width,
+                  color=adv_colors,
+                  alpha=0.85,
+                  edgecolor='white',
+                  linewidth=1.5)
+
+    for bar, acc in zip(bars, accuracies):
+        if acc > 0:
+            height = bar.get_height()
+            ax.text(bar.get_x() + bar.get_width() / 2., height + 0.005,
+                    f'{acc:.3f}',
+                    ha='center', va='bottom', fontsize=11, fontweight='bold')
+
+    ax.set_xlabel("Adversarial Example Mode", fontsize=13, fontweight='bold')
+    ax.set_ylabel("Accuracy", fontsize=13, fontweight='bold')
+
+    title = "Adversarial Attack: Accuracy by Injection Type"
+    title += f"\n(Book Reviews={num_book_reviews}, User Reviews={num_user_reviews}, Avg Ratings={avg_ratings_mode})"
+    ax.set_title(title, fontsize=15, fontweight='bold', pad=20)
+
+    ax.set_xticks(x_positions)
+    ax.set_xticklabels(["negative", "positive", "original"], fontsize=12)
+    ax.tick_params(axis='y', labelsize=11)
+
+    ax.axhline(0.5, color='red', linestyle='-', linewidth=4, alpha=0.7, zorder=10)
+
+    ax.grid(True, alpha=0.2, axis='y', linestyle='--', linewidth=0.8)
+
+    all_accs = [r["metrics"]["accuracy"] for r in filtered if r["metrics"]["accuracy"] > 0]
+    y_min = max(0.3, min(all_accs) - 0.05) if all_accs else 0.3
+    y_max = min(1.0, max(all_accs) + 0.1) if all_accs else 0.8
+    ax.set_ylim(y_min, y_max)
+
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.set_axisbelow(True)
+
+    plt.tight_layout()
+    suffix = f"_{model_name}" if model_name else ""
+    output_path = os.path.join(output_dir, f"claude_adversarial_example{suffix}.png")
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
+    print(f"Saved adversarial plot: {output_path}")
+    plt.close()
+
+
 def print_summary(results):
     """Print a summary table of all results."""
     print("\n" + "="*85)
@@ -1138,6 +1303,19 @@ def main():
                                             avg_ratings_mode="true", num_book_reviews=8, num_user_reviews=1)
     else:
         print("No robustness (reviews_filter) experiment results found")
+
+    # Plot adversarial example experiment (if results available)
+    print("\nChecking for adversarial example experiment results...")
+    adversarial_results = load_results_with_adversarial(args.results_dir)
+    if len(adversarial_results) > 0:
+        print(f"Found {len(adversarial_results)} adversarial experiment runs")
+        print("\nGenerating adversarial example plots...")
+        plot_accuracy_vs_adversarial_example(adversarial_results, args.output_dir,
+                                             avg_ratings_mode="true", reviews_filter_mode="none",
+                                             user_reviews_filter_mode="prefix", num_book_reviews=8,
+                                             num_user_reviews=1)
+    else:
+        print("No adversarial example experiment results found")
 
     print(f"\nAll plots saved to {args.output_dir}")
 
