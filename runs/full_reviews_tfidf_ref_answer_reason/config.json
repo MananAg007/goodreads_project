@@ -1,0 +1,20 @@
+{
+  "input": "data/book_preference_dataset.jsonl",
+  "output_dir": "runs/full_reviews_tfidf_ref_answer_reason",
+  "template": "util/templates/strict_format_prompt.txt",
+  "model": "Qwen/Qwen2.5-14B-Instruct",
+  "num_book_reviews": 8,
+  "num_user_reviews": 1,
+  "max_new_tokens": 256,
+  "batch_size": 4,
+  "random_seed": 86,
+  "device": "auto",
+  "num_entries": null,
+  "debug": false,
+  "user_context_mode": "full_reviews",
+  "reference_selection": "tfidf",
+  "community_selection": "random",
+  "prompt_mode": "answer_plus_reason",
+  "subset": "full",
+  "splits": "data/splits/splits.json"
+}
